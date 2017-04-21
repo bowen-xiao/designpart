@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_home"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.bowen.zdsjclub.view.NoScrollViewPager
+        android:id="@+id/home_content_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.45dp"
+        android:background="@color/bottom_textcolor_defeaut"/>
+    <RadioGroup
+        android:id="@+id/rg_home_bottom_items"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <RadioButton
+            android:id="@+id/rb_home_bottom_first"
+            style="@style/tab_item_style"
+            android:drawableTop="@drawable/home_bottom_first"
+            android:text="首页" />
+
+        <RadioButton
+            android:id="@+id/rb_home_bottom_example"
+            style="@style/tab_item_style"
+            android:drawableTop="@drawable/home_bottom_example"
+            android:text="案例" />
+
+        <RadioButton
+            android:id="@+id/rb_home_bottom_focus"
+            style="@style/tab_item_style"
+            android:drawableTop="@drawable/home_bottom_focus"
+            android:text="关注" />
+
+        <RadioButton
+            android:id="@+id/rb_home_bottom_design"
+            style="@style/tab_item_style"
+            android:drawableTop="@drawable/home_bottom_design"
+            android:text="设置师" />
+
+        <RadioButton
+            android:id="@+id/rb_home_bottom_mine"
+            style="@style/tab_item_style"
+            android:drawableTop="@drawable/home_bottom_mine"
+            android:text="我的" />
+    </RadioGroup>
+
+</LinearLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="LineItemView">
+        <!--这样用户就不会传错值-->
+        <!--<attr name="my_background" format="enum">
+            <enum name="first" value="0"/>
+            <enum name="middle" value="1"/>
+            <enum name="last" value="2"/>
+        </attr>-->
+        <attr name="my_title" format="string"/>
+        <attr name="my_logo" format="integer"/>
+
+    </declare-styleable>
+
+</resources>
