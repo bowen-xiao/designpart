@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:visibility="visible"
+        android:id="@+id/ll_focus_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:text="我的个人中心"
+            android:layout_width="match_parent"
+            android:layout_height="44dp" />
+        <LinearLayout
+            android:paddingLeft="@dimen/common_margin"
+            android:gravity="center_vertical"
+            android:id="@+id/ll_mine_head_info_root"
+            android:background="@mipmap/mine_center_bg"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:orientation="horizontal">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/fragment_iv_header"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@mipmap/ic_launcher"
+                app:civ_border_width="2dp"
+                app:civ_border_color="@color/whilte"/>
+
+            <LinearLayout
+                android:layout_marginRight="@dimen/common_margin"
+                android:layout_marginLeft="10dp"
+                android:gravity="center|left"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+
+                        android:textColor="@color/whilte"
+                        android:text="刘大大"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:gravity="center"
+                        android:layout_marginLeft="@dimen/margin_right_speace"
+                        android:orientation="horizontal"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:visibility="gone"
+                            android:textSize="12sp"
+                            android:id="@+id/tv_mine_lv"
+                            android:text="LV 7"
+                            android:textColor="@color/red"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:visibility="gone"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="12sp"
+                            android:id="@+id/tv_mine_author_status"
+                            android:background="@drawable/red_conner_bg"
+                            android:text="已认证"
+                            android:textColor="@color/red"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_mine_share"
+                        android:src="@mipmap/information"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp" />
+
+                    <ImageView
+                        android:layout_marginLeft="@dimen/common_margin"
+                        android:id="@+id/iv_mine_msg"
+                        android:src="@mipmap/information"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/common_margin"
+                    android:layout_marginBottom="@dimen/common_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+
+                        android:textColor="@color/whilte"
+                        android:text="31岁"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:layout_marginLeft="@dimen/common_margin"
+                        android:id="@+id/iv_mine_sex_type"
+                        android:src="@mipmap/sex_unknow"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_mine_id_number"
+                    android:textColor="@color/whilte"
+                    android:text="ID:0000000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_marginRight="@dimen/common_margin"
+                android:layout_marginLeft="@dimen/common_margin"
+                android:src="@mipmap/arrow_r"
+                android:layout_width="12dp"
+                android:layout_height="24dp" />
+
+        </LinearLayout>
+
+        <View
+            android:background="@color/bottom_textcolor_defeaut"
+            android:layout_width="match_parent"
+            android:layout_height="0.45dp"/>
+        <LinearLayout
+            android:id="@+id/ll_mine_note_root"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/common_margin"
+            android:background="@mipmap/mine_author_note_bg"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:src="@mipmap/author_note"
+                android:layout_width="18dp"
+                android:layout_height="18dp" />
+
+            <TextView
+                android:layout_marginLeft="@dimen/common_margin"
+                android:text="您还没有进行认证，请在PC端进行认证！"
+                android:textColor="@color/whilte"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="@dimen/common_margin"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <com.bowen.zdsjclub.view.LineItemView
+                android:id="@+id/li_seen_mine_people"
+                app:my_title="谁看过我"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <com.bowen.zdsjclub.view.LineItemView
+                android:visibility="gone"
+                android:id="@+id/li_mine_fans"
+                app:my_title="我的粉丝"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <com.bowen.zdsjclub.view.LineItemView
+            android:id="@+id/li_mine_percent"
+            app:my_title="我的积分"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/common_margin"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <com.bowen.zdsjclub.view.LineItemView
+                android:visibility="gone"
+                android:id="@+id/li_mine_example"
+                app:my_title="我的案例"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <com.bowen.zdsjclub.view.LineItemView
+                android:visibility="gone"
+                android:id="@+id/li_mine_material"
+                app:my_title="我的素材"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <com.bowen.zdsjclub.view.LineItemView
+            android:id="@+id/li_mine_collect"
+            app:my_title="我的收藏"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+            <View
+                android:background="@color/bottom_textcolor_defeaut"
+                android:layout_width="match_parent"
+                android:layout_height="0.45dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/common_margin"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <com.bowen.zdsjclub.view.LineItemView
+                android:id="@+id/li_mine_comment_manager"
+                app:my_title="评论管理"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <com.bowen.zdsjclub.view.LineItemView
+                android:id="@+id/li_mine_change_password"
+                app:my_title="修改密码"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:background="@color/bottom_textcolor_defeaut"
+                android:layout_width="match_parent"
+                android:layout_height="0.45dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/common_margin"
+            android:layout_marginBottom="@dimen/common_margin"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="44dp">
+            <View
+                android:background="@color/bottom_textcolor_defeaut"
+                android:layout_width="match_parent"
+                android:layout_height="0.45dp"/>
+            <TextView
+                android:clickable="true"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:background="@drawable/focus_item_bg"
+                android:gravity="center"
+                android:text="退出登录"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+            <View
+                android:background="@color/bottom_textcolor_defeaut"
+                android:layout_width="match_parent"
+                android:layout_height="0.45dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    </ScrollView>
+</FrameLayout>

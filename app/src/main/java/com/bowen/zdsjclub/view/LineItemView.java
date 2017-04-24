@@ -35,12 +35,18 @@ public class LineItemView extends LinearLayout {
 		View view = View.inflate(getContext(), R.layout.view_line_mune, this);
 		TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.LineItemView);
 		String title = array.getString(R.styleable.LineItemView_my_title);
-		int logo = array.getResourceId(R.styleable.LineItemView_my_logo,R.mipmap.design_cirle);
+		int logo = array.getResourceId(R.styleable.LineItemView_my_logo,-1);
 
 		array.recycle();
 		ImageView ivLogo = (ImageView) view.findViewById(R.id.iv_line_mune);
 		TextView tvTitle = (TextView) view.findViewById(R.id.tv_line_title);
-		ivLogo.setImageResource(logo);
+		//没有输入就不显示
+		if(logo != -1){
+			ivLogo.setImageResource(logo);
+			ivLogo.setVisibility(View.VISIBLE);
+		}else{
+			ivLogo.setVisibility(View.GONE);
+		}
 		tvTitle.setText(title);
 		view.setClickable(true);
 	}

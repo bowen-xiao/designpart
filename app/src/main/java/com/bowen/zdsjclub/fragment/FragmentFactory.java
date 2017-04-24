@@ -41,7 +41,7 @@ public class FragmentFactory
 				break;
 			case 4:
 				// 我的
-				fragment = new HomeFragment();
+				fragment = new MineFragment();
 				break;
 		}
 		//传递的参数信息

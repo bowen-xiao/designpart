@@ -4,4 +4,5 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="common_margin">15dp</dimen>
     <dimen name="focus_image_size">20dp</dimen>
+    <dimen name="margin_right_speace">10dp</dimen>
 </resources>
