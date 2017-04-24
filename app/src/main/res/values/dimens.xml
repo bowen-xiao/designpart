@@ -8,4 +8,5 @@
     <dimen name="line_margin">10dp</dimen>
     <dimen name="login_line_margin">20dp</dimen>
     <dimen name="login_type_size">60dp</dimen>
+    <dimen name="login_margin_board">40dp</dimen>
 </resources>
