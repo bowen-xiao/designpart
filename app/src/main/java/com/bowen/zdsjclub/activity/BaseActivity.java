@@ -2,6 +2,7 @@ package com.bowen.zdsjclub.activity;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.WindowManager;
@@ -21,7 +22,9 @@ public abstract class BaseActivity extends FragmentActivity {
 		//		锁定屏幕的方向
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		// 设置键盘不要破坏布局
-		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+//		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+		getWindow().setFormat(PixelFormat.TRANSLUCENT);
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		super.onCreate(savedInstanceState);
 		mActivity = this;
 		setContentView(getContextViewId());

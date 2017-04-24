@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
 	@Override
 	public void onBackPressed() {
-		if(mLoadView.isShowing()){
+		if(mLoadView!=null && mLoadView.isShowing()){
 			mLoadView.dismiss();
 			return;
 		}

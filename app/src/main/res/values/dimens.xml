@@ -5,4 +5,7 @@
     <dimen name="common_margin">15dp</dimen>
     <dimen name="focus_image_size">20dp</dimen>
     <dimen name="margin_right_speace">10dp</dimen>
+    <dimen name="line_margin">10dp</dimen>
+    <dimen name="login_line_margin">20dp</dimen>
+    <dimen name="login_type_size">60dp</dimen>
 </resources>

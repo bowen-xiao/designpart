@@ -18,4 +18,9 @@ public interface RxNetWorkService {
     @FormUrlEncoded
     @POST(" ")
     Observable<String> getBaiDuInfo(@FieldMap Map<String,Object> filedMap );
+
+    //key	是	string	信鸽推送KEY
+    @FormUrlEncoded
+    @POST("based/push/index")
+    Observable<String> upLoadPushID(@FieldMap Map<String,Object> filedMap);
 }

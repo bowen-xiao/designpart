@@ -6,5 +6,6 @@ package com.bowen.zdsjclub;
  */
 public interface SysConfiguration {
 //	public static final String BASE_URL = "https://www.baidu.com/";
-	public static final String BASE_URL = "https://kyfw.12306.cn/otn/leftTicket/init/";
+	public static final String BASE_URL = "http://apidev.hannengclub.com/";
+//	public static final String BASE_URL = "https://kyfw.12306.cn/otn/leftTicket/init/";
 }

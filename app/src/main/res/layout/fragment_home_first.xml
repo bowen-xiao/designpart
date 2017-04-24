@@ -4,13 +4,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:text="page"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <com.tencent.smtt.sdk.WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/whilte" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:max="100"
+            android:progress="0" />
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#903B9FF8"
+            android:padding="5dp"
+            android:text="当前内核:--\n内核版本:---"
+            android:textColor="#FFF"
+            android:textSize="12sp" />
+    </RelativeLayout>
 
 
-    <include layout="@layout/new_popup_common_view"/>
+    <!--资源异常页面-->
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_err_page"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    </LinearLayout>
+
+    <include layout="@layout/new_popup_common_view" />
+
 
 </FrameLayout>

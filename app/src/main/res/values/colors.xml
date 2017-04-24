@@ -13,4 +13,5 @@
     <!--     <color name="bottom_textcolor_defeaut">#FFFFFF</color> -->
     <color name="bottom_textcolor_checked">#FF4747</color>
     <color name="red">#FF0000</color>
+    <color name="login_red">#FF4747</color>
 </resources>

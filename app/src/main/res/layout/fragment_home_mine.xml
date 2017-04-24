@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+
+    <TextView
+        android:textSize="17sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:text="我的个人中心"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,13 +24,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:textSize="17sp"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:text="我的个人中心"
-            android:layout_width="match_parent"
-            android:layout_height="44dp" />
         <LinearLayout
             android:paddingLeft="@dimen/common_margin"
             android:gravity="center_vertical"
@@ -36,7 +38,7 @@
                 android:id="@+id/fragment_iv_header"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@mipmap/ic_launcher"
+                android:src="@mipmap/male_defalut"
                 app:civ_border_width="2dp"
                 app:civ_border_color="@color/whilte"/>
 
@@ -107,8 +109,8 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="@dimen/common_margin"
-                    android:layout_marginBottom="@dimen/common_margin"
+                    android:layout_marginTop="@dimen/line_margin"
+                    android:layout_marginBottom="@dimen/line_margin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -257,6 +259,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.45dp"/>
             <TextView
+                android:id="@+id/tv_mine_exit_login"
                 android:clickable="true"
                 android:textSize="16sp"
                 android:textColor="@color/black"
@@ -276,4 +279,4 @@
     </LinearLayout>
 
     </ScrollView>
-</FrameLayout>
+</LinearLayout>

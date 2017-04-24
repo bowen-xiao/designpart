@@ -1,11 +1,13 @@
 package com.bowen.zdsjclub.fragment;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bowen.zdsjclub.R;
+import com.bowen.zdsjclub.activity.LoginActivity;
 import com.bowen.zdsjclub.view.LineItemView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -69,7 +71,6 @@ public class MineFragment extends BaseFragment {
 	}
 
 
-
 	@OnClick({R.id.iv_mine_share,
 			  R.id.iv_mine_msg,
 			  R.id.li_seen_mine_people,
@@ -79,7 +80,9 @@ public class MineFragment extends BaseFragment {
 			  R.id.li_mine_material,
 			  R.id.li_mine_collect,
 			  R.id.li_mine_comment_manager,
-			  R.id.li_mine_change_password})
+			  R.id.tv_mine_exit_login,
+			  R.id.li_mine_change_password
+	})
 	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.iv_mine_share:
@@ -103,6 +106,16 @@ public class MineFragment extends BaseFragment {
 				break;
 			case R.id.li_mine_change_password:
 				break;
+			case R.id.tv_mine_exit_login:
+				//退出登录，登录按钮
+				jumpToLogin();
+				break;
 		}
+	}
+
+	//跳转到登录页面
+	private void jumpToLogin() {
+		Intent intent = new Intent(mActivity, LoginActivity.class);
+		startActivity(intent);
 	}
 }

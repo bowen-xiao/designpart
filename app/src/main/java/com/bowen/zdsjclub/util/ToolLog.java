@@ -13,7 +13,7 @@ public class ToolLog {
 	/**
 	 * 调试信息的是否显示，上线后关闭log
 	 */
-	public static Boolean DEBUG = true;
+	public static Boolean DEBUG = false;
 	
 	public static void d(String tag, String msg) {
 		if (DEBUG) {
@@ -68,6 +68,13 @@ public class ToolLog {
 		if (DEBUG) {
 			tag = Thread.currentThread().getName() + ":" + tag;
 			Log.e(TAG, tag + " : " + msg, error);
+		}
+	}
+
+	public static void i(String msg) {
+		if (DEBUG) {
+			String tag = Thread.currentThread().getName() ;
+			Log.i(tag, " : " + msg);
 		}
 	}
 }

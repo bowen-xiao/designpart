@@ -1,9 +1,12 @@
 package com.bowen.zdsjclub.network.configraution;
 
 
+import com.bowen.zdsjclub.util.Constans;
+import com.bowen.zdsjclub.util.SHA1Util;
 import com.bowen.zdsjclub.util.ToolLog;
 
 import java.io.IOException;
+import java.util.Random;
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -18,8 +21,24 @@ import okhttp3.ResponseBody;
  */
 public class LogInterceptor implements Interceptor {
 
+    private long timestamp = System.currentTimeMillis();
+
+    private int nonce = new Random().nextInt(10000) + 10000;
+
+    private int device_type = Constans.DEVICE_TYPE;
+
+    private int version_id = Constans.VERSION_ID;
+
+
+    private  String getSign(){
+       String signature = SHA1Util.SHA1("TOKEN_WITH_HANNENG_IPHONE" + timestamp
+                                  + nonce);
+        return signature;
+    }
+
     @Override
     public Response intercept(Chain chain) throws IOException {
+
         //String marvelHash = ApiUtils.generateMarvelHash(mApiKey, mApiSecret);
         Request oldRequest = chain.request();
         // 添加新的参数
@@ -28,7 +47,13 @@ public class LogInterceptor implements Interceptor {
                 .scheme(oldRequest.url().scheme())
                 .host(oldRequest.url().host())
                 //公共参数，app版本号
-                 //.addQueryParameter("appVersion", Parameters.appVersion)
+                 .addQueryParameter("signature", getSign())
+                 .addQueryParameter("timestamp", timestamp + "")
+                 .addQueryParameter("nonce", nonce + "")
+                 .addQueryParameter("device_type", device_type + "")
+                 .addQueryParameter("api_ver", version_id + "")
+                  //公共参数信息 // TODO: 2017/4/24  登录后需要保存到本地的信息
+                 .addQueryParameter("login_token", "")
                 //添加公共的参数信息,这里不需要
                 //.addQueryParameter("token", token)
                 ;

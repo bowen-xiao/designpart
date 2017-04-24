@@ -2,6 +2,9 @@ package com.bowen.zdsjclub.fragment;
 
 import android.os.Bundle;
 import android.support.v4.util.SparseArrayCompat;
+import android.text.TextUtils;
+
+import com.bowen.zdsjclub.SysConfiguration;
 
 /**
  * @author bowen
@@ -21,14 +24,20 @@ public class FragmentFactory
 			return fragment;
 		}
 
+		//传递的参数信息
+		Bundle args = new Bundle();
+		String url = "";
 		switch (position)
 		{
 			case 0:
+				//"http://lytest.fengjing.com/wap/guideInfo/g_comment_list.html?id=383"
 				// 首页
+				url = ("http://lytest.fengjing.com/wap/guideInfo/g_comment_list.html?id=383");
 				fragment = new HomeFragment();
 				break;
 			case 1:
 				// 案例
+				url =  "case/index.aspx?apptype=2";
 				fragment = new HomeFragment();
 				break;
 			case 2:
@@ -37,6 +46,7 @@ public class FragmentFactory
 				break;
 			case 3:
 				// 设计师
+				url = "/designer/index.aspx?apptype=2";
 				fragment = new HomeFragment();
 				break;
 			case 4:
@@ -44,8 +54,10 @@ public class FragmentFactory
 				fragment = new MineFragment();
 				break;
 		}
-		//传递的参数信息
-		Bundle args = new Bundle();
+		if(!TextUtils.isEmpty(url) && !url.contains("http")){
+			url = SysConfiguration.BASE_URL + url;
+		}
+		args.putString(HomeFragment.COMMON_URL, url);
 		fragment.setArguments(args);
 		args.putInt("index",position);
 		// 存储到缓存
