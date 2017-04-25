@@ -2,6 +2,7 @@ package com.bowen.zdsjclub.activity;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.bowen.zdsjclub.R;
@@ -11,6 +12,12 @@ import com.bowen.zdsjclub.R;
  */
 
 public class StartActivity extends BaseActivity {
+
+	@Override
+	protected String initTitle() {
+		mTitleRoot.setVisibility(View.GONE);
+		return "";
+	}
 
 	@Override
 	public int getContextViewId() {

@@ -71,7 +71,9 @@ public abstract class BaseFragment extends Fragment {
 	}
 
 	//用户可见的时候
-	public void loadDataOnce(){}
+	public void loadDataOnce(){
+
+	}
 
 	@Override
 	public void onDestroy() {

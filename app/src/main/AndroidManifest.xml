@@ -60,7 +60,8 @@
 
         <activity android:name=".activity.HomeActivity" />
         <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.ForgetPasswordActivity"></activity>
+        <activity android:name=".activity.ForgetPasswordActivity" />
+        <activity android:name=".activity.ConfirmPasswordActivity"></activity>
     </application>
 
 </manifest>

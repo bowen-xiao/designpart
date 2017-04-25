@@ -13,7 +13,7 @@ public class ToolLog {
 	/**
 	 * 调试信息的是否显示，上线后关闭log
 	 */
-	public static Boolean DEBUG = false;
+	public static Boolean DEBUG = true;
 	
 	public static void d(String tag, String msg) {
 		if (DEBUG) {

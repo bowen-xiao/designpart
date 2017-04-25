@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center_horizontal|bottom"
+    android:background="@drawable/delete_note_bg"
+    android:layout_width="220dp"
+    android:layout_height="120dp">
+
+    <TextView
+        android:id="@+id/tv_common_dialog_title"
+        android:padding="@dimen/margin_right_speace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_common_dialog_msg"
+        android:gravity="center"
+        android:padding="@dimen/margin_right_speace"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <View
+        android:background="@color/bottom_textcolor_defeaut"
+        android:layout_width="match_parent"
+        android:layout_height="0.45dp"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+
+        <TextView
+            android:id="@+id/tv_common_dialog_sure"
+            android:gravity="center"
+            android:text="确定"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+
+        <View
+            android:background="@color/bottom_textcolor_defeaut"
+            android:layout_width="0.45dp"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/tv_common_dialog_cancel"
+            android:gravity="center"
+            android:text="取消"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</LinearLayout>

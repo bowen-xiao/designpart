@@ -17,12 +17,18 @@ public class LoginActivity extends BaseActivity {
 	private LoginErrDialog mLoginErrDialog;
 
 	@Override
+	protected String initTitle() {
+		return "登录";
+	}
+
+	@Override
 	public int getContextViewId() {
 		return R.layout.activity_login;
 	}
 
 	@Override
 	public void initData() {
+		//1)设置大小
 		LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mMarginTop.getLayoutParams();
 		int screenWith = mActivity.getResources().getDisplayMetrics().widthPixels;
 		layoutParams.width = screenWith;
@@ -45,6 +51,7 @@ public class LoginActivity extends BaseActivity {
 		}
 	}
 
+	//显示登录错误的信息
 	private void showLoginErr() {
 		if(mLoginErrDialog == null){
 			mLoginErrDialog = new LoginErrDialog(mActivity);

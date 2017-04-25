@@ -152,6 +152,7 @@
                 android:layout_height="wrap_content" />
             <LinearLayout
                 android:layout_marginTop="@dimen/login_line_margin"
+                android:layout_marginBottom="@dimen/login_margin_board"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

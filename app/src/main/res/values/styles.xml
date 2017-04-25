@@ -45,4 +45,17 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
+    <!-- dialog样式 -->
+    <style name="delete_Dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <!-- 对话框的背景 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 是否漂浮在现有的activity上 -->
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!--是否模糊-->
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
 </resources>

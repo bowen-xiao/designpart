@@ -1,5 +1,6 @@
 package com.bowen.zdsjclub.activity;
 
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -7,6 +8,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.bowen.zdsjclub.R;
+import com.bowen.zdsjclub.dialog.DeleteDialog;
 import com.bowen.zdsjclub.fragment.FragmentFactory;
 import com.bowen.zdsjclub.fragment.HomePagerAdapter;
 import com.bowen.zdsjclub.network.DataEngine2;
@@ -24,6 +26,7 @@ import butterknife.OnClick;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
 
 public class HomeActivity extends BaseActivity {
 
@@ -45,6 +48,7 @@ public class HomeActivity extends BaseActivity {
 	LinearLayout      mHomeRoot;
 	private HomePagerAdapter mAdapter;
 
+
 	@Override
 	public int getContextViewId() {
 		return R.layout.activity_home;
@@ -60,8 +64,17 @@ public class HomeActivity extends BaseActivity {
 		mAdapter = new HomePagerAdapter(getSupportFragmentManager(), this);
 		mViewPager.setAdapter(mAdapter);
 		mViewPager.setOffscreenPageLimit(ids.size());
-
+		//默认选中第一个
+		mViewPager.setCurrentItem(0);
+		//去加载数据
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				mAdapter.getItem(0).loadDataOnce();
+			}
+		},500L);
 		uploadPushId();
+
 	}
 
 	//提交pushId
@@ -77,16 +90,17 @@ public class HomeActivity extends BaseActivity {
 			   .subscribe(new Subscriber<String>() {
 				   @Override
 				   public void onCompleted() {
-					   ToolLog.e("main", "加载完成 !");
+					   ToolLog.e("main", "请求完成 !");
 				   }
 
 				   @Override
 				   public void onError(Throwable e) {
-					   ToolLog.e("main",e.getMessage() + "加载完成 !");
+					   ToolLog.e("main",e.getMessage() + "请求完成 !");
 				   }
 
 				   @Override
 				   public void onNext(String model) {
+					   ToolLog.e("main", "model : " + model);
 				   }
 			   });
 	}
@@ -111,6 +125,10 @@ public class HomeActivity extends BaseActivity {
 			  R.id.rb_home_bottom_mine})
 	public void onClick(View view) {
 		mBottomItems.check(view.getId());
+		if(view.getId() == R.id.rb_home_bottom_example){
+			DeleteDialog deleteDialog = new DeleteDialog(mActivity);
+			deleteDialog.showDialog();
+		}
 		mViewPager.setCurrentItem(ids.indexOf(view.getId()));
 	}
 
@@ -125,7 +143,6 @@ public class HomeActivity extends BaseActivity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK
 			&& event.getAction() == KeyEvent.ACTION_DOWN) {
-
 			//如果在显示先进行取消
 			ToastUtil.cancelToast();
 			if ((System.currentTimeMillis() - exitPress) > 2000 && mActivity != null) {
