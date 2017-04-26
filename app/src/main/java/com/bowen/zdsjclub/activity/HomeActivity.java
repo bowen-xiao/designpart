@@ -8,7 +8,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.bowen.zdsjclub.R;
+import com.bowen.zdsjclub.dialog.CommonMsgDialog;
 import com.bowen.zdsjclub.dialog.DeleteDialog;
+import com.bowen.zdsjclub.dialog.DialogBean;
 import com.bowen.zdsjclub.fragment.FragmentFactory;
 import com.bowen.zdsjclub.fragment.HomePagerAdapter;
 import com.bowen.zdsjclub.network.DataEngine2;
@@ -128,6 +130,11 @@ public class HomeActivity extends BaseActivity {
 		if(view.getId() == R.id.rb_home_bottom_example){
 			DeleteDialog deleteDialog = new DeleteDialog(mActivity);
 			deleteDialog.showDialog();
+		}
+		if(view.getId() == R.id.rb_home_bottom_mine){
+			DialogBean dialogBean = new DialogBean("你尚未登录您的账号，前往登录！", "", "取消", "前去登录");
+			CommonMsgDialog commonMsgDialog = new CommonMsgDialog(mActivity, dialogBean);
+			commonMsgDialog.showDialog();
 		}
 		mViewPager.setCurrentItem(ids.indexOf(view.getId()));
 	}

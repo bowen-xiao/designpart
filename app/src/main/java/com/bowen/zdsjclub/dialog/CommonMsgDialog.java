@@ -85,7 +85,6 @@ public class CommonMsgDialog {
 
     @OnClick({
         R.id.tv_common_dialog_cancel
-
     })
     public void onClick(View view) {
         switch (view.getId()) {

@@ -1,6 +1,5 @@
 package com.bowen.zdsjclub.fragment;
 
-import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -85,6 +84,7 @@ public class HomeFragment extends BaseFragment {
 		webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 		loadUrl(url);
 	}
+
 
 	private void loadUrl(String url) {
 		mWebView.loadUrl(url);

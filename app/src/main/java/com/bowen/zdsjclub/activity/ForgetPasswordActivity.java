@@ -6,10 +6,12 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.bowen.zdsjclub.R;
 import com.bowen.zdsjclub.dialog.CommonMsgDialog;
 import com.bowen.zdsjclub.dialog.DialogBean;
+import com.bowen.zdsjclub.util.InputCheck;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -26,6 +28,9 @@ public class ForgetPasswordActivity extends BaseActivity {
 	@BindView(R.id.btn_get_phone_msg_number)
 	Button mBtnMsgTime;
 	private CommonMsgDialog mMsgDialog;
+
+	@BindView(R.id.iv_input_phone_status)
+	ImageView mPhoneNumberStatus;
 
 	@Override
 	protected String initTitle() {
@@ -75,6 +80,13 @@ public class ForgetPasswordActivity extends BaseActivity {
 
 	private Handler myHandler ;
 	private void startTimer(){
+		String phoneNumber = mInputPhone.getText().toString().trim();
+		//手机号码不正确
+		boolean isPhoneNumber = InputCheck.isPhoneNumber(phoneNumber);
+		mPhoneNumberStatus.setImageResource(isPhoneNumber ? R.mipmap.input_right : R.mipmap.input_err);
+		if(!isPhoneNumber){
+			return;
+		}
 		mBtnMsgTime.setEnabled(false);
 		myHandler.postDelayed(new Runnable() {
 			@Override

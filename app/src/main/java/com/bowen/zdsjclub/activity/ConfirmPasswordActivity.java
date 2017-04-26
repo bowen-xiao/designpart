@@ -6,13 +6,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bowen.zdsjclub.R;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.bowen.zdsjclub.util.InputCheck;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+
+import static com.bowen.zdsjclub.util.InputCheck.isPassword;
 
 public class ConfirmPasswordActivity extends BaseActivity {
 
@@ -53,7 +53,7 @@ public class ConfirmPasswordActivity extends BaseActivity {
 	public void clickSubmit(View view){
 		String inputOne = mEtInputOne.getText().toString().trim();
 		String inputTwo = mEtInputTwo.getText().toString().trim();
-		boolean isRight = inputOne.equals(inputTwo) && checkInput(inputOne);
+		boolean isRight = inputOne.equals(inputTwo) && isPassword(inputOne);
 		//通过验证的
 		if(isRight){
 				// // TODO: 2017/4/25 请求接口
@@ -67,37 +67,29 @@ public class ConfirmPasswordActivity extends BaseActivity {
 	}
 
 	@OnTextChanged(
-		value ={
-			R.id.et_forget_password_phone
-		}
+
+			value = R.id.et_confirm_password_phone
+
 		//可以指定执行顺序,不影响原有逻辑
-		, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED
+		, callback = OnTextChanged.Callback.TEXT_CHANGED
 	)
 	public void onTextChange(CharSequence s, int start, int count, int after){
 		String inputOne = mEtInputOne.getText().toString().trim();
-		boolean isRight = checkInput(inputOne);
+		boolean isRight = InputCheck.isPassword(inputOne);
 		mOneStatus.setImageResource(isRight ? R.mipmap.input_right : R.mipmap.input_err);
 	}
 
-	@OnTextChanged(
-		value ={
+	/*@OnTextChanged(
+		value =
 			R.id.et_forget_password_phone_two
-		}
 		//可以指定执行顺序,不影响原有逻辑
 		, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED
 	)
 	public void onTextChangeTwo(CharSequence s, int start, int count, int after){
 		String inputOne = mEtInputOne.getText().toString().trim();
 		String inputTwo = mEtInputTwo.getText().toString().trim();
-		boolean isRight = inputOne.equals(inputTwo) && checkInput(inputOne);
+		boolean isRight = inputOne.equals(inputTwo) && InputCheck.isPassword(inputOne);
 		mTwoStatus.setImageResource(isRight ? R.mipmap.input_right : R.mipmap.input_err);
-	}
+	}*/
 
-	//是否是合法的值 6-16位的数字和字母
-	private boolean checkInput(String myInput){
-		String regex = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(myInput);
-		return (matcher.matches());
-	}
 }
