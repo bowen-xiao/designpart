@@ -7,8 +7,9 @@
     android:layout_height="120dp">
 
     <TextView
+        android:gravity="center_horizontal|bottom"
         android:id="@+id/tv_common_dialog_title"
-        android:padding="@dimen/margin_right_speace"
+        android:paddingTop="@dimen/margin_right_speace"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

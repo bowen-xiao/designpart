@@ -67,9 +67,9 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:visibility="gone"
+                android:id="@+id/tv_head_title_right_text"
                 android:textSize="16sp"
-                android:text="确定"
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

@@ -7,6 +7,9 @@
     <dimen name="margin_right_speace">10dp</dimen>
     <dimen name="line_margin">10dp</dimen>
     <dimen name="login_line_margin">20dp</dimen>
-    <dimen name="login_type_size">60dp</dimen>
+    <dimen name="login_type_size">50dp</dimen>
+    <dimen name="login_type_size_margin">36dp</dimen>
     <dimen name="login_margin_board">40dp</dimen>
+    <dimen name="login_line_height">42dp</dimen>
+    <dimen name="login_user_logo">24dp</dimen>
 </resources>

@@ -180,18 +180,18 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="wrap_content">
-            <com.bowen.zdsjclub.view.LineItemView
+            <com.bowen.hannengclub.view.LineItemView
                 android:id="@+id/li_seen_mine_people"
                 app:my_title="谁看过我"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-            <com.bowen.zdsjclub.view.LineItemView
+            <com.bowen.hannengclub.view.LineItemView
                 android:visibility="gone"
                 android:id="@+id/li_mine_fans"
                 app:my_title="我的粉丝"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-            <com.bowen.zdsjclub.view.LineItemView
+            <com.bowen.hannengclub.view.LineItemView
             android:id="@+id/li_mine_percent"
             app:my_title="我的积分"
             android:layout_width="match_parent"
@@ -203,19 +203,19 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="wrap_content">
-            <com.bowen.zdsjclub.view.LineItemView
+            <com.bowen.hannengclub.view.LineItemView
                 android:visibility="gone"
                 android:id="@+id/li_mine_example"
                 app:my_title="我的案例"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-            <com.bowen.zdsjclub.view.LineItemView
+            <com.bowen.hannengclub.view.LineItemView
                 android:visibility="gone"
                 android:id="@+id/li_mine_material"
                 app:my_title="我的素材"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-            <com.bowen.zdsjclub.view.LineItemView
+            <com.bowen.hannengclub.view.LineItemView
             android:id="@+id/li_mine_collect"
             app:my_title="我的收藏"
             android:layout_width="match_parent"
@@ -231,12 +231,12 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="wrap_content">
-            <com.bowen.zdsjclub.view.LineItemView
+            <com.bowen.hannengclub.view.LineItemView
                 android:id="@+id/li_mine_comment_manager"
                 app:my_title="评论管理"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-            <com.bowen.zdsjclub.view.LineItemView
+            <com.bowen.hannengclub.view.LineItemView
                 android:id="@+id/li_mine_change_password"
                 app:my_title="修改密码"
                 android:layout_width="match_parent"

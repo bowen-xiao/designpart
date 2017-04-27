@@ -16,4 +16,20 @@
     <color name="login_red">#FF4747</color>
 
     <color name="transparent_half">#b0000000</color>
+
+    <!-- 5BCA82 草绿色   -->
+    <!-- 33B5E5 天空蓝   指针点击的颜色-->
+    <color name="background_tab_pressed">#66FF4747</color>
+    <!-- 指针的颜色蓝色铅笔墨水色  6666FF -->
+    <!-- 指针选中的颜色 -->
+    <color name="tab_indicator_selected">#FF4747</color>
+    <!-- 字体颜色google 6666FF -->
+    <!-- 指针字体选中的颜色 -->
+    <color name="tab_text_selected">#FF4747</color>
+
+    <!-- 字体默认颜色  B0B0B0 -->
+    <!-- 字体颜色黑色  333333 -->
+    <color name="tab_text_normal">#000</color>
+
+
 </resources>

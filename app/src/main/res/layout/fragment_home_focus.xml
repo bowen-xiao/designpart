@@ -13,7 +13,7 @@
         android:paddingTop="@dimen/common_margin"
         android:orientation="vertical">
 
-        <com.bowen.zdsjclub.view.LineItemView
+        <com.bowen.hannengclub.view.LineItemView
             android:id="@+id/li_design_circle"
             app:my_title="设计圈"
             app:my_logo="@mipmap/design_cirle"
@@ -24,14 +24,14 @@
             android:layout_width="match_parent"
             android:layout_height="0.45dp"/>
 
-        <com.bowen.zdsjclub.view.LineItemView
+        <com.bowen.hannengclub.view.LineItemView
             android:layout_marginTop="@dimen/common_margin"
             android:id="@+id/li_design_club_dynamic"
             app:my_title="俱乐部动态"
             app:my_logo="@mipmap/happy_part"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <com.bowen.zdsjclub.view.LineItemView
+        <com.bowen.hannengclub.view.LineItemView
             android:id="@+id/li_design_same_city"
             app:my_title="同城设计师"
             app:my_logo="@mipmap/same_place_design"
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.45dp"/>
 
-        <com.bowen.zdsjclub.view.LineItemView
+        <com.bowen.hannengclub.view.LineItemView
             android:layout_marginTop="@dimen/common_margin"
             android:id="@+id/li_design_myfocus"
             app:my_title="关注的设计师"
@@ -51,14 +51,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <com.bowen.zdsjclub.view.LineItemView
+        <com.bowen.hannengclub.view.LineItemView
             android:id="@+id/li_design_focus_activity"
             app:my_title="关注的活动"
             app:my_logo="@mipmap/fouce_activity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <com.bowen.zdsjclub.view.LineItemView
+        <com.bowen.hannengclub.view.LineItemView
             android:id="@+id/li_design_focus_subject"
             app:my_title="关注的专题"
             app:my_logo="@mipmap/fouce_subject"
