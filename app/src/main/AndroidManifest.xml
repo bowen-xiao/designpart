@@ -58,12 +58,20 @@
             android:name="PGYER_APPID"
             android:value="999c552a6f1007e21ee641c7862f3983" />
 
-        <activity android:name=".activity.HomeActivity" />
-        <activity android:name=".activity.LoginActivity" />
+        <activity
+            android:name=".activity.HomeActivity"
+            android:stateNotNeeded="true" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:stateNotNeeded="true" />
         <activity android:name=".activity.ForgetPasswordActivity" />
         <activity android:name=".activity.ConfirmPasswordActivity" />
         <activity android:name=".activity.CommonActivity" />
-        <activity android:name=".activity.RegisterActivity"></activity>
+        <!-- 需要杀死后自动重启 -->
+        <activity
+            android:name=".activity.RegisterActivity"
+            android:stateNotNeeded="true" />
+        <activity android:name=".activity.RegisterStep2Activity"></activity>
     </application>
 
 </manifest>

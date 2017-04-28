@@ -79,17 +79,17 @@ public class ConfirmPasswordActivity extends BaseActivity {
 		mOneStatus.setImageResource(isRight ? R.mipmap.input_right : R.mipmap.input_err);
 	}
 
-	/*@OnTextChanged(
+	@OnTextChanged(
 		value =
 			R.id.et_forget_password_phone_two
 		//可以指定执行顺序,不影响原有逻辑
-		, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED
+		, callback = OnTextChanged.Callback.TEXT_CHANGED
 	)
 	public void onTextChangeTwo(CharSequence s, int start, int count, int after){
 		String inputOne = mEtInputOne.getText().toString().trim();
 		String inputTwo = mEtInputTwo.getText().toString().trim();
 		boolean isRight = inputOne.equals(inputTwo) && InputCheck.isPassword(inputOne);
 		mTwoStatus.setImageResource(isRight ? R.mipmap.input_right : R.mipmap.input_err);
-	}*/
+	}
 
 }

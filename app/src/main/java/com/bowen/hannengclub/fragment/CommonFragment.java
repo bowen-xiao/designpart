@@ -61,7 +61,9 @@ public class CommonFragment extends BaseFragment {
 		int index = getArguments().getInt("index", -1);
 		mErrBack.setVisibility(index == -1 ? View.GONE : View.GONE);
 		ToolLog.e("main",url + "url");
-
+		if(index == 0){
+			loadDataOnce();
+		}
 	}
 
 	boolean isLoad;
@@ -70,12 +72,14 @@ public class CommonFragment extends BaseFragment {
 		if(isLoad){return;}
 		isLoad = true;
 		mErrPage.setVisibility(View.GONE);
+		//加载中的显示
+		mLoadRoot.setVisibility(View.VISIBLE);
 		//可以开始加载数据
 		WebSettings webSettings = mWebView.getSettings();
 		//可以使用script
 		webSettings.setJavaScriptEnabled(true);
 		int width = mWebView.getView().getWidth();
-		mWebView.addJavascriptInterface(new JavaScriptInterface(mActivity), "android");
+		mWebView.addJavascriptInterface(new JavaScriptInterface(mActivity,mWebView), "android");
 		int tbsVersion = QbSdk.getTbsVersion(mActivity);
 		String TID = QbSdk.getTID();
 		String qBVersion = QbSdk.getMiniQBVersion(mActivity);
@@ -122,7 +126,7 @@ public class CommonFragment extends BaseFragment {
 			@Override
 			public void onProgressChanged(WebView view, int newProgress) {
 				mProgressBar.setVisibility(View.VISIBLE);
-				mLoadRoot.setVisibility(View.VISIBLE);
+				//mLoadRoot.setVisibility(View.VISIBLE);
 				mProgressBar.setProgress(newProgress);
 				if (newProgress == 100) {
 					mWebView.setVisibility(View.VISIBLE);
@@ -151,6 +155,7 @@ public class CommonFragment extends BaseFragment {
 			case  R.id.ll_err_refresh:
 				mErrPage.setVisibility(View.GONE);
 				mWebView.setVisibility(View.GONE);
+				mLoadRoot.setVisibility(View.VISIBLE);
 				mWebView.reload();
 				break;
 			case  R.id.ll_err_back:
@@ -182,4 +187,17 @@ public class CommonFragment extends BaseFragment {
 		mErrPage.setVisibility(View.VISIBLE);
 		//ToastUtil.showToast(mActivity,"加载错误");
 	}
+
+
+	public boolean canBack(){
+		boolean result =  false;
+		if(mWebView != null){
+			if(mWebView.canGoBack()){
+				mWebView.goBack();
+				result = true;
+			}
+		}
+		return result;
+	}
+
 }

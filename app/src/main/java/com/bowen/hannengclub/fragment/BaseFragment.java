@@ -1,12 +1,13 @@
 package com.bowen.hannengclub.fragment;
 
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.bowen.hannengclub.activity.BaseActivity;
 
 import butterknife.ButterKnife;
 
@@ -17,7 +18,7 @@ import butterknife.ButterKnife;
 public abstract class BaseFragment extends Fragment {
 
 //	每个fragment都需要一个依附的对象
-	protected Activity mActivity;
+	protected BaseActivity mActivity;
 
 	protected String TAG ;
 	private View mRootView;
@@ -25,7 +26,7 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		TAG = this.getClass().getSimpleName();
-		mActivity = getActivity();
+		mActivity = (BaseActivity) getActivity();
 		super.onCreate(savedInstanceState);
 	}
 	

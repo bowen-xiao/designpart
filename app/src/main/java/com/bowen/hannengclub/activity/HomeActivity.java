@@ -1,5 +1,6 @@
 package com.bowen.hannengclub.activity;
 
+import android.content.Intent;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -10,6 +11,7 @@ import com.bowen.hannengclub.R;
 import com.bowen.hannengclub.dialog.CommonMsgDialog;
 import com.bowen.hannengclub.dialog.DeleteDialog;
 import com.bowen.hannengclub.dialog.DialogBean;
+import com.bowen.hannengclub.fragment.BaseFragment;
 import com.bowen.hannengclub.fragment.FragmentFactory;
 import com.bowen.hannengclub.fragment.HomePagerAdapter;
 import com.bowen.hannengclub.network.DataEngine2;
@@ -68,15 +70,8 @@ public class HomeActivity extends BaseActivity {
 		mViewPager.setOffscreenPageLimit(ids.size());
 		//默认选中第一个
 		mViewPager.setCurrentItem(0);
-		//去加载数据
-		/*new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				mAdapter.getItem(0).loadDataOnce();
-			}
-		},500L);*/
-		uploadPushId();
 
+		uploadPushId();
 	}
 
 	//提交pushId
@@ -160,5 +155,15 @@ public class HomeActivity extends BaseActivity {
 			}
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		int currentItem = mViewPager.getCurrentItem();
+		BaseFragment item = mAdapter.getItem(currentItem);
+		if(item != null){
+			item.onActivityResult(requestCode,resultCode,data);
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 }

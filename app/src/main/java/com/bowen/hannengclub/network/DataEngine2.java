@@ -2,6 +2,7 @@ package com.bowen.hannengclub.network;
 
 
 import com.bowen.hannengclub.SysConfiguration;
+import com.bowen.hannengclub.network.configraution.CommonParamInterceptor;
 import com.bowen.hannengclub.network.configraution.FastJsonConverterFactory;
 import com.bowen.hannengclub.network.configraution.LogInterceptor;
 import com.bowen.hannengclub.network.configraution.SslContextFactory;
@@ -27,9 +28,9 @@ public class DataEngine2 {
             //用于添加第三方证书
             SSLSocketFactory sslSocketFactory = new SslContextFactory().getSslSocket().getSocketFactory();
             OkHttpClient client = new OkHttpClient.Builder()
-                                        .sslSocketFactory(sslSocketFactory)
+//                                        .sslSocketFactory(sslSocketFactory)
                                         //用于添加公共的参数信息
-                                       // .addInterceptor(new CommonParamInterceptor())
+                                        .addInterceptor(new CommonParamInterceptor())
                                         //用于日志拦截
                                         .addInterceptor(new LogInterceptor())
                                         .build();

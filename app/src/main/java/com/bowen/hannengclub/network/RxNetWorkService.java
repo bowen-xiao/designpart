@@ -23,4 +23,15 @@ public interface RxNetWorkService {
     @FormUrlEncoded
     @POST("based/push/index")
     Observable<String> upLoadPushID(@FieldMap Map<String,Object> filedMap);
+
+    //登录
+    @FormUrlEncoded
+    @POST("user/login/index")
+    Observable<String> login(@FieldMap Map<String,Object> paramMap);
+
+
+    //登录
+    @FormUrlEncoded
+    @POST("based/code/index")
+    Observable<String> getPhoneCode(@FieldMap Map<String,Object> paramMap);
 }

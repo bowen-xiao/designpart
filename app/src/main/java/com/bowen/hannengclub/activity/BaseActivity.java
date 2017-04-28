@@ -38,6 +38,16 @@ public abstract class BaseActivity extends FragmentActivity {
 	@BindView(R.id.ll_common_header_root)
 	LinearLayout mTitleRoot;
 
+	//加载页面
+	@BindView(R.id.ll_page_loadding_root)
+	LinearLayout mLoaddingRoot;
+
+	//加载页面
+	@BindView(R.id.tv_common_loadding_status)
+	TextView mLoaddingText;
+
+	Bundle mIsRestartData;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		//		锁定屏幕的方向
@@ -49,6 +59,7 @@ public abstract class BaseActivity extends FragmentActivity {
 			WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		getWindow().setFormat(PixelFormat.TRANSLUCENT);
 		super.onCreate(savedInstanceState);
+		mIsRestartData = savedInstanceState;
 		mActivity = this;
 		View view = View.inflate(mActivity, getContextViewId(), null);
 		setContentView(R.layout.activity_base);
@@ -58,7 +69,6 @@ public abstract class BaseActivity extends FragmentActivity {
 		initData();
 		//设置标题
 		setTitle();
-
 	}
 
 	private void setTitle(){

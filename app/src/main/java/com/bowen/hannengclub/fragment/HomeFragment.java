@@ -1,11 +1,11 @@
 package com.bowen.hannengclub.fragment;
 
 import android.graphics.Color;
-import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.bowen.hannengclub.R;
+import com.bowen.hannengclub.adapter.NewHomeFragmentFactory;
 import com.bowen.hannengclub.adapter.NewHomePageAdapter;
 import com.bowen.hannengclub.view.PagerSlidingTabStrip;
 
@@ -49,12 +49,12 @@ public class HomeFragment extends BaseFragment {
 		//设置绑定的对象
 		mPagerIndex.setViewPager(mViewPager);
 		mViewPager.setCurrentItem(0);
+	}
 
-		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				mAdapter.getItem(0).loadDataOnce();
-			}
-		}, 1500L);
+	@Override
+	public void onDestroy() {
+		//必须清除
+		NewHomeFragmentFactory.clearCaches();
+		super.onDestroy();
 	}
 }

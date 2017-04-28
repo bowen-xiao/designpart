@@ -1,6 +1,7 @@
 package com.bowen.hannengclub.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.bowen.hannengclub.util.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 
 public class ForgetPasswordActivity extends BaseActivity {
@@ -47,6 +49,21 @@ public class ForgetPasswordActivity extends BaseActivity {
 	public void initData() {
 		//初始化数据
 		myHandler = new Handler();
+		//数据恢复
+		reStoreData();
+	}
+
+	private void reStoreData(){
+		//数据恢复操作
+		if(mIsRestartData != null){
+			String inputPhone = mIsRestartData.getString(REGISTER_PHONE);
+			if(TextUtils.isEmpty(inputPhone)){return;}
+			seconds = mIsRestartData.getInt(REGISTER_CODE,0);
+			//如果时间不为零才显示
+			if(seconds != 0){
+				startTimer();
+			}
+		}
 	}
 
 	@OnClick({
@@ -70,15 +87,24 @@ public class ForgetPasswordActivity extends BaseActivity {
 		}
 	}
 
+	@OnTextChanged(
+
+		value = R.id.et_forget_password_phone
+
+		//可以指定执行顺序,不影响原有逻辑
+		, callback = OnTextChanged.Callback.TEXT_CHANGED
+	)
+	public void onTextChange(CharSequence s, int start, int count, int after){
+		mPhoneNumberStatus.setVisibility(View.VISIBLE);
+		String inputOne = mInputPhone.getText().toString().trim();
+		boolean isRight = InputCheck.isPhoneNumber(inputOne);
+		mPhoneNumberStatus.setImageResource(isRight ? R.mipmap.input_right : R.mipmap.input_err);
+	}
+
 	int seconds = 60;
 	//需要去访问接口
 	// // TODO: 2017/4/25  需要去短信验证码
 	private void getMsgNumber(){
-		startTimer();
-	}
-
-	private Handler myHandler ;
-	private void startTimer(){
 		String phoneNumber = mInputPhone.getText().toString().trim();
 		//手机号码不正确
 		boolean isPhoneNumber = InputCheck.isPhoneNumber(phoneNumber);
@@ -89,7 +115,12 @@ public class ForgetPasswordActivity extends BaseActivity {
 		}
 		//开始获取验证码
 		seconds = 60;
-		mBtnMsgTime.setText("获取验证码(60s)");
+		startTimer();
+	}
+
+	private Handler myHandler ;
+	private void startTimer(){
+		mBtnMsgTime.setText("获取验证码("+seconds+"s)");
 		mBtnMsgTime.setEnabled(false);
 		myHandler.postDelayed(new Runnable() {
 			@Override
@@ -119,6 +150,17 @@ public class ForgetPasswordActivity extends BaseActivity {
 			Intent intent = new Intent(mActivity, ConfirmPasswordActivity.class);
 			startActivity(intent);
 		}
+	}
+
+	//注册的手机号码
+	private static final String REGISTER_PHONE = "register_phone";
+	//注册码剩余的时间
+	private static final String REGISTER_CODE = "register_code";
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString(REGISTER_PHONE, mInputPhone.getText().toString().trim());
+		outState.putInt(REGISTER_CODE,seconds);
 	}
 
 }

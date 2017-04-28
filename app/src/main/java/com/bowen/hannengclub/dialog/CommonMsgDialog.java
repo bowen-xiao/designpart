@@ -14,6 +14,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.text.TextUtils.isEmpty;
+
 
 /**
  * @创建者 xiao
@@ -32,6 +34,9 @@ public class CommonMsgDialog {
 
     @BindView(R.id.tv_common_dialog_cancel)
     TextView mRight;
+
+    @BindView(R.id.tv_common_dialog_spit_line)
+    View mCenterLine;
 
     @BindView(R.id.tv_common_dialog_sure)
     TextView mLeft;
@@ -61,23 +66,27 @@ public class CommonMsgDialog {
         mDialog.getWindow().setAttributes(params);
         mDialog.getWindow().setContentView(inflate);
         //点击外面是否可以关闭页面
-        mDialog.setCanceledOnTouchOutside(true);
+        mDialog.setCanceledOnTouchOutside(false);
 
         //设置要显示的内容
         setTextView(mBean.getTitle(),mTvTitle);
         setTextView(mBean.getMsg(),mTvMsg);
         setBtnText(mBean.getLeftBtn(),mLeft);
         setBtnText(mBean.getRightBtn(),mRight);
+        boolean rightIsEmpty = TextUtils.isEmpty(mBean.getRightBtn());
+
+        mRight.setVisibility(rightIsEmpty ? View.GONE : View.VISIBLE);
+        mCenterLine.setVisibility(rightIsEmpty ? View.GONE : View.VISIBLE);
     }
 
     private void setTextView(String msg ,TextView view){
-        boolean empty = TextUtils.isEmpty(msg);
+        boolean empty = isEmpty(msg);
         view.setText(msg);
         view.setVisibility(empty ? View.GONE : View.VISIBLE);
     }
 
     private void setBtnText(String msg ,TextView view){
-        boolean empty = TextUtils.isEmpty(msg);
+        boolean empty = isEmpty(msg);
         if(empty){return;}
         view.setText(msg);
     }

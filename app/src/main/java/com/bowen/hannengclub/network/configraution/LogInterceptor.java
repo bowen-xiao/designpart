@@ -47,13 +47,13 @@ public class LogInterceptor implements Interceptor {
                 .scheme(oldRequest.url().scheme())
                 .host(oldRequest.url().host())
                 //公共参数，app版本号
-                 .addQueryParameter("signature", getSign())
-                 .addQueryParameter("timestamp", timestamp + "")
-                 .addQueryParameter("nonce", nonce + "")
-                 .addQueryParameter("device_type", device_type + "")
-                 .addQueryParameter("api_ver", version_id + "")
+//                 .addQueryParameter("signature", getSign())
+//                 .addQueryParameter("timestamp", timestamp + "")
+//                 .addQueryParameter("nonce", nonce + "")
+//                 .addQueryParameter("device_type", device_type + "")
+//                 .addQueryParameter("api_ver", version_id + "")
                   //公共参数信息 // TODO: 2017/4/24  登录后需要保存到本地的信息
-                 .addQueryParameter("login_token", "")
+//                 .addQueryParameter("login_token", "")
                 //添加公共的参数信息,这里不需要
                 //.addQueryParameter("token", token)
                 ;
@@ -85,6 +85,7 @@ public class LogInterceptor implements Interceptor {
                                 "\n response Header : %s" +
                                 "\n response body : %s",
                                 newRequest.url(),
+                                newRequest.body(),
                                 time,
                                 newRequest.headers(),
                                 response.code(),

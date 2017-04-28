@@ -31,5 +31,6 @@
     <!-- 字体颜色黑色  333333 -->
     <color name="tab_text_normal">#000</color>
 
+    <color name="blue2">#1e90ff</color>
 
 </resources>

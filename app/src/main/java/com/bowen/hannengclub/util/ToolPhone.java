@@ -3,6 +3,8 @@ package com.bowen.hannengclub.util;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.view.Display;
+import android.view.WindowManager;
 
 /**
  * Created by 肖稳华 on 2017/4/27.
@@ -35,5 +37,13 @@ public class ToolPhone {
 		}
 
 		return pi;
+	}
+
+	// 获取屏幕的宽度
+	public static int getScreenWidth(Context context) {
+		WindowManager manager = (WindowManager) context
+			.getSystemService(Context.WINDOW_SERVICE);
+		Display display = manager.getDefaultDisplay();
+		return display.getWidth();
 	}
 }

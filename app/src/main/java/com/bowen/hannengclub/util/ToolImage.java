@@ -15,4 +15,8 @@ public class ToolImage {
 	public static void loading(Context context, ImageView imageView){
 		Glide.with(context).load(R.mipmap.loading_data).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
 	}
+
+	public static void displayLocalPic(Context context, ImageView imageView,String path){
+		Glide.with(context).load(path).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
+	}
 }

@@ -12,4 +12,6 @@
     <dimen name="login_margin_board">40dp</dimen>
     <dimen name="login_line_height">42dp</dimen>
     <dimen name="login_user_logo">24dp</dimen>
+    <dimen name="loadding_margin">5dp</dimen>
+    <dimen name="must_require">12dp</dimen>
 </resources>

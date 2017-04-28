@@ -12,7 +12,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * @author 欧阳丰
+ * @author bowen
  * 
  */
 public class SHA1Util {

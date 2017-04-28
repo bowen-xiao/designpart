@@ -81,10 +81,52 @@
         android:background="@color/bottom_textcolor_defeaut"
         android:layout_width="match_parent"
         android:layout_height="0.45dp"/>
-
     <FrameLayout
-        android:id="@+id/ff_common_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></FrameLayout>
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/ff_common_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/ll_page_loadding_root"
+            android:background="@color/transparent_half"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:gravity="center_vertical|left"
+                android:background="@drawable/base_activity_loading_bg"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/line_margin"
+                android:paddingRight="@dimen/common_margin"
+                android:paddingTop="@dimen/loadding_margin"
+                android:paddingBottom="@dimen/loadding_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ProgressBar
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    style="@style/Widget.AppCompat.ProgressBar" />
+                <TextView
+                    android:layout_marginRight="@dimen/common_margin"
+                    android:layout_marginLeft="@dimen/loadding_margin"
+                    android:id="@+id/tv_common_loadding_status"
+                    android:text="登录中"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
 
 </LinearLayout>

@@ -18,6 +18,15 @@ public class InputCheck {
 		return (matcher.matches());
 	}
 
+
+	//是否是合法的值 6-16位的数字和字母
+	public static boolean isNickName(String myInput){
+		String regex = "^[a-zA-Z0-9\\u4e00-\\u9fa5]+$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(myInput);
+		return (matcher.matches());
+	}
+
 	/**
 	 * 是否手机号码
 	 * @param phone

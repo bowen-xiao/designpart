@@ -2,6 +2,7 @@ package com.bowen.hannengclub.fragment;
 
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -11,12 +12,28 @@ import com.bowen.hannengclub.R;
 import com.bowen.hannengclub.SysConfiguration;
 import com.bowen.hannengclub.activity.CommonActivity;
 import com.bowen.hannengclub.activity.LoginActivity;
+import com.bowen.hannengclub.network.UpLoadFile;
+import com.bowen.hannengclub.util.GlideImageLoader;
+import com.bowen.hannengclub.util.ToastUtil;
+import com.bowen.hannengclub.util.ToolLog;
+import com.bowen.hannengclub.util.ToolPhone;
 import com.bowen.hannengclub.view.LineItemView;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
+import com.lzy.imagepicker.ui.ImageGridActivity;
+import com.lzy.imagepicker.view.CropImageView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 /**
  * Created by 肖稳华 on 2017/4/20.
@@ -47,6 +64,8 @@ public class MineFragment extends BaseFragment {
 	@BindView(R.id.tv_mine_author_status)
 	TextView mAuthorStatus;
 
+	//图片选择器 参考 https://github.com/jeasonlzy/ImagePicker
+	private ImagePicker imagePicker;
 
 	@Override
 	protected View initView() {
@@ -58,6 +77,11 @@ public class MineFragment extends BaseFragment {
 	public void loadDataOnce() {
 		//更新显示的状态,数据加载完成需要重新更新状态
 		upViewState();
+
+		//用于选择图片
+		imagePicker = ImagePicker.getInstance();
+		//初始化图片加载器
+		imagePicker.setImageLoader(new GlideImageLoader());
 	}
 
 	boolean isAuthor;
@@ -85,6 +109,7 @@ public class MineFragment extends BaseFragment {
 			  R.id.li_mine_comment_manager,
 			  R.id.tv_mine_exit_login,
 			  R.id.ll_mine_head_info_root,
+			  R.id.fragment_iv_header,
 			  R.id.li_mine_change_password
 	})
 	public void onClick(View view) {
@@ -95,6 +120,10 @@ public class MineFragment extends BaseFragment {
 		switch (view.getId()) {
 			case R.id.iv_mine_share:
 				//Todo 分享我的名片
+				break;
+			case R.id.fragment_iv_header:
+				//Todo 选择上传头像
+				selectPic();
 				break;
 			case R.id.ll_mine_head_info_root:
 				//个人信息	/account/view.aspx
@@ -149,4 +178,69 @@ public class MineFragment extends BaseFragment {
 		Intent intent = new Intent(mActivity, LoginActivity.class);
 		startActivity(intent);
 	}
+
+
+	/**
+	 * 去选择图片,设置一些参数信息
+	 */
+	private void selectPic(){
+		int width = (int) (ToolPhone.getScreenWidth(mActivity) / 1.5f + 0.5f);
+		//需要考虑苹果手机,输出相素
+		int outPutX = 1024;
+		imagePicker.setMultiMode(false); //表示单选
+		imagePicker.setShowCamera(true);  //显示拍照按钮
+		imagePicker.setCrop(true);        //允许裁剪（单选才有效）
+		imagePicker.setSaveRectangle(true); //是否按矩形区域保存
+		imagePicker.setSelectLimit(1);    //选中数量限制
+		imagePicker.setStyle(CropImageView.Style.RECTANGLE);  //裁剪框的形状(矩形)
+		imagePicker.setFocusWidth(width );   //裁剪框的宽度。单位像素（圆形自动取宽高最小值）
+		imagePicker.setFocusHeight(width);  //裁剪框的高度。单位像素（圆形自动取宽高最小值）
+		imagePicker.setOutPutX(outPutX);//保存文件的宽度。单位像素
+		imagePicker.setOutPutY(outPutX);//保存文件的高度。单位像素
+
+		Intent intent = new Intent(mActivity, ImageGridActivity.class);
+		startActivityForResult(intent, 100);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		/** attention to this below ,must add this**/
+		// mShareAPI.onActivityResult(requestCode, resultCode, data);
+		Log.d("result", "onActivityResult");
+
+		switch (resultCode) {
+
+			case ImagePicker.RESULT_CODE_ITEMS: //表示从相册选择
+				if (data != null && requestCode == 100) {
+					ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+					if(images != null && images.size() != 0){
+						final String path = images.get(0).path;
+						ToolLog.e("main",path + " ::: path");
+						File file = new File(path);
+						if(file != null && file.exists()){
+							String uploadUrl = SysConfiguration.BASE_URL + "user/profile/avatar";
+							UpLoadFile.upFile(file, uploadUrl, new Callback() {
+								@Override
+								public void onFailure(Call call, IOException e) {
+									ToastUtil.showToast(mActivity,"头像上传失败");
+								}
+
+								@Override
+								public void onResponse(Call call, Response response) throws IOException {
+									//有返回值
+//									response.body();
+								}
+							});
+							//ToolImage.displayLocalPic(mActivity,mHeadImage,path);
+
+						}
+					}
+				}
+				break;
+		}
+	}
+
+
+
 }
