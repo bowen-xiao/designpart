@@ -31,6 +31,8 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static android.R.attr.phoneNumber;
+
 
 public class RegisterActivity extends BaseActivity {
 
@@ -58,6 +60,7 @@ public class RegisterActivity extends BaseActivity {
 	//是否同意的按钮
 	@BindView(R.id.cb_register_comment)
 	CheckBox mCBAgree;
+	private String mPhoneNumber;
 
 	@Override
 	protected String initTitle() {
@@ -138,9 +141,9 @@ public class RegisterActivity extends BaseActivity {
 	//需要去访问接口
 	// // TODO: 2017/4/25  需要去短信验证码
 	private void getMsgNumber(){
-		String phoneNumber = mInputPhone.getText().toString().trim();
+		mPhoneNumber = mInputPhone.getText().toString().trim();
 		//手机号码不正确
-		boolean isPhoneNumber = InputCheck.isPhoneNumber(phoneNumber);
+		boolean isPhoneNumber = InputCheck.isPhoneNumber(mPhoneNumber);
 		mPhoneNumberStatus.setImageResource(isPhoneNumber ? R.mipmap.input_right : R.mipmap.input_err);
 		if(!isPhoneNumber){
 			//请输入正确的手机号码
@@ -162,11 +165,10 @@ public class RegisterActivity extends BaseActivity {
 		 type	是	int	类型：0注册，1找回密码，2手机登录
 
 		 */
-		String phoneNumber = mInputPhone.getText().toString().trim();
 		RxNetWorkService service = DataEngine2.getServiceApiByClass(RxNetWorkService.class);
 		//		service.getBaiDuInfo(SysConfiguration.BASE_URL)
 		final HashMap<String, Object> map = new HashMap<>();
-		map.put("phone_number",phoneNumber);
+		map.put("phone_number",mPhoneNumber);
 		map.put("type",0);
 		/*LoginResult
 		phone_number	是	string	用户号码
@@ -235,7 +237,16 @@ public class RegisterActivity extends BaseActivity {
 	//检查输入项
 	private void checkInput(){
 		String msgNumber = mMsgNumber.getText().toString();
-		if(TextUtils.isEmpty(msgNumber)){
+		if(!mCBAgree.isChecked()){
+			DialogBean bean = new DialogBean("请同意《注册协议》", "", "", "");
+			//显示错误信息
+			mMsgDialog = new CommonMsgDialog(mActivity, bean);
+			mMsgDialog.showDialog();
+			return;
+		}
+
+		//去验证验证码
+		/*if(TextUtils.isEmpty(msgNumber)){
 			DialogBean bean = new DialogBean("错误信息", "", "", "");
 			//显示错误信息
 			mMsgDialog = new CommonMsgDialog(mActivity, bean);
@@ -244,7 +255,7 @@ public class RegisterActivity extends BaseActivity {
 			//确认密码页面
 			Intent intent = new Intent(mActivity, RegisterStep2Activity.class);
 			startActivity(intent);
-		}
+		}*/
 	}
 
 	//注册的手机号码

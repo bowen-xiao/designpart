@@ -30,8 +30,13 @@ public interface RxNetWorkService {
     Observable<String> login(@FieldMap Map<String,Object> paramMap);
 
 
-    //登录
+    //获取检验码
     @FormUrlEncoded
     @POST("based/code/index")
     Observable<String> getPhoneCode(@FieldMap Map<String,Object> paramMap);
+
+    //检查检验码
+    @FormUrlEncoded
+    @POST("based/code/checkcode")
+    Observable<String> checkPhoneCode(@FieldMap Map<String,Object> paramMap);
 }
