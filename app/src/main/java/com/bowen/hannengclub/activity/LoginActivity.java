@@ -132,7 +132,7 @@ public class LoginActivity extends BaseActivity {
 					   if(model != null){
 						   ToolLog.e("login reslut ",model.toString() + "--请求完成 !");
 						   if(model.getStatus() == 0){
-							   ToastUtil.showToast(mActivity, model.getErrmsg());
+							   //ToastUtil.showToast(mActivity, model.getErrmsg());
 							   DialogBean bean = new DialogBean(model.getErrmsg(),"","","");
 							   CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
 							   msgDialog.showDialog();

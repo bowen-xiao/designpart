@@ -63,10 +63,17 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     /*使用QQ浏览器内核*/
     compile files('libs/tbs_v2.6.0.jar')
-
     /*图片选择库*/
     compile 'com.lzy.widget:imagepicker:0.3.2'
-
     /*用于解决动态权限问题的*/
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.3@aar'
+    compile files('libs/Xg_sdk_v3.1_20170417_0946.jar')
+    compile files('libs/mid-core-sdk-3.7.2.jar')
+    compile files('libs/Xg_sdk_v2.46_20160602_1638.jar')
+    compile files('libs/SocialSDK_WeChat_Simplify.jar')
+    compile files('libs/umeng_social_tool.jar')
+    compile files('libs/umeng_social_api.jar')
+    compile files('libs/umeng_social_net.jar')
+    compile files('libs/umeng_social_shareview.jar')
+    compile files('libs/umeng_social_shareboard.jar')
 }

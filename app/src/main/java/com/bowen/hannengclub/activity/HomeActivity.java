@@ -11,6 +11,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.bowen.hannengclub.R;
+import com.bowen.hannengclub.SysConfiguration;
 import com.bowen.hannengclub.dialog.CommonMsgDialog;
 import com.bowen.hannengclub.dialog.DialogBean;
 import com.bowen.hannengclub.fragment.BaseFragment;
@@ -22,6 +23,9 @@ import com.bowen.hannengclub.util.ToastUtil;
 import com.bowen.hannengclub.util.ToolLog;
 import com.bowen.hannengclub.util.UserUtil;
 import com.bowen.hannengclub.view.NoScrollViewPager;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushConfig;
+import com.tencent.android.tpush.XGPushManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,10 +78,29 @@ public class HomeActivity extends BaseActivity {
 		//默认选中第一个
 		mViewPager.setCurrentItem(0);
 
-		uploadPushId();
+
 		registerBroadcast();
+
+		//启用调试
+		XGPushConfig.enableDebug(this, SysConfiguration.DEBUG);
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		XGPushManager.registerPush(getApplicationContext(), new XGIOperateCallback() {
+			@Override
+			public void onSuccess(Object o, int i) {
+				uploadPushId();
+			}
+
+			@Override
+			public void onFail(Object o, int i, String s) {
+
+			}
+		});
+
+	}
 
 	public final static String LOGIN_OUT = "user_login_out";
 	/**
@@ -100,11 +123,10 @@ public class HomeActivity extends BaseActivity {
 
 	//提交pushId
 	private void uploadPushId(){
-
 		RxNetWorkService service = DataEngine2.getServiceApiByClass(RxNetWorkService.class);
 		//		service.getBaiDuInfo(SysConfiguration.BASE_URL)
 		HashMap<String, Object> map = new HashMap<>();
-		map.put("key","3b4f7bad8821b7354bd697f7a5096b6c7ba2aae7");
+		map.put("key", XGPushConfig.getToken(mActivity));
 		service.upLoadPushID(map)
 			   .subscribeOn(Schedulers.io())
 			   .observeOn(AndroidSchedulers.mainThread())

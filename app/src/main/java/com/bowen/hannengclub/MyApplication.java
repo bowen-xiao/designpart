@@ -9,6 +9,8 @@ import com.tencent.smtt.sdk.QbSdk;
 import com.tencent.smtt.sdk.TbsListener;
 /**
  * Created by 肖稳华 on 2017/4/18.
+ *
+ * http://dev.umeng.com/social/android/login-page
  */
 
 public class MyApplication extends Application {

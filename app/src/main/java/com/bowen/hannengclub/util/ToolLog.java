@@ -2,6 +2,8 @@ package com.bowen.hannengclub.util;
 
 import android.util.Log;
 
+import static com.bowen.hannengclub.SysConfiguration.DEBUG;
+
 /**
  * 日志工具类
  *
@@ -13,7 +15,6 @@ public class ToolLog {
 	/**
 	 * 调试信息的是否显示，上线后关闭log
 	 */
-	public static Boolean DEBUG = true;
 	
 	public static void d(String tag, String msg) {
 		if (DEBUG) {
