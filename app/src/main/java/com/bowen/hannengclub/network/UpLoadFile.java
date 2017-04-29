@@ -1,7 +1,11 @@
 package com.bowen.hannengclub.network;
 
+import com.bowen.hannengclub.util.Constans;
+import com.bowen.hannengclub.util.SHA1Util;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -17,7 +21,20 @@ import okhttp3.Response;
 
 public class UpLoadFile {
 
+
 	public static void upFile(File file,String uploadUrl, Callback callback){
+
+		 long timestamp = System.currentTimeMillis();
+
+		 int nonce = new Random().nextInt(10000) + 10000;
+
+		 int device_type = Constans.DEVICE_TYPE;
+
+		 int version_id = Constans.VERSION_ID;
+
+		String signature = SHA1Util.SHA1("TOKEN_WITH_HANNENG_IPHONE" + timestamp
+										 + nonce);
+
 		OkHttpClient client = new OkHttpClient();
     /* 第一个要上传的file */
 		RequestBody fileBody1 = RequestBody.create(MediaType.parse("application/octet-stream") , file);
@@ -34,7 +51,12 @@ public class UpLoadFile {
 
 		MultipartBody mBody = new MultipartBody.Builder(boundary).setType(MultipartBody.FORM)
             /* 上传一个普通的String参数 , key 叫 "param" */
-																 .addFormDataPart("tag" , "异步上传")
+																 //.addFormDataPart("tag" , "异步上传")
+																 .addFormDataPart("signature",signature)
+																 .addFormDataPart("timestamp",timestamp + "")
+																 .addFormDataPart("nonce",nonce + "")
+																 .addFormDataPart("device_type",device_type + "")
+																 .addFormDataPart("api_ver",version_id + "")
             /* 底下是上传了两个文件 */
 																 .addFormDataPart("file" , file1Name , fileBody1)
 																// .addFormDataPart("file" , file2Name , fileBody2)

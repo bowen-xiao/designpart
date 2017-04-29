@@ -3,13 +3,17 @@ package com.bowen.hannengclub.fragment;
 import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.bowen.hannengclub.R;
 import com.bowen.hannengclub.adapter.NewHomeFragmentFactory;
 import com.bowen.hannengclub.adapter.NewHomePageAdapter;
+import com.bowen.hannengclub.bean.UserInfo;
+import com.bowen.hannengclub.util.UserUtil;
 import com.bowen.hannengclub.view.PagerSlidingTabStrip;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 
 /**
@@ -20,6 +24,9 @@ public class HomeFragment extends BaseFragment {
 
 	@BindView(R.id.home_page_index)
 	PagerSlidingTabStrip mPagerIndex;
+
+	@BindView(R.id.iv_home_sign)
+	ImageView mIvSign;
 
 	@BindView(R.id.vp_home_pager)
 	ViewPager mViewPager;
@@ -49,6 +56,23 @@ public class HomeFragment extends BaseFragment {
 		//设置绑定的对象
 		mPagerIndex.setViewPager(mViewPager);
 		mViewPager.setCurrentItem(0);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		//默认值
+		mIvSign.setImageResource(R.mipmap.remarked);
+		UserInfo info = UserUtil.getUserInfo(mActivity);
+		if(info != null){
+			//是否已经签到的标识
+			mIvSign.setImageResource(info.getSign_status() == 0 ? R.mipmap.unremark : R.mipmap.remarked);
+		}
+	}
+
+	@OnClick(R.id.ll_home_sign_root)
+	public void signClick(View view){
+		// 签到的点击事件
 	}
 
 	@Override

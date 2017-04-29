@@ -2,9 +2,7 @@ package com.bowen.hannengclub.adapter;
 
 import android.os.Bundle;
 import android.support.v4.util.SparseArrayCompat;
-import android.text.TextUtils;
 
-import com.bowen.hannengclub.SysConfiguration;
 import com.bowen.hannengclub.fragment.BaseFragment;
 import com.bowen.hannengclub.fragment.CommonFragment;
 
@@ -45,8 +43,8 @@ public class NewHomeFragmentFactory
 			case 0:
 //				"http://lytest.fengjing.com/wap/guideInfo/g_comment_list.html?id=383"
 				//  热点
-//				url = ("index.aspx?apptype=1");
-				url = ("http://lytest.fengjing.com/wap/guideInfo/g_comment_list.html?id=383");
+				url = ("index.aspx?apptype=1");
+//				url = ("http://lytest.fengjing.com/wap/guideInfo/g_comment_list.html?id=383");
 				fragment = new CommonFragment();
 				break;
 			case 1:
@@ -69,9 +67,6 @@ public class NewHomeFragmentFactory
 				url =  "subject/index.aspx?apptype=1";
 				fragment = new CommonFragment();
 				break;
-		}
-		if(!TextUtils.isEmpty(url) && !url.contains("http")){
-			url = SysConfiguration.BASE_URL + url;
 		}
 		args.putString(CommonFragment.COMMON_URL, url);
 		fragment.setArguments(args);

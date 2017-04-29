@@ -10,7 +10,15 @@ public class BaseReqResult {
 //	errmsg	string	错误信息
 
 
-	protected int status;
+	@Override
+	public String toString() {
+		return "BaseReqResult{" +
+			   "status=" + status +
+			   ", errmsg='" + errmsg + '\'' +
+			   '}';
+	}
+
+	protected int    status;
 	protected String errmsg;
 
 	public int getStatus() {

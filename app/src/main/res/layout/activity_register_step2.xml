@@ -187,12 +187,13 @@
         android:layout_height="@dimen/login_line_height" />
 
     <TextView
-        android:layout_marginTop="@dimen/common_margin"
+        android:paddingBottom="@dimen/common_margin"
+        android:layout_marginTop="@dimen/login_line_margin"
         android:textSize="16sp"
         android:gravity="center"
         android:text="已有账号，点击登录"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/login_line_height"
+        android:layout_height="wrap_content"
         android:id="@+id/tv_back_login" />
 
 </LinearLayout>

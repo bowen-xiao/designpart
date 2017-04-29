@@ -5,7 +5,7 @@
     <item android:drawable="@mipmap/home_bottom_mine_select" android:state_checked="true"/>
 
     <!-- 按下 -->
-    <item android:drawable="@mipmap/home_bottom_mine_select" android:state_pressed="true"/>
+    <!--<item android:drawable="@mipmap/home_bottom_mine_select" android:state_pressed="true"/>-->
     <item android:drawable="@mipmap/home_bottom_mine_default"/>
 
 </selector>

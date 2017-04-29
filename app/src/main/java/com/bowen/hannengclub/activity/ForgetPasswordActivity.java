@@ -1,6 +1,9 @@
 package com.bowen.hannengclub.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -10,14 +13,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bowen.hannengclub.R;
+import com.bowen.hannengclub.bean.BaseReqResult;
 import com.bowen.hannengclub.dialog.CommonMsgDialog;
 import com.bowen.hannengclub.dialog.DialogBean;
+import com.bowen.hannengclub.network.DataEngine2;
+import com.bowen.hannengclub.network.RxNetWorkService;
 import com.bowen.hannengclub.util.InputCheck;
 import com.bowen.hannengclub.util.ToastUtil;
+import com.bowen.hannengclub.util.ToolLog;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 public class ForgetPasswordActivity extends BaseActivity {
@@ -30,6 +42,9 @@ public class ForgetPasswordActivity extends BaseActivity {
 
 	@BindView(R.id.btn_get_phone_msg_number)
 	Button mBtnMsgTime;
+
+	@BindView(R.id.btn_sure_to_reset_password)
+	Button mBtnRestPassword;
 	private CommonMsgDialog mMsgDialog;
 
 	@BindView(R.id.iv_input_phone_status)
@@ -51,7 +66,32 @@ public class ForgetPasswordActivity extends BaseActivity {
 		myHandler = new Handler();
 		//数据恢复
 		reStoreData();
+		registerBroadcast();
 	}
+
+	@Override
+	protected void onDestroy() {
+		unregisterReceiver(receiver);
+		super.onDestroy();
+	}
+
+	public final static String FINISH_ACTIVITY = "finish_activity";
+	/**
+	 * 注册广播,刷新头像等用户信息
+	 */
+	public void registerBroadcast() {
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(FINISH_ACTIVITY);
+		registerReceiver(receiver, filter);
+	}
+
+	private BroadcastReceiver receiver = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			if (FINISH_ACTIVITY.equals(intent.getAction())) {
+				//默认选中第一个
+				finish();
+			}
+		}};
 
 	private void reStoreData(){
 		//数据恢复操作
@@ -116,6 +156,65 @@ public class ForgetPasswordActivity extends BaseActivity {
 		//开始获取验证码
 		seconds = 60;
 		startTimer();
+		getPhoneCode();
+
+	}
+
+
+	private void getPhoneCode(){
+		/**
+		 * 	必选	类型及范围	说明
+		 phone_number	是	string	手机号
+		 type	是	int	类型：0注册，1找回密码，2手机登录
+
+		 */
+		String mPhoneNumber = mInputPhone.getText().toString().trim();
+		RxNetWorkService service = DataEngine2.getServiceApiByClass(RxNetWorkService.class);
+		//		service.getBaiDuInfo(SysConfiguration.BASE_URL)
+		final HashMap<String, Object> map = new HashMap<>();
+		map.put("phone_number",mPhoneNumber);
+		map.put("type",1);
+		/*LoginResult
+		phone_number	是	string	用户号码
+		type	是	int	类型：0账号登录，1手机登录
+		password	是	string	用户密码或验证码*/
+		service.getPhoneCode(map)
+			   .subscribeOn(Schedulers.io())
+			   .observeOn(AndroidSchedulers.mainThread())
+			   .subscribe(new Subscriber<BaseReqResult>() {
+				   @Override
+				   public void onCompleted() {
+					   //启用按钮
+					   mBtnMsgTime.setEnabled(true);
+				   }
+
+				   @Override
+				   public void onError(Throwable e) {
+					   //有异常不处理
+					   ToolLog.e("login getPhoneCode ",e.getMessage() + "--onError !");
+					   //seconds = 1;
+				   }
+
+				   @Override
+				   public void onNext(BaseReqResult model) {
+					   ToolLog.e("login getPhoneCode ",model + "--请求完成 !");
+					   if(model != null){
+						   if(model.getStatus() == 0){
+							   //重新计时
+							   seconds = 1;
+							   //ToastUtil.showToast(mActivity, model.getErrmsg());
+							   DialogBean bean = new DialogBean(model.getErrmsg(),"","","");
+							   CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
+							   msgDialog.showDialog();
+						   }else{
+							   //							   ToolLog.e("login", "model : " + model);
+							   // CacheUtils.setString(mActivity, SysConfiguration.USER_INFO, JSON.toJSONString(model));
+							   //ToastUtil.showToast(mActivity,"登录成功");
+						   }
+					   }
+
+				   }
+			   });
 	}
 
 	private Handler myHandler ;
@@ -127,7 +226,7 @@ public class ForgetPasswordActivity extends BaseActivity {
 			public void run() {
 				seconds--;
 				mBtnMsgTime.setText( "获取验证码(" + seconds + "s)");
-				if(seconds == 0){
+				if(seconds <= 0){
 					mBtnMsgTime.setText("获取验证码");
 					mBtnMsgTime.setEnabled(true);
 					return;
@@ -141,15 +240,72 @@ public class ForgetPasswordActivity extends BaseActivity {
 	private void checkInput(){
 		String msgNumber = mMsgNumber.getText().toString();
 		if(TextUtils.isEmpty(msgNumber)){
-			DialogBean bean = new DialogBean("错误信息", "", "", "");
+			DialogBean bean = new DialogBean("请输入验证码", "", "", "");
 			//显示错误信息
 			mMsgDialog = new CommonMsgDialog(mActivity, bean);
 			mMsgDialog.showDialog();
 		}else{
 			//确认密码页面
-			Intent intent = new Intent(mActivity, ConfirmPasswordActivity.class);
-			startActivity(intent);
+			verifyPhoneCode(msgNumber);
 		}
+	}
+
+
+	private void verifyPhoneCode(final String msgNumber){
+		/**
+		 * 		必选	类型及范围	说明
+		 phone_number	是	string	手机号
+		 type	是	int	类型：0注册，1找回密码，2手机登录
+		 code	是	string	验证码
+		 */
+		mBtnRestPassword.setEnabled(false);
+		final String mPhoneNumber = mInputPhone.getText().toString().trim();
+		RxNetWorkService service = DataEngine2.getServiceApiByClass(RxNetWorkService.class);
+		//		service.getBaiDuInfo(SysConfiguration.BASE_URL)
+		final HashMap<String, Object> map = new HashMap<>();
+		map.put("phone_number",mPhoneNumber);
+		map.put("type",1);
+		map.put("code",msgNumber);
+		/*LoginResult
+		phone_number	是	string	用户号码
+		type	是	int	类型：0账号登录，1手机登录
+		password	是	string	用户密码或验证码*/
+		service.checkPhoneCode(map)
+			   .subscribeOn(Schedulers.io())
+			   .observeOn(AndroidSchedulers.mainThread())
+			   .subscribe(new Subscriber<BaseReqResult>() {
+				   @Override
+				   public void onCompleted() {
+					   //启用按钮
+					   mBtnRestPassword.setEnabled(true);
+				   }
+
+				   @Override
+				   public void onError(Throwable e) {
+					   ToolLog.e("verifyPhoneCode ", e.getMessage() + "--onError !");
+				   }
+
+				   @Override
+				   public void onNext(BaseReqResult model) {
+					   ToolLog.e("verifyPhoneCode ",model + "--请求完成 !");
+					   if(model != null){
+						   if(model.getStatus() == 0){
+							   //ToastUtil.showToast(mActivity, model.getErrmsg());
+							   DialogBean bean = new DialogBean(model.getErrmsg(), "", "", "");
+							   CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
+							   msgDialog.showDialog();
+						   }else{
+							   //							   ToolLog.e("login", "model : " + model);
+							   // CacheUtils.setString(mActivity, SysConfiguration.USER_INFO, JSON.toJSONString(model));
+							   //ToastUtil.showToast(mActivity,"登录成功");
+							   Intent intent = new Intent(mActivity, ConfirmPasswordActivity.class);
+							   intent.putExtra(RegisterStep2Activity.PARAM_PHONE_NUMBER,mPhoneNumber);
+							   intent.putExtra(RegisterStep2Activity.PARAM_PHONE_CODE,msgNumber);
+							   startActivity(intent);
+						   }
+					   }
+				   }
+			   });
 	}
 
 	//注册的手机号码

@@ -57,13 +57,14 @@
                     android:orientation="horizontal">
 
                     <TextView
-
+                        android:id="@+id/tv_user_name"
                         android:textColor="@color/whilte"
                         android:text="刘大大"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <LinearLayout
+                        android:id="@+id/mine_author_base_root"
                         android:gravity="center"
                         android:layout_marginLeft="@dimen/margin_right_speace"
                         android:orientation="horizontal"
@@ -120,7 +121,8 @@
                         android:textColor="@color/whilte"
                         android:text="31岁"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_user_age" />
 
                     <ImageView
                         android:layout_marginLeft="@dimen/common_margin"
@@ -168,6 +170,7 @@
                 android:layout_height="18dp" />
 
             <TextView
+                android:id="@+id/ll_mine_note_text"
                 android:layout_marginLeft="@dimen/common_margin"
                 android:text="您还没有进行认证，请在PC端进行认证！"
                 android:textColor="@color/whilte"
@@ -196,7 +199,12 @@
             app:my_title="我的积分"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+            <View
+                android:background="@color/bottom_textcolor_defeaut"
+                android:layout_width="match_parent"
+                android:layout_height="0.45dp"/>
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_marginTop="@dimen/common_margin"

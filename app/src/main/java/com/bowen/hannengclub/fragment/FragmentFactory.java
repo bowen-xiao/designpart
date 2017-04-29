@@ -2,9 +2,6 @@ package com.bowen.hannengclub.fragment;
 
 import android.os.Bundle;
 import android.support.v4.util.SparseArrayCompat;
-import android.text.TextUtils;
-
-import com.bowen.hannengclub.SysConfiguration;
 
 /**
  * @author bowen
@@ -53,9 +50,6 @@ public class FragmentFactory
 				// 我的
 				fragment = new MineFragment();
 				break;
-		}
-		if(!TextUtils.isEmpty(url) && !url.contains("http")){
-			url = SysConfiguration.BASE_URL + url;
 		}
 		args.putString(CommonFragment.COMMON_URL, url);
 		fragment.setArguments(args);

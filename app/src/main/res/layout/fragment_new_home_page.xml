@@ -23,6 +23,7 @@
             app:pstsIndicatorHeight="2dp"/>
 
         <LinearLayout
+            android:id="@+id/ll_home_sign_root"
             android:paddingRight="@dimen/line_margin"
             android:gravity="center"
             android:layout_marginLeft="5dp"
@@ -30,7 +31,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
             <ImageView
-                android:src="@mipmap/unremark"
+                android:id="@+id/iv_home_sign"
+                android:src="@mipmap/remarked"
                 android:layout_width="22dp"
                 android:layout_height="22dp" />
         </LinearLayout>

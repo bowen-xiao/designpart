@@ -17,6 +17,9 @@ public class ToolImage {
 	}
 
 	public static void displayLocalPic(Context context, ImageView imageView,String path){
-		Glide.with(context).load(path).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
+		Glide.with(context).load(path).
+			placeholder(R.mipmap.male_defalut)
+			 .error(R.mipmap.male_defalut)
+			 .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
 	}
 }

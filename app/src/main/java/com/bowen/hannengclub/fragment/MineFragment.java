@@ -1,5 +1,6 @@
 package com.bowen.hannengclub.fragment;
 
+import android.Manifest;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
@@ -11,29 +12,41 @@ import android.widget.TextView;
 import com.bowen.hannengclub.R;
 import com.bowen.hannengclub.SysConfiguration;
 import com.bowen.hannengclub.activity.CommonActivity;
-import com.bowen.hannengclub.activity.LoginActivity;
+import com.bowen.hannengclub.activity.HomeActivity;
+import com.bowen.hannengclub.bean.UserInfo;
+import com.bowen.hannengclub.dialog.CommonMsgDialog;
+import com.bowen.hannengclub.dialog.DialogBean;
 import com.bowen.hannengclub.network.UpLoadFile;
+import com.bowen.hannengclub.util.CacheUtils;
 import com.bowen.hannengclub.util.GlideImageLoader;
 import com.bowen.hannengclub.util.ToastUtil;
+import com.bowen.hannengclub.util.ToolImage;
 import com.bowen.hannengclub.util.ToolLog;
 import com.bowen.hannengclub.util.ToolPhone;
+import com.bowen.hannengclub.util.UserUtil;
 import com.bowen.hannengclub.view.LineItemView;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.view.CropImageView;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import rx.functions.Action1;
+
+import static com.bowen.hannengclub.R.id.iv_mine_sex_type;
 
 /**
  * Created by 肖稳华 on 2017/4/20.
@@ -44,7 +57,7 @@ public class MineFragment extends BaseFragment {
 	//	如果不认证就不显示
 	@BindView(R.id.fragment_iv_header)
 	CircleImageView mHeadImage;
-	@BindView(R.id.iv_mine_sex_type)
+	@BindView(iv_mine_sex_type)
 	ImageView       mSexType;
 	@BindView(R.id.tv_mine_id_number)
 	TextView        mIdNumber;
@@ -55,17 +68,37 @@ public class MineFragment extends BaseFragment {
 	@BindView(R.id.li_mine_material)
 	LineItemView    mMaterial;
 	@BindView(R.id.ll_mine_note_root)
-	LinearLayout    mAuthorNote;
+	LinearLayout    mRedAuthorNote;
+
+	@BindView(R.id.ll_mine_note_text)
+	TextView mTvRedAuthorNote;
 
 	//认证等级
 	@BindView(R.id.tv_mine_lv)
 	TextView mAuthorLv;
+
+	//用户的名字
+	@BindView(R.id.tv_user_name)
+	TextView mUserName;
 	//认证状态
 	@BindView(R.id.tv_mine_author_status)
 	TextView mAuthorStatus;
 
+	//用户年龄
+	@BindView(R.id.tv_user_age)
+	TextView mUserAge;
+
+	//用户年龄
+	@BindView(R.id.iv_mine_share)
+	View mShareView;
+
+	//已经谁的用户才显示的内容
+	@BindView(R.id.mine_author_base_root)
+	View mAuthorBase;
+
 	//图片选择器 参考 https://github.com/jeasonlzy/ImagePicker
 	private ImagePicker imagePicker;
+	private UserInfo    mUserInfo;
 
 	@Override
 	protected View initView() {
@@ -77,11 +110,69 @@ public class MineFragment extends BaseFragment {
 	public void loadDataOnce() {
 		//更新显示的状态,数据加载完成需要重新更新状态
 		upViewState();
-
 		//用于选择图片
 		imagePicker = ImagePicker.getInstance();
 		//初始化图片加载器
 		imagePicker.setImageLoader(new GlideImageLoader());
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		upDateShow();
+	}
+
+	@Override
+	public void initData() {
+		//gender	int	性别：-1 保密，0女，1男
+		SexTypes.put(-1,R.mipmap.sex_unknow);
+		SexTypes.put(0,R.mipmap.sex_woman);
+		SexTypes.put(1,R.mipmap.sex_man);
+	}
+
+	//	int[] SexTypes = new int[]{R.mipmap.sex_man};
+	Map<Integer,Integer> SexTypes = new HashMap<>();
+	private void upDateShow(){
+		mUserInfo = UserUtil.getUserInfo(mActivity);
+		if(mUserInfo != null){
+			//1)打印头像
+			ToolImage.displayLocalPic(mActivity, mHeadImage, mUserInfo.getAvatar());
+			//2)姓名
+			mUserName.setText(mUserInfo.getName());
+			//3)性别
+			mSexType.setImageResource(SexTypes.get(mUserInfo.getGender()));
+			//4)id号
+			mIdNumber.setText("ID:"+mUserInfo.getId_str());
+			//5)认证状态,认证等级
+			String author_str = mUserInfo.getAuthor_str();
+			if("未认证".equals(author_str)){
+				isAuthor = false;
+				mTvRedAuthorNote.setVisibility(View.GONE);
+				mShareView.setVisibility(View.GONE);
+				mAuthorLv.setVisibility(View.GONE);
+				mAuthorStatus.setVisibility(View.GONE);
+				mAuthorBase.setVisibility(View.GONE);
+
+				mTvRedAuthorNote.setVisibility(View.VISIBLE);
+				mRedAuthorNote.setVisibility(View.VISIBLE);
+				mTvRedAuthorNote.setText(mUserInfo.getTipsmsg());
+			}else{
+				isAuthor = true;
+				mAuthorStatus.setText(author_str);
+				mAuthorStatus.setVisibility(View.VISIBLE);
+				//分享的按钮
+				mShareView.setVisibility(View.VISIBLE);
+				mAuthorLv.setText(mUserInfo.getGrade_str());
+				mAuthorBase.setVisibility(View.VISIBLE);
+
+
+				mTvRedAuthorNote.setVisibility(View.GONE);
+				mRedAuthorNote.setVisibility(View.GONE);
+			}
+			//6)年龄
+			mUserAge.setText(mUserInfo.getAge_str()+"岁");
+			upViewState();
+		}
 	}
 
 	boolean isAuthor;
@@ -94,7 +185,7 @@ public class MineFragment extends BaseFragment {
 		mMaterial.setVisibility(visible);
 		mAuthorLv.setVisibility(visible);
 		mAuthorStatus.setVisibility(visible);
-		mAuthorNote.setVisibility(isAuthor ? View.GONE : View.VISIBLE);
+		mRedAuthorNote.setVisibility(isAuthor ? View.GONE : View.VISIBLE);
 	}
 
 
@@ -123,7 +214,7 @@ public class MineFragment extends BaseFragment {
 				break;
 			case R.id.fragment_iv_header:
 				//Todo 选择上传头像
-				selectPic();
+				getPhoneReq();
 				break;
 			case R.id.ll_mine_head_info_root:
 				//个人信息	/account/view.aspx
@@ -175,8 +266,46 @@ public class MineFragment extends BaseFragment {
 
 	//跳转到登录页面
 	private void jumpToLogin() {
-		Intent intent = new Intent(mActivity, LoginActivity.class);
-		startActivity(intent);
+//		Intent intent = new Intent(mActivity, LoginActivity.class);
+//		startActivity(intent);
+		DialogBean bean = new DialogBean("您确定退出登录？", "", "确定", "取消");
+		CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
+		msgDialog.setLeftClick(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//将数据清理，退出登录
+				CacheUtils.setString(mActivity,SysConfiguration.USER_INFO,"");
+				upDateShow();
+				Intent intent = new Intent(HomeActivity.LOGIN_OUT);
+				mActivity.sendBroadcast(intent);
+			}
+		});
+		msgDialog.showDialog();
+	}
+
+	//解决授权问题
+	private void getPhoneReq(){
+
+		//请求授权,权限框架
+		new RxPermissions(mActivity)
+			.request(
+				Manifest.permission.CAMERA
+//				Manifest.permission.ACCESS_FINE_LOCATION
+			)
+			.subscribe(new Action1<Boolean>() {
+				@Override
+				public void call(Boolean granted) {
+					if (granted) { // 在android 6.0之前会默认返回true
+						// 已经获取权限
+						selectPic();
+					} else {
+						// 未获取权限
+						DialogBean bean = new DialogBean("摄像头打开失败，请重试", "", "确定", "");
+						CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
+						msgDialog.showDialog();
+					}
+				}
+			});
 	}
 
 
@@ -223,13 +352,15 @@ public class MineFragment extends BaseFragment {
 							UpLoadFile.upFile(file, uploadUrl, new Callback() {
 								@Override
 								public void onFailure(Call call, IOException e) {
+									ToolLog.i("upload onFailure : " + e.getMessage());
 									ToastUtil.showToast(mActivity,"头像上传失败");
 								}
 
 								@Override
 								public void onResponse(Call call, Response response) throws IOException {
 									//有返回值
-//									response.body();
+									response.body();
+									ToolLog.i("upload success : " + response.body().string());
 								}
 							});
 							//ToolImage.displayLocalPic(mActivity,mHeadImage,path);

@@ -1,5 +1,8 @@
 package com.bowen.hannengclub.network;
 
+import com.bowen.hannengclub.bean.BaseReqResult;
+import com.bowen.hannengclub.bean.LoginResult;
+
 import java.util.Map;
 
 import retrofit2.http.FieldMap;
@@ -24,19 +27,26 @@ public interface RxNetWorkService {
     @POST("based/push/index")
     Observable<String> upLoadPushID(@FieldMap Map<String,Object> filedMap);
 
-    //登录
+    //登录  LoginResult
     @FormUrlEncoded
     @POST("user/login/index")
-    Observable<String> login(@FieldMap Map<String,Object> paramMap);
+    Observable<LoginResult> login(@FieldMap Map<String,Object> paramMap);
 
 
     //获取检验码
     @FormUrlEncoded
     @POST("based/code/index")
-    Observable<String> getPhoneCode(@FieldMap Map<String,Object> paramMap);
+    Observable<BaseReqResult> getPhoneCode(@FieldMap Map<String,Object> paramMap);
 
-    //检查检验码
     @FormUrlEncoded
     @POST("based/code/checkcode")
-    Observable<String> checkPhoneCode(@FieldMap Map<String,Object> paramMap);
+    Observable<BaseReqResult> checkPhoneCode(@FieldMap Map<String,Object> paramMap);
+
+    @FormUrlEncoded
+    @POST("user/login/register")
+    Observable<BaseReqResult> register(@FieldMap Map<String,Object> paramMap);
+
+    @FormUrlEncoded
+    @POST("user/login/resetpasswd")
+    Observable<BaseReqResult> resetPasword(@FieldMap Map<String,Object> paramMap);
 }

@@ -1,8 +1,11 @@
 package com.bowen.hannengclub.network.configraution;
 
+import android.text.TextUtils;
+
+import com.bowen.hannengclub.MyApplication;
 import com.bowen.hannengclub.util.Constans;
 import com.bowen.hannengclub.util.SHA1Util;
-import com.bowen.hannengclub.util.ToolLog;
+import com.bowen.hannengclub.util.UserUtil;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -55,6 +58,7 @@ public class CommonParamInterceptor implements Interceptor {
 				newFormBody.addEncoded(oidFormBody.encodedName(i),oidFormBody.encodedValue(i));
 				reqParams.put(oidFormBody.encodedName(i),oidFormBody.encodedValue(i));
 			}
+			String token = UserUtil.getToken(MyApplication.context);
 			timestamp = System.currentTimeMillis();
 			//添加公共的请求参数信息
 			newFormBody.add("signature",getSign());
@@ -63,17 +67,24 @@ public class CommonParamInterceptor implements Interceptor {
 			newFormBody.add("device_type",device_type + "");
 			newFormBody.add("api_ver",version_id + "");
 
+			//如果有就进行添加
+			if(!TextUtils.isEmpty(token)){
+				newFormBody.add("token",token + "");
+				reqParams.put("token",token);
+			}
+
 			reqParams.put("signature",getSign());
 			reqParams.put("timestamp",timestamp + "");
 			reqParams.put("nonce",nonce + "");
 			reqParams.put("device_type",device_type + "");
 			reqParams.put("api_ver",version_id + "");
 
+
 			//第一种：普遍使用，二次取值
-			ToolLog.i("通过Map.keySet遍历key和value：");
-			for (String key : reqParams.keySet()) {
-				ToolLog.i("key : value ;" + key + " : " + reqParams.get(key));
-			}
+//			ToolLog.i("通过Map.keySet遍历key和value：");
+//			for (String key : reqParams.keySet()) {
+//				ToolLog.i("key : value ;" + key + " : " + reqParams.get(key));
+//			}
 
 			requestBuilder.method(original.method(),newFormBody.build());
 			/*.addQueryParameter("signature", getSign())
@@ -81,7 +92,6 @@ public class CommonParamInterceptor implements Interceptor {
 				.addQueryParameter("nonce", nonce + "")
 				.addQueryParameter("device_type", device_type + "")
 				.addQueryParameter("api_ver", version_id + "")
-			//公共参数信息 // TODO: 2017/4/24  登录后需要保存到本地的信息
 			//                 .addQueryParameter("login_token", "")*/
 		}
 

@@ -6,12 +6,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.alibaba.fastjson.JSON;
 import com.bowen.hannengclub.R;
+import com.bowen.hannengclub.SysConfiguration;
+import com.bowen.hannengclub.bean.LoginResult;
 import com.bowen.hannengclub.dialog.CommonMsgDialog;
 import com.bowen.hannengclub.dialog.DialogBean;
 import com.bowen.hannengclub.dialog.LoginErrDialog;
 import com.bowen.hannengclub.network.DataEngine2;
 import com.bowen.hannengclub.network.RxNetWorkService;
+import com.bowen.hannengclub.util.CacheUtils;
+import com.bowen.hannengclub.util.ToastUtil;
 import com.bowen.hannengclub.util.ToolLog;
 
 import java.util.HashMap;
@@ -93,7 +98,8 @@ public class LoginActivity extends BaseActivity {
 		//		service.getBaiDuInfo(SysConfiguration.BASE_URL)
 		final HashMap<String, Object> map = new HashMap<>();
 		map.put("phone_number",inputPhone);
-		map.put("type",1);
+		//这里应该是为 1
+		map.put("type",0);
 		map.put("password",inputPassword);
 		/*LoginResult
 		phone_number	是	string	用户号码
@@ -102,11 +108,11 @@ public class LoginActivity extends BaseActivity {
 		service.login(map)
 			   .subscribeOn(Schedulers.io())
 			   .observeOn(AndroidSchedulers.mainThread())
-			   .subscribe(new Subscriber<String>() {
+			   .subscribe(new Subscriber<LoginResult>() {
 				   @Override
 				   public void onCompleted() {
 					   mBtnLogin.setEnabled(true);
-					   ToolLog.e("login", "请求完成 !");
+					   //ToolLog.e("login", "请求完成 !");
 					   mLoaddingRoot.setVisibility(View.GONE);
 				   }
 
@@ -121,19 +127,21 @@ public class LoginActivity extends BaseActivity {
 				   }
 
 				   @Override
-				   public void onNext(String model) {
+				   public void onNext(LoginResult model) {
 					   ToolLog.e("login reslut ",model + "--请求完成 !");
 					   if(model != null){
-						  /* if(model.getStatus() == 0){
-							   ToastUtil.showToast(mActivity,model.getErrmsg());
+						   ToolLog.e("login reslut ",model.toString() + "--请求完成 !");
+						   if(model.getStatus() == 0){
+							   ToastUtil.showToast(mActivity, model.getErrmsg());
 							   DialogBean bean = new DialogBean(model.getErrmsg(),"","","");
 							   CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
 							   msgDialog.showDialog();
 						   }else{
 //							   ToolLog.e("login", "model : " + model);
-							   CacheUtils.setString(mActivity, SysConfiguration.USER_INFO, JSON.toJSONString(model));
+							   CacheUtils.setString(mActivity, SysConfiguration.USER_INFO, JSON.toJSONString(model.getItem()));
 							   ToastUtil.showToast(mActivity,"登录成功");
-						   }*/
+							   finish();
+						   }
 					   }
 
 				   }

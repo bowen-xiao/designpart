@@ -1,6 +1,9 @@
 package com.bowen.hannengclub.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -9,7 +12,6 @@ import android.widget.RadioGroup;
 
 import com.bowen.hannengclub.R;
 import com.bowen.hannengclub.dialog.CommonMsgDialog;
-import com.bowen.hannengclub.dialog.DeleteDialog;
 import com.bowen.hannengclub.dialog.DialogBean;
 import com.bowen.hannengclub.fragment.BaseFragment;
 import com.bowen.hannengclub.fragment.FragmentFactory;
@@ -18,6 +20,7 @@ import com.bowen.hannengclub.network.DataEngine2;
 import com.bowen.hannengclub.network.RxNetWorkService;
 import com.bowen.hannengclub.util.ToastUtil;
 import com.bowen.hannengclub.util.ToolLog;
+import com.bowen.hannengclub.util.UserUtil;
 import com.bowen.hannengclub.view.NoScrollViewPager;
 
 import java.util.ArrayList;
@@ -72,7 +75,28 @@ public class HomeActivity extends BaseActivity {
 		mViewPager.setCurrentItem(0);
 
 		uploadPushId();
+		registerBroadcast();
 	}
+
+
+	public final static String LOGIN_OUT = "user_login_out";
+	/**
+	 * 注册广播,刷新头像等用户信息
+	 */
+	public void registerBroadcast() {
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(LOGIN_OUT);
+		registerReceiver(receiver, filter);
+	}
+
+	private BroadcastReceiver receiver = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			if (LOGIN_OUT.equals(intent.getAction())) {
+				//默认选中第一个
+				mViewPager.setCurrentItem(0);
+				mBottomItems.check(R.id.rb_home_bottom_first);
+			}
+		}};
 
 	//提交pushId
 	private void uploadPushId(){
@@ -121,21 +145,35 @@ public class HomeActivity extends BaseActivity {
 			  R.id.rb_home_bottom_design,
 			  R.id.rb_home_bottom_mine})
 	public void onClick(View view) {
-		mBottomItems.check(view.getId());
-		if(view.getId() == R.id.rb_home_bottom_example){
+
+		/*if(view.getId() == R.id.rb_home_bottom_example){
 			DeleteDialog deleteDialog = new DeleteDialog(mActivity);
 			deleteDialog.showDialog();
-		}
-		if(view.getId() == R.id.rb_home_bottom_mine){
+		}*/
+		if(view.getId() == R.id.rb_home_bottom_mine && UserUtil.getUserInfo(mActivity) == null){
+			mBottomItems.check(ids.get(mViewPager.getCurrentItem()));
 			DialogBean dialogBean = new DialogBean("你尚未登录您的账号，前往登录！", "", "取消", "前去登录");
 			CommonMsgDialog commonMsgDialog = new CommonMsgDialog(mActivity, dialogBean);
+			commonMsgDialog.setRightClick(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					//去登录页面
+					Intent intent = new Intent(mActivity, LoginActivity.class);
+					startActivity(intent);
+				}
+			});
 			commonMsgDialog.showDialog();
+			return;
 		}
+		mBottomItems.check(view.getId());
 		mViewPager.setCurrentItem(ids.indexOf(view.getId()));
 	}
 
 	@Override
 	protected void onDestroy() {
+		if(receiver != null){
+			unregisterReceiver(receiver);
+		}
 		FragmentFactory.clearCaches();
 		super.onDestroy();
 	}

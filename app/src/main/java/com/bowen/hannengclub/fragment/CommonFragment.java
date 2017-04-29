@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.bowen.hannengclub.R;
+import com.bowen.hannengclub.SysConfiguration;
 import com.bowen.hannengclub.javascript.JavaScriptInterface;
 import com.bowen.hannengclub.util.ToolImage;
 import com.bowen.hannengclub.util.ToolLog;
@@ -58,6 +59,9 @@ public class CommonFragment extends BaseFragment {
 	public void initData() {
 		ToolImage.loading(mActivity, mIvLoad);
 		url = getArguments().getString(COMMON_URL);
+		if(!url.contains("http")){
+			url = SysConfiguration.BASE_URL + url;
+		}
 		int index = getArguments().getInt("index", -1);
 		mErrBack.setVisibility(index == -1 ? View.GONE : View.GONE);
 		ToolLog.e("main",url + "url");

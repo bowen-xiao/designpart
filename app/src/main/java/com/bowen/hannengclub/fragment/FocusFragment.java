@@ -7,9 +7,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bowen.hannengclub.R;
-import com.bowen.hannengclub.SysConfiguration;
 import com.bowen.hannengclub.activity.CommonActivity;
+import com.bowen.hannengclub.activity.LoginActivity;
+import com.bowen.hannengclub.dialog.CommonMsgDialog;
+import com.bowen.hannengclub.dialog.DialogBean;
 import com.bowen.hannengclub.util.ToolImage;
+import com.bowen.hannengclub.util.UserUtil;
 import com.bowen.hannengclub.view.LineItemView;
 
 import butterknife.BindView;
@@ -49,7 +52,7 @@ public class FocusFragment extends BaseFragment {
 				mLoadRoot.setVisibility(View.GONE);
 				//mLoadViewRoot.setVisibility(View.GONE);
 			}
-		}, 5000);
+		}, 500);
 	}
 
 	@OnClick({R.id.li_design_circle,
@@ -59,6 +62,21 @@ public class FocusFragment extends BaseFragment {
 			  R.id.li_design_focus_activity,
 			  R.id.li_design_focus_subject})
 	public void onClick(View view) {
+		//如果没有登录就去登录
+		if(UserUtil.getUserInfo(mActivity) == null){
+			DialogBean dialogBean = new DialogBean("你尚未登录您的账号，前往登录！", "", "取消", "前去登录");
+			CommonMsgDialog commonMsgDialog = new CommonMsgDialog(mActivity, dialogBean);
+			commonMsgDialog.setRightClick(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					//去登录页面
+					Intent intent = new Intent(mActivity, LoginActivity.class);
+					startActivity(intent);
+				}
+			});
+			commonMsgDialog.showDialog();
+			return;
+		}
 		/**
 		 * 关注
 			 设计圈	/focus/dynamic.aspx
@@ -73,7 +91,8 @@ public class FocusFragment extends BaseFragment {
 			case R.id.li_design_circle:
 				//设计圈
 //				ToolLog.e("onclick", view.getId() + " : id");
-				url = "focus/club.aspx";
+//				url = "focus/club.aspx";
+				url = "http://www.baidu.com";
 				break;
 			case R.id.li_design_club_dynamic:
 				//俱乐部动态
@@ -95,7 +114,7 @@ public class FocusFragment extends BaseFragment {
 				break;
 		}
 		Intent intent = new Intent(mActivity, CommonActivity.class);
-		intent.putExtra(CommonFragment.COMMON_URL, SysConfiguration.BASE_URL + url);
+		intent.putExtra(CommonFragment.COMMON_URL, url);
 		startActivity(intent);
 	}
 
