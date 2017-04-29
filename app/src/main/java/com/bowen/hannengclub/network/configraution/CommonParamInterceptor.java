@@ -69,8 +69,11 @@ public class CommonParamInterceptor implements Interceptor {
 
 			//如果有就进行添加
 			if(!TextUtils.isEmpty(token)){
-				newFormBody.add("token",token + "");
+				newFormBody.add("token",token);
 				reqParams.put("token",token);
+
+				newFormBody.add("login_token",token );
+				reqParams.put("login_token",token);
 			}
 
 			reqParams.put("signature",getSign());

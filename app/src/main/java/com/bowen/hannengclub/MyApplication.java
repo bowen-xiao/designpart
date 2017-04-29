@@ -7,6 +7,10 @@ import com.bowen.hannengclub.util.ToolLog;
 import com.pgyersdk.crash.PgyCrashManager;
 import com.tencent.smtt.sdk.QbSdk;
 import com.tencent.smtt.sdk.TbsListener;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareConfig;
+
 /**
  * Created by 肖稳华 on 2017/4/18.
  *
@@ -24,6 +28,27 @@ public class MyApplication extends Application {
 		Log.e("main",this.getClass().getSimpleName() + " is start 。");
 		PgyCrashManager.register(this);
 		initTbs();
+		initShareConfig();
+	}
+
+	//初始化友盟分享
+	private void initShareConfig() {
+		//Todo 分享的ID
+		PlatformConfig.setWeixin("wx967daebe835fbeac", "5bb696d9ccd75a38c8a0bfe0675559b3");
+		PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
+		PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad", "http://sns.whalecloud.com");
+		UMShareAPI.get(this);
+
+		UMShareConfig config = new UMShareConfig();
+		//使用授权页
+		config.isNeedAuthOnGetUserInfo(true);
+		//分享内容不可以被编辑
+		config.isOpenShareEditActivity(false);
+
+		config.setSinaAuthType(UMShareConfig.AUTH_TYPE_WEBVIEW);;
+		config.setFacebookAuthType(UMShareConfig.AUTH_TYPE_SSO);
+		config.setShareToLinkedInFriendScope(UMShareConfig.LINKED_IN_FRIEND_SCOPE_ANYONE);
+
 	}
 
 	//使用QQ浏览器内核,提高网页的兼容性

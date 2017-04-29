@@ -187,9 +187,11 @@
                 <ImageView
                     android:src="@mipmap/wechat_login"
                     android:layout_width="@dimen/login_type_size"
-                    android:layout_height="@dimen/login_type_size" />
+                    android:layout_height="@dimen/login_type_size"
+                    android:id="@+id/iv_wechat_login" />
 
                 <ImageView
+                    android:id="@+id/iv_qq_login"
                     android:layout_marginLeft="@dimen/login_type_size_margin"
                     android:src="@mipmap/qq_login"
                     android:layout_width="@dimen/login_type_size"

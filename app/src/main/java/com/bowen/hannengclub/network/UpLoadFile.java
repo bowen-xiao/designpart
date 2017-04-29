@@ -1,7 +1,9 @@
 package com.bowen.hannengclub.network;
 
+import com.bowen.hannengclub.MyApplication;
 import com.bowen.hannengclub.util.Constans;
 import com.bowen.hannengclub.util.SHA1Util;
+import com.bowen.hannengclub.util.UserUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +37,8 @@ public class UpLoadFile {
 		String signature = SHA1Util.SHA1("TOKEN_WITH_HANNENG_IPHONE" + timestamp
 										 + nonce);
 
+		String token = UserUtil.getToken(MyApplication.context);
+
 		OkHttpClient client = new OkHttpClient();
     /* 第一个要上传的file */
 		RequestBody fileBody1 = RequestBody.create(MediaType.parse("application/octet-stream") , file);
@@ -57,6 +61,9 @@ public class UpLoadFile {
 																 .addFormDataPart("nonce",nonce + "")
 																 .addFormDataPart("device_type",device_type + "")
 																 .addFormDataPart("api_ver",version_id + "")
+																.addFormDataPart("token",token)
+																.addFormDataPart("login_token",token)
+																.addFormDataPart("file","file")
             /* 底下是上传了两个文件 */
 																 .addFormDataPart("file" , file1Name , fileBody1)
 																// .addFormDataPart("file" , file2Name , fileBody2)

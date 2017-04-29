@@ -18,8 +18,12 @@ import com.bowen.hannengclub.network.RxNetWorkService;
 import com.bowen.hannengclub.util.CacheUtils;
 import com.bowen.hannengclub.util.ToastUtil;
 import com.bowen.hannengclub.util.ToolLog;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -67,6 +71,8 @@ public class LoginActivity extends BaseActivity {
 		R.id.btn_login
 		,R.id.tv_forget_password
 		,R.id.tv_user_register
+		,R.id.iv_wechat_login
+		,R.id.iv_qq_login
 	})
 	public void onClick(View view){
 		switch (view.getId()){
@@ -81,7 +87,45 @@ public class LoginActivity extends BaseActivity {
 			case R.id.tv_user_register:
 				jumpToRegister();
 				break;
+			case R.id.iv_wechat_login:
+				thirdLogin(SHARE_MEDIA.WEIXIN);
+				break;
+			case R.id.iv_qq_login:
+				thirdLogin(SHARE_MEDIA.QQ);
+				break;
 		}
+	}
+
+	//微信登录  http://dev.umeng.com/social/android/login-page#1
+	private void thirdLogin(SHARE_MEDIA loginType){
+		UMShareAPI.get(this).getPlatformInfo(this, loginType, new UMAuthListener() {
+			@Override
+			public void onStart(SHARE_MEDIA share_media) {
+				ToolLog.e("thirdlogin","start_login");
+			}
+
+			@Override
+			public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+
+			}
+
+			@Override
+			public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+				ToolLog.e("thirdlogin",throwable.getMessage());
+			}
+
+			@Override
+			public void onCancel(SHARE_MEDIA share_media, int i) {
+
+			}
+		});
+
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		UMShareAPI.get(this).onActivityResult(requestCode,resultCode,data);
 	}
 
 	//提交pushId

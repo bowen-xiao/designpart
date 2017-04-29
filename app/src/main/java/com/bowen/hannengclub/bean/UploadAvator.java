@@ -1,0 +1,32 @@
+package com.bowen.hannengclub.bean;
+
+/**
+ * Created by 肖稳华 on 2017/4/29.
+ */
+
+public class UploadAvator extends BaseReqResult {
+
+	/**
+	 * avatar : http://222.171.202.3:7002/Files/MemberPhoto/1704/98035aff8bc14afaa0d75bd6dfcee870_Thumb.jpg
+	 * uniqueid : 8c8598ee-c7bc-4040-b23f-8ab6c9757c46
+	 */
+
+	private String avatar;
+	private String uniqueid;
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+	public String getUniqueid() {
+		return uniqueid;
+	}
+
+	public void setUniqueid(String uniqueid) {
+		this.uniqueid = uniqueid;
+	}
+}

@@ -1,5 +1,6 @@
 package com.bowen.hannengclub.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -40,6 +41,14 @@ public class CommonActivity extends BaseActivity {
 		mTvRight.setText("关闭");
 		mTvRight.setTextColor(Color.BLUE);
 		mRightRoot.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(mFragment != null){
+			mFragment.onActivityResult(requestCode,resultCode,data);
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override

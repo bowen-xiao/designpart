@@ -92,7 +92,7 @@ public class FocusFragment extends BaseFragment {
 				//设计圈
 //				ToolLog.e("onclick", view.getId() + " : id");
 //				url = "focus/club.aspx";
-				url = "http://www.baidu.com";
+				url = "https://apidev.hannengclub.com/ApiTest/user";
 				break;
 			case R.id.li_design_club_dynamic:
 				//俱乐部动态

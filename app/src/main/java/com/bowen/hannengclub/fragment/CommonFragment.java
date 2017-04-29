@@ -1,5 +1,7 @@
 package com.bowen.hannengclub.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.ProgressBar;
 
 import com.bowen.hannengclub.R;
 import com.bowen.hannengclub.SysConfiguration;
+import com.bowen.hannengclub.javascript.FileSelectClient;
 import com.bowen.hannengclub.javascript.JavaScriptInterface;
 import com.bowen.hannengclub.util.ToolImage;
 import com.bowen.hannengclub.util.ToolLog;
@@ -28,7 +31,7 @@ import butterknife.OnClick;
  * Created by 肖稳华 on 2017/4/20.
  * Web X5 //http://x5.tencent.com/tbs/guide.html
  */
-public class CommonFragment extends BaseFragment {
+public class CommonFragment extends BaseFragment implements FileSelectClient.MayGolfChromeClient {
 
 	@BindView(R.id.ll_loading_view_root)
 	LinearLayout mLoadRoot;
@@ -45,6 +48,7 @@ public class CommonFragment extends BaseFragment {
 
 	@BindView(R.id.ll_err_back)
 	View                  mErrBack;
+	private FileSelectClient chromeClient;
 
 	@Override
 	protected View initView() {
@@ -81,9 +85,17 @@ public class CommonFragment extends BaseFragment {
 		//可以开始加载数据
 		WebSettings webSettings = mWebView.getSettings();
 		//可以使用script
-		webSettings.setJavaScriptEnabled(true);
+		//设置可以访问文件
+		mWebView.getSettings().setAllowFileAccess(true);
+
+		mWebView.getSettings().setJavaScriptEnabled(true);//可以使用JS
+		mWebView.getSettings().setPluginState(WebSettings.PluginState.ON);//可以使用插件
+		mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
 		int width = mWebView.getView().getWidth();
 		mWebView.addJavascriptInterface(new JavaScriptInterface(mActivity,mWebView), "android");
+		//支持文件选择
+		chromeClient = new FileSelectClient(mActivity, this);
+		mWebView.setWebChromeClient(chromeClient);
 		int tbsVersion = QbSdk.getTbsVersion(mActivity);
 		String TID = QbSdk.getTID();
 		String qBVersion = QbSdk.getMiniQBVersion(mActivity);
@@ -101,6 +113,17 @@ public class CommonFragment extends BaseFragment {
 		mWebView.setWebViewClient(new WebViewClient() {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				if (url.startsWith("mailto:") || url.startsWith("geo:")
+					|| url.startsWith("tel:")||url.startsWith("wtai:")
+					) {
+					try {
+						Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+						view.getContext().startActivity(intent);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					return true;
+				}
 				view.loadUrl(url);
 				return true;
 			}
@@ -204,4 +227,21 @@ public class CommonFragment extends BaseFragment {
 		return result;
 	}
 
+	@Override
+	public void onReceivedTitle(android.webkit.WebView view, String title) {
+
+	}
+
+	@Override
+	public void onProgressChanged(android.webkit.WebView view, int newProgress) {
+
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(resultCode < 1000 && chromeClient != null){
+			chromeClient.onActivityResult(requestCode, resultCode, data);
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 }

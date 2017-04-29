@@ -2,6 +2,8 @@ package com.bowen.hannengclub.fragment;
 
 import android.Manifest;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -9,10 +11,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.bowen.hannengclub.R;
 import com.bowen.hannengclub.SysConfiguration;
 import com.bowen.hannengclub.activity.CommonActivity;
 import com.bowen.hannengclub.activity.HomeActivity;
+import com.bowen.hannengclub.bean.UploadAvator;
 import com.bowen.hannengclub.bean.UserInfo;
 import com.bowen.hannengclub.dialog.CommonMsgDialog;
 import com.bowen.hannengclub.dialog.DialogBean;
@@ -30,6 +34,10 @@ import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.view.CropImageView;
 import com.tbruyelle.rxpermissions.RxPermissions;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -100,6 +108,8 @@ public class MineFragment extends BaseFragment {
 	private ImagePicker imagePicker;
 	private UserInfo    mUserInfo;
 
+	protected Handler mHandler;
+
 	@Override
 	protected View initView() {
 		View inflate = View.inflate(mActivity, R.layout.fragment_home_mine, null);
@@ -109,7 +119,7 @@ public class MineFragment extends BaseFragment {
 	@Override
 	public void loadDataOnce() {
 		//更新显示的状态,数据加载完成需要重新更新状态
-		upViewState();
+		upDateShow();
 		//用于选择图片
 		imagePicker = ImagePicker.getInstance();
 		//初始化图片加载器
@@ -128,7 +138,41 @@ public class MineFragment extends BaseFragment {
 		SexTypes.put(-1,R.mipmap.sex_unknow);
 		SexTypes.put(0,R.mipmap.sex_woman);
 		SexTypes.put(1,R.mipmap.sex_man);
+		mHandler = new Handler(){
+			@Override
+			public void handleMessage(Message msg) {
+				super.handleMessage(msg);
+				switch (msg.what){
+					case  UPDATESHOW:
+						if(msg.obj != null &&
+						   msg.obj instanceof  UploadAvator){
+							handUploadResult((UploadAvator) msg.obj);
+						}
+						break;
+				}
+			}
+		};
 	}
+
+	//更新要显示的内容
+	private void handUploadResult(UploadAvator resultBean){
+		if(resultBean.getStatus() == 0){
+			//显示错误信息
+			DialogBean bean = new DialogBean(resultBean.getErrmsg(),"", "", "");
+			CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
+			msgDialog.showDialog();
+		}else{
+			//更新头像信息
+			String avatar = resultBean.getAvatar();
+			UserInfo userInfo = UserUtil.getUserInfo(mActivity);
+			userInfo.setAvatar(avatar);
+			CacheUtils.setString(mActivity,SysConfiguration.USER_INFO,JSON.toJSONString(userInfo));
+			upDateShow();
+		}
+	}
+
+	//更新显示
+	protected final int UPDATESHOW = 1022;
 
 	//	int[] SexTypes = new int[]{R.mipmap.sex_man};
 	Map<Integer,Integer> SexTypes = new HashMap<>();
@@ -211,6 +255,7 @@ public class MineFragment extends BaseFragment {
 		switch (view.getId()) {
 			case R.id.iv_mine_share:
 				//Todo 分享我的名片
+				shareMyInfo();
 				break;
 			case R.id.fragment_iv_header:
 				//Todo 选择上传头像
@@ -262,6 +307,41 @@ public class MineFragment extends BaseFragment {
 		Intent intent = new Intent(mActivity, CommonActivity.class);
 		intent.putExtra(CommonFragment.COMMON_URL, SysConfiguration.BASE_URL + url);
 		startActivity(intent);
+	}
+
+	//分享我的名片
+	private void shareMyInfo() {
+		UMShareListener umShareListener = new UMShareListener() {
+			@Override
+			public void onStart(SHARE_MEDIA share_media) {
+				//开始分享
+			}
+
+			@Override
+			public void onResult(SHARE_MEDIA share_media) {
+
+			}
+
+			@Override
+			public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+				//分享错误
+			}
+
+			@Override
+			public void onCancel(SHARE_MEDIA share_media) {
+				//用户取消分享
+			}
+		};
+	   //SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN_FAVORITE,
+//		SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
+		new ShareAction(mActivity).withText("分享")
+								  .setDisplayList(SHARE_MEDIA.WEIXIN_CIRCLE,
+												  SHARE_MEDIA.WEIXIN,
+												  SHARE_MEDIA.SINA,
+												  SHARE_MEDIA.QQ,
+												  SHARE_MEDIA.QZONE
+								  )
+								  .setCallback(umShareListener).open();
 	}
 
 	//跳转到登录页面
@@ -337,7 +417,7 @@ public class MineFragment extends BaseFragment {
 		/** attention to this below ,must add this**/
 		// mShareAPI.onActivityResult(requestCode, resultCode, data);
 		Log.d("result", "onActivityResult");
-
+		UMShareAPI.get(mActivity).onActivityResult(requestCode, resultCode, data);
 		switch (resultCode) {
 
 			case ImagePicker.RESULT_CODE_ITEMS: //表示从相册选择
@@ -359,8 +439,17 @@ public class MineFragment extends BaseFragment {
 								@Override
 								public void onResponse(Call call, Response response) throws IOException {
 									//有返回值
-									response.body();
-									ToolLog.i("upload success : " + response.body().string());
+									String result = response.body().string();
+									ToolLog.i("upload success : " + result);
+									if(!TextUtils.isEmpty(result)){
+										UploadAvator resultBean = JSON.parseObject(result, UploadAvator.class);
+										if(mHandler != null){
+											Message message = mHandler.obtainMessage();
+											message.what = UPDATESHOW;
+											message.obj = resultBean;
+											mHandler.sendMessage(message);
+										}
+									}
 								}
 							});
 							//ToolImage.displayLocalPic(mActivity,mHeadImage,path);
