@@ -433,7 +433,15 @@ public class MineFragment extends BaseFragment {
 								@Override
 								public void onFailure(Call call, IOException e) {
 									ToolLog.i("upload onFailure : " + e.getMessage());
-									ToastUtil.showToast(mActivity,"头像上传失败");
+									mActivity.runOnUiThread(new Runnable() {
+										@Override
+										public void run() {
+											ToastUtil.showToast(mActivity,"头像上传失败");
+											DialogBean bean = new DialogBean("头像上传失败","", "", "");
+											CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
+											msgDialog.showDialog();
+										}
+									});
 								}
 
 								@Override

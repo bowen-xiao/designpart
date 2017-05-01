@@ -1,5 +1,6 @@
 package com.bowen.hannengclub.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
@@ -11,13 +12,13 @@ import android.widget.ProgressBar;
 
 import com.bowen.hannengclub.R;
 import com.bowen.hannengclub.SysConfiguration;
-import com.bowen.hannengclub.javascript.FileSelectClient;
 import com.bowen.hannengclub.javascript.JavaScriptInterface;
 import com.bowen.hannengclub.util.ToolImage;
 import com.bowen.hannengclub.util.ToolLog;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
 import com.tencent.smtt.sdk.QbSdk;
+import com.tencent.smtt.sdk.ValueCallback;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
@@ -31,7 +32,7 @@ import butterknife.OnClick;
  * Created by 肖稳华 on 2017/4/20.
  * Web X5 //http://x5.tencent.com/tbs/guide.html
  */
-public class CommonFragment extends BaseFragment implements FileSelectClient.MayGolfChromeClient {
+public class CommonFragment extends BaseFragment {
 
 	@BindView(R.id.ll_loading_view_root)
 	LinearLayout mLoadRoot;
@@ -48,7 +49,9 @@ public class CommonFragment extends BaseFragment implements FileSelectClient.May
 
 	@BindView(R.id.ll_err_back)
 	View                  mErrBack;
-	private FileSelectClient chromeClient;
+
+	private ValueCallback<Uri[]> mUploadMessage;
+	public static final int FILECHOOSER_RESULTCODE = 1023;
 
 	@Override
 	protected View initView() {
@@ -93,9 +96,7 @@ public class CommonFragment extends BaseFragment implements FileSelectClient.May
 		mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
 		int width = mWebView.getView().getWidth();
 		mWebView.addJavascriptInterface(new JavaScriptInterface(mActivity,mWebView), "android");
-		//支持文件选择
-		chromeClient = new FileSelectClient(mActivity, this);
-		mWebView.setWebChromeClient(chromeClient);
+
 		int tbsVersion = QbSdk.getTbsVersion(mActivity);
 		String TID = QbSdk.getTID();
 		String qBVersion = QbSdk.getMiniQBVersion(mActivity);
@@ -163,7 +164,23 @@ public class CommonFragment extends BaseFragment implements FileSelectClient.May
 					return;
 				}
 			}
-		});
+
+			//文件选择
+			@Override
+			public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> valueCallback, FileChooserParams fileChooserParams) {
+				mUploadMessage = valueCallback;
+				Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+				intent.addCategory(Intent.CATEGORY_OPENABLE);
+				intent.setType("*/*");
+				startActivityForResult(
+						Intent.createChooser(intent, "完成操作需要使用"),
+						FILECHOOSER_RESULTCODE);
+				return true;
+				//return super.onShowFileChooser(webView, valueCallback, fileChooserParams);
+			}
+		}
+
+		);
 	}
 
 	//发送错误的消息
@@ -227,21 +244,18 @@ public class CommonFragment extends BaseFragment implements FileSelectClient.May
 		return result;
 	}
 
-	@Override
-	public void onReceivedTitle(android.webkit.WebView view, String title) {
 
-	}
-
-	@Override
-	public void onProgressChanged(android.webkit.WebView view, int newProgress) {
-
-	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(resultCode < 1000 && chromeClient != null){
-			chromeClient.onActivityResult(requestCode, resultCode, data);
-		}
 		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == FILECHOOSER_RESULTCODE) {
+			if (null == mUploadMessage)
+				return;
+			Uri result = data == null || resultCode != Activity.RESULT_OK ? null
+					: data.getData();
+			mUploadMessage.onReceiveValue(new Uri[]{result});
+			mUploadMessage = null;
+		}
 	}
 }
