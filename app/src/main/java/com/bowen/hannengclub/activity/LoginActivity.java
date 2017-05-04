@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.alibaba.fastjson.JSON;
@@ -45,6 +47,9 @@ public class LoginActivity extends BaseActivity {
 	@BindView(R.id.et_login_password)
 	EditText mEtPassword;
 
+	@BindView(R.id.iv_login_bg)
+	ImageView mLoginBg;
+
 	private LoginErrDialog mLoginErrDialog;
 
 	@Override
@@ -65,6 +70,12 @@ public class LoginActivity extends BaseActivity {
 		layoutParams.width = screenWith;
 		layoutParams.height = (int) (screenWith * 0.2f + 0.5f);
 		mMarginTop.setLayoutParams(layoutParams);
+
+		//为了动态适配
+		FrameLayout.LayoutParams layoutParams2 = (FrameLayout.LayoutParams) mLoginBg.getLayoutParams();
+		layoutParams2.width = screenWith;
+		layoutParams2.height = (int) (screenWith / 1125.0f * 2004.0f +0.5f);
+		mLoginBg.setLayoutParams(layoutParams2);
 	}
 
 	@OnClick({

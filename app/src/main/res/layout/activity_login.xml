@@ -12,19 +12,18 @@
     android:orientation="vertical"
     >
 
-
-   <!-- <ImageView
+    <ImageView
+        android:id="@+id/iv_login_bg"
         android:scaleType="fitXY"
         android:src="@mipmap/login_bg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />-->
+        android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:background="@mipmap/login_bg"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <View
             android:id="@+id/login_margin"

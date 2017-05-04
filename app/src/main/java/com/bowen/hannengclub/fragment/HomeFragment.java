@@ -1,5 +1,6 @@
 package com.bowen.hannengclub.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -14,8 +15,6 @@ import com.bowen.hannengclub.view.PagerSlidingTabStrip;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-
 /**
  * Created by 肖稳华 on 2017/4/20.
  * Web X5 //http://x5.tencent.com/tbs/guide.html
@@ -80,5 +79,15 @@ public class HomeFragment extends BaseFragment {
 		//必须清除
 		NewHomeFragmentFactory.clearCaches();
 		super.onDestroy();
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		int currentItem = mViewPager.getCurrentItem();
+		BaseFragment item = mAdapter.getItem(currentItem);
+		if(item != null){
+			item.onActivityResult(requestCode,resultCode,data);
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 }

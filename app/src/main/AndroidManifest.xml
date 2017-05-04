@@ -83,7 +83,7 @@
             android:value="999c552a6f1007e21ee641c7862f3983" />
 
         <activity
-            android:name=".activity.HomeActivity" android:launchMode="singleInstance"
+            android:name=".activity.HomeActivity" android:launchMode="singleTop"
             android:stateNotNeeded="true" />
         <activity
             android:name=".activity.LoginActivity"
