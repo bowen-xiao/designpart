@@ -9,9 +9,14 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.bowen.hannengclub.R;
 import com.bowen.hannengclub.SysConfiguration;
+import com.bowen.hannengclub.bean.LoginResult;
+import com.bowen.hannengclub.bean.UserInfo;
+import com.bowen.hannengclub.bean.VersionResult;
 import com.bowen.hannengclub.dialog.CommonMsgDialog;
 import com.bowen.hannengclub.dialog.DialogBean;
 import com.bowen.hannengclub.fragment.BaseFragment;
@@ -19,6 +24,7 @@ import com.bowen.hannengclub.fragment.FragmentFactory;
 import com.bowen.hannengclub.fragment.HomePagerAdapter;
 import com.bowen.hannengclub.network.DataEngine2;
 import com.bowen.hannengclub.network.RxNetWorkService;
+import com.bowen.hannengclub.util.CacheUtils;
 import com.bowen.hannengclub.util.ToastUtil;
 import com.bowen.hannengclub.util.ToolLog;
 import com.bowen.hannengclub.util.UserUtil;
@@ -30,12 +36,15 @@ import com.tencent.android.tpush.XGPushManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static com.pgyersdk.update.UpdateManagerListener.startDownloadTask;
 
 
 public class HomeActivity extends BaseActivity {
@@ -78,11 +87,96 @@ public class HomeActivity extends BaseActivity {
 		//默认选中第一个
 		mViewPager.setCurrentItem(0);
 
-
 		registerBroadcast();
 
 		//启用调试
 		XGPushConfig.enableDebug(this, SysConfiguration.DEBUG);
+		//同步用户信息
+		getLoginInfo();
+		checkForUpdate();
+	}
+
+	private void getLoginInfo(){
+		RxNetWorkService service = DataEngine2.getServiceApiByClass(RxNetWorkService.class);
+		Map<String,Object> param = new HashMap<>();
+		param.put("test","test");
+		service.getLogin(param)
+			   .subscribeOn(Schedulers.io())
+			   .observeOn(AndroidSchedulers.mainThread())
+			   .subscribe(new Subscriber<LoginResult>() {
+				   @Override
+				   public void onCompleted() {
+
+					   ToolLog.e("main getLogin", "onCompleted !");
+				   }
+
+				   @Override
+				   public void onError(Throwable e) {
+					   ToolLog.e("main getLogin",e.getMessage() + "请求完成 !");
+				   }
+
+				   @Override
+				   public void onNext(LoginResult model) {
+					   ToolLog.e("main getLogin", "onNext !" + model);
+					   UserInfo item = model.getItem();
+					   if(model.getStatus() == 1 && item != null){
+						   //更新登录信息
+						   CacheUtils.setString(mActivity, SysConfiguration.USER_INFO, JSON.toJSONString(model.getItem()));
+					   }
+				   }
+			   });
+	}
+
+
+	//检查更新
+	private void checkForUpdate() {
+		RxNetWorkService service = DataEngine2.getServiceApiByClass(RxNetWorkService.class);
+		Map<String,Object> param = new HashMap<>();
+		param.put("test","test");
+		service.getVersion(param)
+			   .subscribeOn(Schedulers.io())
+			   .observeOn(AndroidSchedulers.mainThread())
+			   .subscribe(new Subscriber<VersionResult>() {
+				   @Override
+				   public void onCompleted() {
+
+					   ToolLog.e("main checkForUpdate", "请求完成 !");
+				   }
+
+				   @Override
+				   public void onError(Throwable e) {
+					   ToolLog.e("main checkForUpdate",e.getMessage() + "请求完成 !");
+				   }
+
+				   @Override
+				   public void onNext(VersionResult model) {
+
+					   ToolLog.e("main checkForUpdate", "checkForUpdate : " + model);
+					   if(model != null){
+						   if(model.getStatus() == 1){
+							   final VersionResult.ItemBean item = model.getItem();
+							   DialogBean dialogBean = new DialogBean(item.getMessage(),item.getTitle(),item.getUpdate(),item.getCancel());
+							   CommonMsgDialog dialog = new CommonMsgDialog(mActivity, dialogBean);
+							   dialog.setLeftClick(new View.OnClickListener() {
+								   @Override
+								   public void onClick(View v) {
+									   //去下载
+									   ToolLog.e("main checkForUpdate", "下载地址 :: " + item.getDown_url());
+									   // 1)开始下载,到服务
+									   startDownloadTask(
+										   mActivity,
+										   item.getDown_url());
+//									   Intent intent1 = new Intent(mActivity, UpLoadService.class);
+////									   intent1.putExtra(UpLoadService.DOWNLOAD_RUL ,item.getDown_url());
+//									   intent1.putExtra(UpLoadService.DOWNLOAD_RUL ,"http://xg.qq.com/pigeon_v2/resource/sdk/Xg-Push-SDK-Android-3.0.zip");
+//									   startService(intent1);
+								   }
+							   });
+							   dialog.showDialog();
+						   }
+					   }
+				   }
+			   });
 	}
 
 	@Override
@@ -103,12 +197,14 @@ public class HomeActivity extends BaseActivity {
 	}
 
 	public final static String LOGIN_OUT = "user_login_out";
+	public final static String UPDATE_ERR = "update_err";
 	/**
 	 * 注册广播,刷新头像等用户信息
 	 */
 	public void registerBroadcast() {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(LOGIN_OUT);
+		filter.addAction(UPDATE_ERR);
 		registerReceiver(receiver, filter);
 	}
 
@@ -118,6 +214,8 @@ public class HomeActivity extends BaseActivity {
 				//默认选中第一个
 				mViewPager.setCurrentItem(0);
 				mBottomItems.check(R.id.rb_home_bottom_first);
+			}else if(UPDATE_ERR.equals(intent.getAction())){
+				Toast.makeText(mActivity, "更新失败", Toast.LENGTH_SHORT).show();
 			}
 		}};
 
@@ -133,6 +231,7 @@ public class HomeActivity extends BaseActivity {
 			   .subscribe(new Subscriber<String>() {
 				   @Override
 				   public void onCompleted() {
+
 					   ToolLog.e("main", "请求完成 !");
 				   }
 

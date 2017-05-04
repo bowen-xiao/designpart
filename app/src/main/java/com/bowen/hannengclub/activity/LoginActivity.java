@@ -101,12 +101,57 @@ public class LoginActivity extends BaseActivity {
 		UMShareAPI.get(this).getPlatformInfo(this, loginType, new UMAuthListener() {
 			@Override
 			public void onStart(SHARE_MEDIA share_media) {
+				mLoaddingRoot.setVisibility(View.VISIBLE);
+				mLoaddingText.setText("获取授权中...");
 				ToolLog.e("thirdlogin","start_login");
 			}
 
 			@Override
 			public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
 
+				/**
+					 *
+					 UShare封装后字段名	QQ原始字段名	微信原始字段名	新浪原始字段名	字段含义	备注
+					 uid	openid	unionid	id	用户唯一标识	如果需要做跨APP用户打通，QQ需要使用unionID实现
+					 name	screen_name	screen_name	screen_name	用户昵称
+					 gender	gender	gender	gender	用户性别	该字段会直接返回男女
+					 iconurl	profile_image_url	profile_image_url	profile_image_url	用户头像
+				 */
+				if(map != null){
+					for (Map.Entry<String, String> entry : map.entrySet()) {
+						System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+					}
+					int type = 1;
+					if(share_media.equals(SHARE_MEDIA.QQ)){
+						type = 2;
+					}
+					//第三登录返回的信息
+					String uid = map.get("uid");
+					String name = map.get("name");
+					String gender = map.get("gender");
+					String iconurl = map.get("iconurl");
+					String openid = map.get("openid");
+					/**
+					 * 	必选	类型及范围	说明
+					 type	是	int	类型：1微信，2 QQ
+					 third_unionid	是	string	微信或QQ的unionid
+					 third_openid	是	string	微信或QQ的openid
+					 third_nickname	是	string	微信或QQ的昵称
+					 */
+					HashMap<String, Object> reqParam = new HashMap<>();
+					reqParam.put("type",type);
+					reqParam.put("third_unionid",uid);
+					reqParam.put("third_openid",openid);
+					reqParam.put("third_nickname",name);
+					reqParam.put("third_nickname",name);
+					//参数名称
+					reqParam.put("unionid",uid);
+					reqParam.put("openid",openid);
+
+					thirdLogin(reqParam);
+				}else{
+					mLoaddingRoot.setVisibility(View.GONE);
+				}
 			}
 
 			@Override
@@ -116,10 +161,39 @@ public class LoginActivity extends BaseActivity {
 
 			@Override
 			public void onCancel(SHARE_MEDIA share_media, int i) {
-
+				ToastUtil.showToast(mActivity,"用户取消授权");
 			}
 		});
 
+	}
+
+	//检查第三方的信息
+	private void thirdLogin(Map<String, Object> map) {
+		//打印参数名称
+		for (Map.Entry<String, Object> entry : map.entrySet()) {
+			ToolLog.e("login","Key = " + entry.getKey() + ", Value = " + entry.getValue());
+		}
+		RxNetWorkService service = DataEngine2.getServiceApiByClass(RxNetWorkService.class);
+		service.thirdLogin(map)
+			   .subscribeOn(Schedulers.io())
+			   .observeOn(AndroidSchedulers.mainThread())
+			   .subscribe(new Subscriber<String>() {
+				   @Override
+				   public void onCompleted() {
+					   mLoaddingRoot.setVisibility(View.GONE);
+					   ToolLog.e("main thirdLogin", "请求完成 !");
+				   }
+
+				   @Override
+				   public void onError(Throwable e) {
+					   ToolLog.e("main thirdLogin",e.getMessage() + "请求完成 !");
+				   }
+
+				   @Override
+				   public void onNext(String model) {
+					   ToolLog.e("main thirdLogin", "请求完成 !" + model);
+				   }
+			   });
 	}
 
 	@Override

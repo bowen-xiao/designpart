@@ -2,6 +2,7 @@ package com.bowen.hannengclub.network;
 
 import com.bowen.hannengclub.bean.BaseReqResult;
 import com.bowen.hannengclub.bean.LoginResult;
+import com.bowen.hannengclub.bean.VersionResult;
 
 import java.util.Map;
 
@@ -49,4 +50,18 @@ public interface RxNetWorkService {
     @FormUrlEncoded
     @POST("user/login/resetpasswd")
     Observable<BaseReqResult> resetPasword(@FieldMap Map<String,Object> paramMap);
+
+    @FormUrlEncoded
+    @POST("based/version/index")
+    Observable<VersionResult> getVersion(@FieldMap Map<String,Object> param);
+
+    //http://api.hannengclub.com/user/login/get
+    @FormUrlEncoded
+    @POST("user/login/get")
+    Observable<LoginResult> getLogin(@FieldMap Map<String,Object> param);
+
+    //http://api.hannengclub.com/user/login/get
+    @FormUrlEncoded
+    @POST("user/login/third")
+    Observable<String> thirdLogin(@FieldMap Map<String,Object> param);
 }

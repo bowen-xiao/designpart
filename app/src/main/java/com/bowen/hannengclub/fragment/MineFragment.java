@@ -16,6 +16,7 @@ import com.bowen.hannengclub.R;
 import com.bowen.hannengclub.SysConfiguration;
 import com.bowen.hannengclub.activity.CommonActivity;
 import com.bowen.hannengclub.activity.HomeActivity;
+import com.bowen.hannengclub.bean.ShareBean;
 import com.bowen.hannengclub.bean.UploadAvator;
 import com.bowen.hannengclub.bean.UserInfo;
 import com.bowen.hannengclub.dialog.CommonMsgDialog;
@@ -38,6 +39,9 @@ import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -311,15 +315,17 @@ public class MineFragment extends BaseFragment {
 
 	//分享我的名片
 	private void shareMyInfo() {
+		ShareBean shareBean = mUserInfo.getShare();
+		if(shareBean == null){return;}
 		UMShareListener umShareListener = new UMShareListener() {
 			@Override
 			public void onStart(SHARE_MEDIA share_media) {
 				//开始分享
+
 			}
 
 			@Override
 			public void onResult(SHARE_MEDIA share_media) {
-
 			}
 
 			@Override
@@ -330,18 +336,37 @@ public class MineFragment extends BaseFragment {
 			@Override
 			public void onCancel(SHARE_MEDIA share_media) {
 				//用户取消分享
+				ToastUtil.showToast(mActivity,"用户取消了分享");
 			}
 		};
+		/**
+		 *   UMImage image = new UMImage(ShareActivity.this, "imageurl");//网络图片
+		 UMImage image = new UMImage(ShareActivity.this, file);//本地文件
+		 UMImage image = new UMImage(ShareActivity.this, R.drawable.xxx);//资源文件
+		 UMImage image = new UMImage(ShareActivity.this, bitmap);//bitmap文件
+		 UMImage image = new UMImage(ShareActivity.this, byte[]);//字节流
+		 */
+		UMImage image = new UMImage(mActivity,shareBean.getPic());//网络图片
+		UMWeb web = new UMWeb(shareBean.getBackurl());
+		web.setTitle(shareBean.getTitle());//标题
+		web.setThumb(image);  //缩略图
+		web.setDescription(shareBean.getContent());//描述
+
 	   //SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN_FAVORITE,
 //		SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
-		new ShareAction(mActivity).withText("分享")
+		ShareBoardConfig config = new ShareBoardConfig();
+		config.setTitleText("分享");
+		//不显示指示器
+		config.setIndicatorVisibility(false);
+		config.setCancelButtonText("取消分享");
+		new ShareAction(mActivity).withMedia(web)
 								  .setDisplayList(SHARE_MEDIA.WEIXIN_CIRCLE,
 												  SHARE_MEDIA.WEIXIN,
 												  SHARE_MEDIA.SINA,
 												  SHARE_MEDIA.QQ,
 												  SHARE_MEDIA.QZONE
 								  )
-								  .setCallback(umShareListener).open();
+								  .setCallback(umShareListener).open(config);
 	}
 
 	//跳转到登录页面

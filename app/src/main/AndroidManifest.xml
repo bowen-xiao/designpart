@@ -46,7 +46,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BATTERY_STATS" />
 
-
     <!-- 获取logcat日志 -->
     <application
         android:name=".MyApplication"
@@ -84,7 +83,7 @@
             android:value="999c552a6f1007e21ee641c7862f3983" />
 
         <activity
-            android:name=".activity.HomeActivity"
+            android:name=".activity.HomeActivity" android:launchMode="singleInstance"
             android:stateNotNeeded="true" />
         <activity
             android:name=".activity.LoginActivity"
@@ -223,6 +222,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
 
+        <service android:name=".service.UpLoadService" android:process="com.bowen.hannengclub.service.UpLoadService"/>
     </application>
 
 </manifest>
