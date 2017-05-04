@@ -17,6 +17,12 @@ import com.bowen.hannengclub.util.ToastUtil;
 import com.bowen.hannengclub.util.ToolLog;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.tencent.smtt.sdk.WebView;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
 
 import java.util.List;
 
@@ -32,93 +38,132 @@ public class JavaScriptInterface {
 
 	com.tencent.smtt.sdk.WebView mWebView;
 
-	public JavaScriptInterface(BaseActivity activity,WebView webView) {
+	public JavaScriptInterface(BaseActivity activity, WebView webView) {
 		this.mActivity = activity;
 		this.mWebView = webView;
 	}
 
 	//1)与JS交互的接口
 	@JavascriptInterface
-	public String app_getVer(){
+	public String app_getVer() {
 		return String.valueOf(Constans.VERSION_ID);
 	}
-	
+
 	//2)设置标题
 	@JavascriptInterface
-	public void app_setTitle(String title){
-		if(mActivity != null){
+	public void app_setTitle(String title) {
+		if (mActivity != null) {
 			mActivity.setTitle(title);
 		}
 	}
 
 	//3)下载资源
 	@JavascriptInterface
-	public void app_downloadResource(String type,String url){
+	public void app_downloadResource(String type, String url) {
 		//// TODO: 2017/4/24 下载内容
 		/**
 		 * type: 资源类型：0 -> 图片
-		 	resourceUrl: 资源url
+		 resourceUrl: 资源url
 		 */
 
 	}
 
 	/**
-	 * type：享到：0 -> 微信聊天， 1 -> 朋友圈,  2 -> 用户选择
-		 title：标题
-		 desc: 描述
-		 url: 分享的url
-		 imageUrl: 图片路径
-	 * @param type
-	 * @param title
-	 * @param desc
-	 * @param url
-	 * @param imageUrl
+	 * type：享到：0 -> 微信聊天， 1 -> 朋友圈,  2 -> 用户选择 title：标题 desc: 描述 url: 分享的url imageUrl: 图片路径
 	 */
 	//4)分享内容
 	@JavascriptInterface
-	public void app_share(String type,String title,String desc,String url,String imageUrl){
-		//// TODO: 2017/4/24 平台分享
+	public void app_share(String type, String title, String desc, String url, String imageUrl) {
+		UMShareListener umShareListener = new UMShareListener() {
+			@Override
+			public void onStart(SHARE_MEDIA share_media) {
+				//开始分享
+			}
+
+			@Override
+			public void onResult(SHARE_MEDIA share_media) {
+			}
+
+			@Override
+			public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+				//分享错误
+			}
+
+			@Override
+			public void onCancel(SHARE_MEDIA share_media) {
+				//用户取消分享
+				ToastUtil.showToast(mActivity, "用户取消了分享");
+			}
+		};
+		UMImage image = new UMImage(mActivity, imageUrl);//网络图片
+		UMWeb web = new UMWeb(url);
+		web.setTitle(title);//标题
+		web.setThumb(image);  //缩略图
+		web.setDescription(desc);//描述
+		if (type.equals("1")) {
+			new ShareAction(mActivity).withMedia(web).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE).setCallback(umShareListener).share();
+		} else if (type.equals("0")) {
+			new ShareAction(mActivity).withMedia(web).setPlatform(SHARE_MEDIA.WEIXIN).setCallback(umShareListener).share();
+		}else if (type.equals("2")) {
+			//// TODO: 2017/4/24 平台分享
+			/**
+			 *   UMImage image = new UMImage(ShareActivity.this, "imageurl");//网络图片
+			 UMImage image = new UMImage(ShareActivity.this, file);//本地文件
+			 UMImage image = new UMImage(ShareActivity.this, R.drawable.xxx);//资源文件
+			 UMImage image = new UMImage(ShareActivity.this, bitmap);//bitmap文件
+			 UMImage image = new UMImage(ShareActivity.this, byte[]);//字节流
+			 */
+			//SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN_FAVORITE,
+			//		SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
+			ShareBoardConfig config = new ShareBoardConfig();
+			config.setTitleText("分享");
+			//不显示指示器
+			config.setIndicatorVisibility(false);
+			config.setCancelButtonText("取消分享");
+			new ShareAction(mActivity).withMedia(web)
+									  .setDisplayList(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.SINA, SHARE_MEDIA.QQ,
+													  SHARE_MEDIA.QZONE)
+									  .setCallback(umShareListener)
+									  .open(config);
+		}
 
 	}
 
 	//5)获取地理位置信息
 	@JavascriptInterface
-	public void app_getCoordinate(){
+	public void app_getCoordinate() {
 		//// TODO: 2017/4/24 位置获取
 
 		//请求授权,权限框架
-		new RxPermissions(mActivity)
-			.request(
-//					 Manifest.permission.CAMERA,
-					 Manifest.permission.ACCESS_FINE_LOCATION
-			)
-			.subscribe(new Action1<Boolean>() {
-				@Override
-				public void call(Boolean granted) {
-					if (granted) { // 在android 6.0之前会默认返回true
-						// 已经获取权限
-						startGetLocation();
-					} else {
-						// 未获取权限
-						ToastUtil.showToast(mActivity,"获取授权失败");
-					}
+		new RxPermissions(mActivity).request(
+			//					 Manifest.permission.CAMERA,
+			Manifest.permission.ACCESS_FINE_LOCATION).subscribe(new Action1<Boolean>() {
+			@Override
+			public void call(Boolean granted) {
+				if (granted) { // 在android 6.0之前会默认返回true
+					// 已经获取权限
+					startGetLocation();
+				} else {
+					// 未获取权限
+					ToastUtil.showToast(mActivity, "获取授权失败");
 				}
-			});
+			}
+		});
 
 	}
 
 	//6)打开新页面
 	@JavascriptInterface
-	public int app_openUrl(String url){
+	public int app_openUrl(String url) {
 		Intent intent = new Intent(mActivity, CommonActivity.class);
 		intent.putExtra(CommonFragment.COMMON_URL, url);
 		mActivity.startActivity(intent);
 		//固定返回值，是APP打开的标识
-		return  1;
+		return 1;
 	}
 
 	//去获取定位，适配6.0以上系统
-	private void startGetLocation(){
+	private void startGetLocation() {
 
 		if (mLocationClient == null) {
 			mLocationClient = new LocationClient(mActivity.getApplicationContext());
@@ -176,8 +221,8 @@ public class JavaScriptInterface {
 	}
 
 	//停止定位
-	private void stopLocation(){
-		if(mLocationClient != null){
+	private void stopLocation() {
+		if (mLocationClient != null) {
 			mLocationClient.stop();
 		}
 	}
@@ -276,22 +321,22 @@ public class JavaScriptInterface {
 
 			ToolLog.i("BaiduLocationApiDem", sb.toString());
 
-			if(mActivity != null && mWebView!= null && location!= null){
+			if (mActivity != null && mWebView != null && location != null) {
 				final double longitude = location.getLongitude();
 				final double latitude = location.getLatitude();
 				mActivity.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						ToolLog.i(longitude + "回调JS"+ latitude);
+						ToolLog.i(longitude + "回调JS" + latitude);
 						//回调JS
-						mWebView.loadUrl("javascript:app_callbackCoordinate("+longitude+", "+latitude+")");
+						mWebView.loadUrl("javascript:app_callbackCoordinate(" + longitude + ", " + latitude + ")");
 					}
 				});
 			}
-//			Message message = myHandler.obtainMessage();
-//			message.what = LOCATION_CODE;
-//			message.obj = sb;
-//			myHandler.sendMessage(message);
+			//			Message message = myHandler.obtainMessage();
+			//			message.what = LOCATION_CODE;
+			//			message.obj = sb;
+			//			myHandler.sendMessage(message);
 			//已经定位成功，
 			stopLocation();
 		}
