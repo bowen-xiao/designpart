@@ -1,31 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_login"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/login_bg"
     android:orientation="vertical"
     >
 
-    <ImageView
+    <!--<ImageView
         android:id="@+id/iv_login_bg"
         android:scaleType="fitXY"
         android:src="@mipmap/login_bg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content" />-->
 
     <LinearLayout
+        android:layout_gravity="center"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <View
+            android:visibility="gone"
             android:id="@+id/login_margin"
             android:layout_width="match_parent"
             android:layout_height="120dp"/>
@@ -176,9 +173,9 @@
                 android:src="@mipmap/other_login_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+                <!--android:layout_marginBottom="@dimen/login_line_margin"-->
             <LinearLayout
                 android:layout_marginTop="@dimen/login_line_margin"
-                android:layout_marginBottom="@dimen/login_margin_board"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -205,5 +202,3 @@
 
 </FrameLayout>
 
-
-</ScrollView>
