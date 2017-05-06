@@ -71,8 +71,9 @@
         <!-- 百度的配置 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="l2N5o9QBV3M9g6FKS2h6hS56rMU77tLG" />
-
+            android:value="G3P4NAoLS2wSNSsuOI6GsPbQ3G1UvoVw" />
+       <!-- G3P4NAoLS2wSNSsuOI6GsPbQ3G1UvoVw
+        l2N5o9QBV3M9g6FKS2h6hS56rMU77tLG-->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
@@ -175,15 +176,15 @@
         <!-- 【必须】 请修改为APP的AccessId，“21”开头的10位数字，中间没空格 -->
         <meta-data
             android:name="XG_V2_ACCESS_ID"
-            android:value="2100047428" />
+            android:value="2100257794" />
         <!-- 【必须】 请修改为APP的AccessKey，“A”开头的12位字符串，中间没空格 -->
         <meta-data
             android:name="XG_V2_ACCESS_KEY"
-            android:value="AKH3A5485ETM" />
+            android:value="AR88VBFP665T" />
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="561cae6ae0f55abd990035bf" >
+            android:value="590bd6337f2c74038e001dde" >
         </meta-data>
 
         <activity
@@ -222,7 +223,6 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
 
-        <service android:name=".service.UpLoadService" android:process="com.bowen.hannengclub.service.UpLoadService"/>
     </application>
 
 </manifest>

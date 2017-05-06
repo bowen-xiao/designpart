@@ -52,6 +52,7 @@ public class LoginActivity extends BaseActivity {
 
 	@Override
 	protected String initTitle() {
+		mTitleRoot.setVisibility(View.GONE);
 		return "登录";
 	}
 
@@ -170,6 +171,7 @@ public class LoginActivity extends BaseActivity {
 
 			@Override
 			public void onCancel(SHARE_MEDIA share_media, int i) {
+				mLoaddingRoot.setVisibility(View.GONE);
 				ToastUtil.showToast(mActivity,"用户取消授权");
 			}
 		});

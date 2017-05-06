@@ -32,5 +32,6 @@
     <color name="tab_text_normal">#000</color>
 
     <color name="blue2">#1e90ff</color>
+    <color name="login_blue">#1ca0a2</color>
 
 </resources>

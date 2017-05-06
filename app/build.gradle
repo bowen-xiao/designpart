@@ -6,7 +6,7 @@ android {
         bowensign {
             keyAlias 'com.bowen'
             keyPassword 'wenhua'
-            storeFile file('F:/studio_demo/BaiDuLocationDemo/bowen')
+            storeFile file('E:/android_workspeace/designpart2/designpart/bowen')
             storePassword 'wenhua'
         }
     }

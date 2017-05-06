@@ -41,7 +41,7 @@
             <LinearLayout
                 android:gravity="center_vertical"
                 android:layout_marginTop="@dimen/login_line_margin"
-                android:background="@drawable/red_conner_login_bg"
+                android:background="@drawable/white_conner_login_bg"
                 android:orientation="horizontal"
                 android:layout_marginLeft="@dimen/login_margin_board"
                 android:layout_marginRight="@dimen/login_margin_board"
@@ -55,11 +55,13 @@
                     android:layout_height="@dimen/login_user_logo" />
                 <View
                     android:layout_marginLeft="5dp"
-                    android:background="@color/login_red"
+                    android:background="@color/whilte"
                     android:layout_width="1dp"
                     android:layout_height="30dp"/>
 
                 <EditText
+                    android:textColorHint="@color/whilte"
+                    android:textColor="@color/whilte"
                     android:inputType="phone"
                     android:textSize="14sp"
                     android:paddingLeft="@dimen/common_margin"
@@ -74,7 +76,7 @@
             <LinearLayout
                 android:gravity="center_vertical"
                 android:layout_marginTop="@dimen/login_line_margin"
-                android:background="@drawable/red_conner_login_bg"
+                android:background="@drawable/white_conner_login_bg"
                 android:orientation="horizontal"
                 android:layout_marginLeft="@dimen/login_margin_board"
                 android:layout_marginRight="@dimen/login_margin_board"
@@ -88,11 +90,13 @@
                     android:layout_height="@dimen/login_user_logo" />
                 <View
                     android:layout_marginLeft="5dp"
-                    android:background="@color/login_red"
+                    android:background="@color/whilte"
                     android:layout_width="1dp"
                     android:layout_height="30dp"/>
 
                 <EditText
+                    android:textColorHint="@color/whilte"
+                    android:textColor="@color/whilte"
                     android:inputType="textPassword"
                     android:textSize="14sp"
                     android:paddingLeft="@dimen/common_margin"
@@ -128,7 +132,7 @@
 
             <Button
                 android:textSize="18sp"
-                android:background="@drawable/red_conner_login_btn_bg"
+                android:background="@drawable/login_conner_login_btn_bg"
                 android:layout_marginTop="@dimen/login_line_margin"
                 android:gravity="center"
                 android:text="登录"
@@ -148,6 +152,7 @@
                 android:layout_height="@dimen/login_line_height">
 
                 <TextView
+                    android:textColor="@color/whilte"
                     android:gravity="center"
                     android:text="忘记密码?"
                     android:layout_width="wrap_content"
@@ -160,6 +165,7 @@
                     android:layout_width="1dp"
                     android:layout_height="20dp"/>
                 <TextView
+                    android:textColor="@color/whilte"
                     android:gravity="center"
                     android:text="手机注册"
                     android:layout_width="wrap_content"
