@@ -122,6 +122,9 @@ public class HomeActivity extends BaseActivity {
 					   if(model.getStatus() == 1 && item != null){
 						   //更新登录信息
 						   CacheUtils.setString(mActivity, SysConfiguration.USER_INFO, JSON.toJSONString(model.getItem()));
+					   }else{
+						   //清空登录信息
+						   CacheUtils.setString(mActivity, SysConfiguration.USER_INFO, "");
 					   }
 				   }
 			   });

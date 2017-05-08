@@ -33,7 +33,6 @@ public interface RxNetWorkService {
     @POST("user/login/index")
     Observable<LoginResult> login(@FieldMap Map<String,Object> paramMap);
 
-
     //获取检验码
     @FormUrlEncoded
     @POST("based/code/index")
@@ -64,4 +63,12 @@ public interface RxNetWorkService {
     @FormUrlEncoded
     @POST("user/login/third")
     Observable<String> thirdLogin(@FieldMap Map<String,Object> param);
+
+    @FormUrlEncoded
+    @POST("user/login/thirdclick")
+    Observable<String> thirdLoginClick(@FieldMap Map<String,Object> param);
+
+    @FormUrlEncoded
+    @POST("user/login/thirdbind")
+    Observable<String> thirdbind(@FieldMap Map<String,Object> param);
 }

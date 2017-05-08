@@ -1,6 +1,10 @@
 package com.bowen.hannengclub.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +14,8 @@ import com.alibaba.fastjson.JSON;
 import com.bowen.hannengclub.R;
 import com.bowen.hannengclub.SysConfiguration;
 import com.bowen.hannengclub.bean.LoginResult;
+import com.bowen.hannengclub.bean.ThirdLoginParam;
+import com.bowen.hannengclub.bean.UserInfo;
 import com.bowen.hannengclub.dialog.CommonMsgDialog;
 import com.bowen.hannengclub.dialog.DialogBean;
 import com.bowen.hannengclub.dialog.LoginErrDialog;
@@ -61,8 +67,27 @@ public class LoginActivity extends BaseActivity {
 		return R.layout.activity_login;
 	}
 
+	public final static String FINISH_LOGIN_ACTIVITY = "finish_login_activity";
+	/**
+	 * 注册广播,刷新头像等用户信息
+	 */
+	public void registerBroadcast() {
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(FINISH_LOGIN_ACTIVITY);
+		registerReceiver(receiver, filter);
+	}
+
+	private BroadcastReceiver receiver = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			if (FINISH_LOGIN_ACTIVITY.equals(intent.getAction())) {
+				//默认选中第一个
+				finish();
+			}
+		}};
+
 	@Override
 	public void initData() {
+		registerBroadcast();
 		//1)设置距离顶部的高度
 		LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mMarginTop.getLayoutParams();
 		int screenWith = mActivity.getResources().getDisplayMetrics().widthPixels;
@@ -108,6 +133,10 @@ public class LoginActivity extends BaseActivity {
 
 	//微信登录  http://dev.umeng.com/social/android/login-page#1
 	private void thirdLogin(SHARE_MEDIA loginType){
+
+		//后台需要统计,访问统计接口
+		uploadLoginType(loginType);
+
 		UMShareAPI.get(this).getPlatformInfo(this, loginType, new UMAuthListener() {
 			@Override
 			public void onStart(SHARE_MEDIA share_media) {
@@ -178,8 +207,35 @@ public class LoginActivity extends BaseActivity {
 
 	}
 
+	//仅仅用于后台用于统计，不处理返回结果
+	private void uploadLoginType(SHARE_MEDIA loginType) {
+		int type = SHARE_MEDIA.QQ == loginType ? 2 : 1;
+		Map<String,Object> map = new HashMap<>();
+		//type	是	int	类型：1微信，2 QQ
+		map.put("type",type);
+		RxNetWorkService service = DataEngine2.getServiceApiByClass(RxNetWorkService.class);
+		service.thirdLoginClick(map)
+			   .subscribeOn(Schedulers.io())
+			   .observeOn(AndroidSchedulers.mainThread())
+			   .subscribe(new Subscriber<String>() {
+				   @Override
+				   public void onCompleted() {
+				   }
+
+				   @Override
+				   public void onError(Throwable e) {
+					   ToolLog.e("main thirdLoginClick",e.getMessage() + "请求完成 !");
+				   }
+
+				   @Override
+				   public void onNext(String model) {
+					   ToolLog.e("main thirdLoginClick", "请求完成 !" + model);
+				   }
+			   });
+	}
+
 	//检查第三方的信息
-	private void thirdLogin(Map<String, Object> map) {
+	private void thirdLogin(final Map<String, Object> map) {
 		//打印参数名称
 		for (Map.Entry<String, Object> entry : map.entrySet()) {
 			ToolLog.e("login","Key = " + entry.getKey() + ", Value = " + entry.getValue());
@@ -202,6 +258,32 @@ public class LoginActivity extends BaseActivity {
 
 				   @Override
 				   public void onNext(String model) {
+
+					   if (!TextUtils.isEmpty(model)) {
+						   LoginResult result = JSON.parseObject(model, LoginResult.class);
+						   if(result.getStatus() == 1){
+							   //登录成功,返回
+							   UserInfo item = result.getItem();
+							   if(item != null){
+								   CacheUtils.setString(mActivity, SysConfiguration.USER_INFO, JSON.toJSONString(item));
+								   ToastUtil.showToast(mActivity,"登录成功");
+								   finish();
+							   }
+						   }else{
+							   //绑定账号
+							   Intent intent = new Intent(mActivity, ThirdLoginBindActivity.class);
+							   /**
+								* reqParam.put("type",type);
+									reqParam.put("third_unionid",uid);
+									reqParam.put("third_openid",openid);
+									reqParam.put("third_nickname",name);
+								*/
+							   ThirdLoginParam param = new ThirdLoginParam();
+							   param.setParams(map);
+							   intent.putExtra("param",param);
+							   startActivity(intent);
+						   }
+					   }
 					   ToolLog.e("main thirdLogin", "请求完成 !" + model);
 				   }
 			   });
@@ -300,6 +382,9 @@ public class LoginActivity extends BaseActivity {
 	protected void onDestroy() {
 		if(mLoginErrDialog != null){
 			mLoginErrDialog.dismiss();
+		}
+		if(receiver != null){
+			unregisterReceiver(receiver);
 		}
 		super.onDestroy();
 	}
