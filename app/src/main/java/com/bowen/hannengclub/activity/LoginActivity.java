@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -300,6 +301,13 @@ public class LoginActivity extends BaseActivity {
 		// 1)数据有效性检查
 		String inputPhone = mEtPhone.getText().toString().trim();
 		String inputPassword = mEtPassword.getText().toString().trim();
+
+		//关闭软键盘
+		InputMethodManager imm =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		if(imm != null) {
+			imm.hideSoftInputFromWindow(mEtPassword.getWindowToken(), 0) ;
+			imm.hideSoftInputFromWindow(mEtPhone.getWindowToken(), 0) ;
+		}
 
 		// 2)网络访问
 		mLoaddingRoot.setVisibility(View.VISIBLE);

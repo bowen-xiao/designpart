@@ -21,7 +21,7 @@ public abstract class BaseFragment extends Fragment {
 	protected BaseActivity mActivity;
 
 	protected String TAG ;
-	private View mRootView;
+	protected View mRootView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

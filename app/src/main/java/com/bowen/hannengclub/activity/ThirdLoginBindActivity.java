@@ -44,6 +44,7 @@ public class ThirdLoginBindActivity extends BaseActivity {
 	@BindView(R.id.et_forget_password_phone)
 	EditText mInputPhone;
 
+	//et_forget_password_msg_recevie
 	@BindView(R.id.et_forget_password_msg_recevie)
 	EditText mPhoneCode;
 
@@ -128,14 +129,13 @@ public class ThirdLoginBindActivity extends BaseActivity {
 	private void getPhoneCodeFrom(){
 		/**
 		 * 	必选	类型及范围	说明
-		 phone_number	是	string	手机号
-		 type	是	int	类型：0注册，1找回密码，2手机登录
+		 type	是	int	类型：0注册，1找回密码，2手机登录，3第三方绑定
 		 */
 		RxNetWorkService service = DataEngine2.getServiceApiByClass(RxNetWorkService.class);
 		//		service.getBaiDuInfo(SysConfiguration.BASE_URL)
 		final HashMap<String, Object> map = new HashMap<>();
 		map.put("phone_number",mPhoneNumber);
-		map.put("type",0);
+		map.put("type",3);
 		/*LoginResult
 		phone_number	是	string	用户号码
 		type	是	int	类型：0账号登录，1手机登录
@@ -226,10 +226,10 @@ public class ThirdLoginBindActivity extends BaseActivity {
 		}
 
 		//2) 提交到后台
-		bindPhone(password);
+		bindPhone(password,phoneCode);
 	}
 
-	private void bindPhone(String password){
+	private void bindPhone(String password,String phoneCode){
 		if(param != null){
 			/**
 			 * 	必选	类型及范围	说明
@@ -239,10 +239,13 @@ public class ThirdLoginBindActivity extends BaseActivity {
 			 third_nickname	是	string	微信或QQ的昵称
 			 phone_number	是	string	手机号
 			 password	是	string	密码
+			 code	是	string	手机验证码
 			 */
 			Map<String, Object> params = param.getParams();
 			params.put("phone_number",mPhoneNumber);
 			params.put("password",password);
+			//手机验证码
+			params.put("code",phoneCode);
 			mLoaddingRoot.setVisibility(View.VISIBLE);
 			mLoaddingText.setText("数据请求中...");
 			mBtnSure.setEnabled(false);

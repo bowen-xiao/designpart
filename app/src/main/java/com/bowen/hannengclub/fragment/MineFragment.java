@@ -22,6 +22,7 @@ import com.bowen.hannengclub.bean.UserInfo;
 import com.bowen.hannengclub.dialog.CommonMsgDialog;
 import com.bowen.hannengclub.dialog.DialogBean;
 import com.bowen.hannengclub.network.UpLoadFile;
+import com.bowen.hannengclub.popuwindow.SharePopupWindow;
 import com.bowen.hannengclub.util.CacheUtils;
 import com.bowen.hannengclub.util.GlideImageLoader;
 import com.bowen.hannengclub.util.ToastUtil;
@@ -35,13 +36,9 @@ import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.view.CropImageView;
 import com.tbruyelle.rxpermissions.RxPermissions;
-import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.media.UMWeb;
-import com.umeng.socialize.shareboard.ShareBoardConfig;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -309,7 +306,7 @@ public class MineFragment extends BaseFragment {
 		//如果URL为空直接返回
 		if(TextUtils.isEmpty(url)){return;}
 		Intent intent = new Intent(mActivity, CommonActivity.class);
-		intent.putExtra(CommonFragment.COMMON_URL, SysConfiguration.BASE_URL + url);
+		intent.putExtra(CommonFragment.COMMON_URL, url);
 		startActivity(intent);
 	}
 
@@ -339,6 +336,8 @@ public class MineFragment extends BaseFragment {
 				ToastUtil.showToast(mActivity,"用户取消了分享");
 			}
 		};
+		//public SharePopupWindow(final Activity mContext, ShareBean shareBean, UMShareListener itemsOnClick)
+		new SharePopupWindow(mActivity,shareBean,umShareListener);
 		/**
 		 *   UMImage image = new UMImage(ShareActivity.this, "imageurl");//网络图片
 		 UMImage image = new UMImage(ShareActivity.this, file);//本地文件
@@ -346,14 +345,14 @@ public class MineFragment extends BaseFragment {
 		 UMImage image = new UMImage(ShareActivity.this, bitmap);//bitmap文件
 		 UMImage image = new UMImage(ShareActivity.this, byte[]);//字节流
 		 */
-		UMImage image = new UMImage(mActivity,shareBean.getPic());//网络图片
+		/*UMImage image = new UMImage(mActivity,shareBean.getPic());//网络图片
 		UMWeb web = new UMWeb(shareBean.getBackurl());
 		web.setTitle(shareBean.getTitle());//标题
 		web.setThumb(image);  //缩略图
 		web.setDescription(shareBean.getContent());//描述
 
-	   //SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN_FAVORITE,
-//		SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
+		//SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN_FAVORITE,
+		//		SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
 		ShareBoardConfig config = new ShareBoardConfig();
 		config.setTitleText("分享");
 		//不显示指示器
@@ -366,7 +365,7 @@ public class MineFragment extends BaseFragment {
 												  SHARE_MEDIA.QQ,
 												  SHARE_MEDIA.QZONE
 								  )
-								  .setCallback(umShareListener).open(config);
+								  .setCallback(umShareListener).open(config);*/
 	}
 
 	//跳转到登录页面

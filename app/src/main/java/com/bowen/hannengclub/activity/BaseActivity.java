@@ -56,7 +56,7 @@ public abstract class BaseActivity extends FragmentActivity {
 		//		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 //		getWindow().setFormat(PixelFormat.TRANSLUCENT);
 		getWindow().setSoftInputMode(
-			WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+			WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		getWindow().setFormat(PixelFormat.TRANSLUCENT);
 		super.onCreate(savedInstanceState);
 		mIsRestartData = savedInstanceState;

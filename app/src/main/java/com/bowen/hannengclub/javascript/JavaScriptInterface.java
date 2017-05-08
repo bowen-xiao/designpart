@@ -11,7 +11,9 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
 import com.bowen.hannengclub.activity.BaseActivity;
 import com.bowen.hannengclub.activity.CommonActivity;
+import com.bowen.hannengclub.bean.ShareBean;
 import com.bowen.hannengclub.fragment.CommonFragment;
+import com.bowen.hannengclub.popuwindow.SharePopupWindow;
 import com.bowen.hannengclub.util.Constans;
 import com.bowen.hannengclub.util.ToastUtil;
 import com.bowen.hannengclub.util.ToolLog;
@@ -22,7 +24,6 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
-import com.umeng.socialize.shareboard.ShareBoardConfig;
 
 import java.util.List;
 
@@ -115,7 +116,7 @@ public class JavaScriptInterface {
 			 */
 			//SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN_FAVORITE,
 			//		SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
-			ShareBoardConfig config = new ShareBoardConfig();
+			/*ShareBoardConfig config = new ShareBoardConfig();
 			config.setTitleText("分享");
 			//不显示指示器
 			config.setIndicatorVisibility(false);
@@ -124,7 +125,13 @@ public class JavaScriptInterface {
 									  .setDisplayList(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.SINA, SHARE_MEDIA.QQ,
 													  SHARE_MEDIA.QZONE)
 									  .setCallback(umShareListener)
-									  .open(config);
+									  .open(config);*/
+			ShareBean shareBean = new ShareBean();
+			shareBean.setBackurl(url);
+			shareBean.setTitle(title);
+			shareBean.setContent(desc);
+			shareBean.setPic(imageUrl);
+			new SharePopupWindow(mActivity, shareBean, umShareListener);
 		}
 
 	}
