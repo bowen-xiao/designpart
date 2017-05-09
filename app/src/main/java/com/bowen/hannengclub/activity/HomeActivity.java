@@ -92,8 +92,7 @@ public class HomeActivity extends BaseActivity {
 
 		//启用调试
 		XGPushConfig.enableDebug(this, SysConfiguration.DEBUG);
-		//同步用户信息
-		getLoginInfo();
+
 		checkForUpdate();
 	}
 
@@ -185,6 +184,10 @@ public class HomeActivity extends BaseActivity {
 
 	@Override
 	protected void onResume() {
+		//更新用户的登录信息
+		//同步用户信息
+		getLoginInfo();
+
 		super.onResume();
 		UserInfo userInfo = UserUtil.getUserInfo(mActivity);
 		String userid = "";

@@ -56,12 +56,13 @@ public abstract class BaseActivity extends FragmentActivity {
 		//		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 //		getWindow().setFormat(PixelFormat.TRANSLUCENT);
 		getWindow().setSoftInputMode(
-			WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+			WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		getWindow().setFormat(PixelFormat.TRANSLUCENT);
 		super.onCreate(savedInstanceState);
 		mIsRestartData = savedInstanceState;
 		mActivity = this;
 		View view = View.inflate(mActivity, getContextViewId(), null);
+		beforeSetContentView();
 		setContentView(R.layout.activity_base);
 		FrameLayout mContentView = (FrameLayout) findViewById(R.id.ff_common_content);
 		mContentView.addView(view);
@@ -70,6 +71,9 @@ public abstract class BaseActivity extends FragmentActivity {
 		//设置标题
 		setTitle();
 	}
+
+	//在启动之前
+	public void beforeSetContentView(){}
 
 	private void setTitle(){
 		//设置标题

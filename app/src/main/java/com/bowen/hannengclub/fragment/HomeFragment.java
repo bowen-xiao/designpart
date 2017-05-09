@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bowen.hannengclub.R;
+import com.bowen.hannengclub.activity.CommonActivity;
 import com.bowen.hannengclub.adapter.NewHomeFragmentFactory;
 import com.bowen.hannengclub.adapter.NewHomePageAdapter;
 import com.bowen.hannengclub.bean.UserInfo;
@@ -69,9 +70,28 @@ public class HomeFragment extends BaseFragment {
 		}
 	}
 
+
 	@OnClick(R.id.ll_home_sign_root)
 	public void signClick(View view){
 		// 签到的点击事件
+		switch (view.getId()){
+			case R.id.ll_home_sign_root:
+				//签到按钮
+				jumpTosign();
+				break;
+		}
+	}
+
+	//去签到
+	private void jumpTosign() {
+		UserInfo info = UserUtil.getUserInfo(mActivity);
+		if(info == null || info.getSign_status() == 1){
+			return;
+		}
+		///account/sign.aspx
+		Intent intent = new Intent(mActivity, CommonActivity.class);
+		intent.putExtra(CommonFragment.COMMON_URL, "account/sign.aspx");
+		startActivity(intent);
 	}
 
 	@Override

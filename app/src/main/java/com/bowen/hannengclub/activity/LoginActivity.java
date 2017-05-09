@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,6 +62,13 @@ public class LoginActivity extends BaseActivity {
 	protected String initTitle() {
 		mTitleRoot.setVisibility(View.GONE);
 		return "登录";
+	}
+
+	@Override
+	public void beforeSetContentView() {
+		super.beforeSetContentView();
+		getWindow().setSoftInputMode(
+			WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 	}
 
 	@Override
