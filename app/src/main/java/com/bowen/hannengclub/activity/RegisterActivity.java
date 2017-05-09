@@ -63,11 +63,11 @@ public class RegisterActivity extends BaseActivity {
 	@BindView(R.id.cb_register_comment)
 	CheckBox mCBAgree;
 	private String mPhoneNumber;
-
-	@Override
-	protected String initTitle() {
-		return "注册";
-	}
+//
+//	@Override
+//	protected String initTitle() {
+//		return "注册";
+//	}
 
 
 	public final static String FINISH_ACTIVITY = "finish_activity";

@@ -271,21 +271,24 @@ public class MineFragment extends BaseFragment {
 				url = "account/message.aspx";
 				break;
 			case R.id.li_seen_mine_people:
+				url = "account/look.aspx";
 				//谁看过我
 				break;
 			case R.id.li_mine_fans:
 				//我的粉丝
-
+				url = "account/fans.aspx";
 				break;
 			case R.id.li_mine_percent:
 				//我的积分
 				url = "account/point.aspx";
 				break;
 			case R.id.li_mine_example:
+				url = "account/case.aspx";
 				//我的案例
 				break;
 			case R.id.li_mine_material:
 				//我的素材
+				url = "account/material.aspx";
 				break;
 			case R.id.li_mine_collect:
 				// 我的收藏	/account/favorite_case.aspx
@@ -293,6 +296,7 @@ public class MineFragment extends BaseFragment {
 				break;
 			case R.id.li_mine_comment_manager:
 				//评论管理
+				url = "account/comment.aspx";
 				break;
 			case R.id.li_mine_change_password:
 //				修改密码	/account/password.aspx

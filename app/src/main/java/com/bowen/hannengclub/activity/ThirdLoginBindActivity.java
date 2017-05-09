@@ -68,7 +68,7 @@ public class ThirdLoginBindActivity extends BaseActivity {
 
 	//倒计时
 	private int seconds;
-	private String mPhoneNumber;
+	private String mPhoneNumber = "";
 	private ThirdLoginParam param;
 
 	@Override
@@ -202,7 +202,7 @@ public class ThirdLoginBindActivity extends BaseActivity {
 	//提交数据
 	private void postFrom(){
 		// 1)检查输入项
-		boolean isPhoneNumber = InputCheck.isPhoneNumber(mPhoneNumber);
+		boolean isPhoneNumber = !TextUtils.isEmpty(mPhoneNumber) && InputCheck.isPhoneNumber(mPhoneNumber);
 		if(!isPhoneNumber){
 			//请输入正确的手机号码
 			DialogBean bean = new DialogBean("请输入正确的手机号码", "", "", "");

@@ -50,10 +50,10 @@ public class ForgetPasswordActivity extends BaseActivity {
 	@BindView(R.id.iv_input_phone_status)
 	ImageView mPhoneNumberStatus;
 
-	@Override
-	protected String initTitle() {
-		return "忘记密码";
-	}
+//	@Override
+//	protected String initTitle() {
+//		return "忘记密码";
+//	}
 
 	@Override
 	public int getContextViewId() {
@@ -121,7 +121,6 @@ public class ForgetPasswordActivity extends BaseActivity {
 				checkInput();
 				break;
 			case R.id.btn_get_phone_msg_number:
-
 				getMsgNumber();
 				break;
 		}

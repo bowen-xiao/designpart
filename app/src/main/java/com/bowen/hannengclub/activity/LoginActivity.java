@@ -109,9 +109,14 @@ public class LoginActivity extends BaseActivity {
 		,R.id.tv_user_register
 		,R.id.iv_wechat_login
 		,R.id.iv_qq_login
+		,R.id.ll_login_left_back
 	})
 	public void onClick(View view){
 		switch (view.getId()){
+			case R.id.ll_login_left_back:
+				//左上角的关闭按钮
+				finish();
+				break;
 			case R.id.btn_login:
 				//登录按钮
 				//showLoginErr();

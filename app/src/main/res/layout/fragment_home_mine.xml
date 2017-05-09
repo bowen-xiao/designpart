@@ -95,8 +95,9 @@
                     </LinearLayout>
 
                     <ImageView
+                        android:scaleType="centerInside"
                         android:id="@+id/iv_mine_share"
-                        android:src="@mipmap/information"
+                        android:src="@mipmap/mine_share"
                         android:layout_width="18dp"
                         android:layout_height="18dp" />
 
@@ -105,7 +106,8 @@
                         android:id="@+id/iv_mine_msg"
                         android:src="@mipmap/information"
                         android:layout_width="18dp"
-                        android:layout_height="18dp" />
+                        android:layout_height="18dp"
+                        android:scaleType="centerInside" />
 
                 </LinearLayout>
 
@@ -145,7 +147,7 @@
             <ImageView
                 android:layout_marginRight="@dimen/common_margin"
                 android:layout_marginLeft="@dimen/common_margin"
-                android:src="@mipmap/arrow_r"
+                android:src="@mipmap/mine_header_indo"
                 android:layout_width="12dp"
                 android:layout_height="24dp" />
 
@@ -270,7 +272,7 @@
                 android:id="@+id/tv_mine_exit_login"
                 android:clickable="true"
                 android:textSize="16sp"
-                android:textColor="@color/black"
+                android:textColor="#494949"
                 android:background="@drawable/focus_item_bg"
                 android:gravity="center"
                 android:text="退出登录"

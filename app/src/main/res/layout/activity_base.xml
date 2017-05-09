@@ -52,7 +52,6 @@
                 android:textColor="@color/black"
                 android:id="@+id/tv_common_title"
                 android:textSize="18sp"
-                android:text="标题"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -78,6 +77,7 @@
 
     </LinearLayout>
     <View
+        android:visibility="gone"
         android:background="@color/bottom_textcolor_defeaut"
         android:layout_width="match_parent"
         android:layout_height="0.45dp"/>

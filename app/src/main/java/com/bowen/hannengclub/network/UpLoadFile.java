@@ -41,7 +41,8 @@ public class UpLoadFile {
 
 		OkHttpClient client = new OkHttpClient();
     /* 第一个要上传的file */
-		RequestBody fileBody1 = RequestBody.create(MediaType.parse("application/octet-stream") , file);
+//		RequestBody fileBody1 = RequestBody.create(MediaType.parse("application/octet-stream") , file);
+		RequestBody fileBody1 = RequestBody.create(MediaType.parse("image/png") , file);
 		String file1Name = file.getName();
 
     /* 第二个要上传的文件,这里偷懒了,和file1用的一个图片 */

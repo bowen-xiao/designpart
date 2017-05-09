@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -185,7 +186,13 @@ public class HomeActivity extends BaseActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		XGPushManager.registerPush(getApplicationContext(), new XGIOperateCallback() {
+		UserInfo userInfo = UserUtil.getUserInfo(mActivity);
+		String userid = "";
+		if(userInfo != null && !TextUtils.isEmpty(userInfo.getId())){
+			userid = userInfo.getId();
+		}
+		//根据用户ID绑定
+		XGPushManager.registerPush(getApplicationContext(), userid,new XGIOperateCallback() {
 			@Override
 			public void onSuccess(Object o, int i) {
 				uploadPushId();

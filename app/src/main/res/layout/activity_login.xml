@@ -7,6 +7,35 @@
     android:orientation="vertical"
     >
 
+
+
+    <LinearLayout
+        android:clickable="true"
+        android:id="@+id/ll_login_left_back"
+        android:gravity="left|top"
+        android:layout_margin="@dimen/login_line_margin"
+        android:orientation="horizontal"
+        android:layout_width="80dp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:visibility="gone"
+            android:textColor="@color/head_left_click"
+            android:duplicateParentState="true"
+            android:clickable="false"
+            android:textSize="16sp"
+            android:text="返回"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_marginLeft="5dp"
+            android:src="@mipmap/head_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
     <!--<ImageView
         android:id="@+id/iv_login_bg"
         android:scaleType="fitXY"

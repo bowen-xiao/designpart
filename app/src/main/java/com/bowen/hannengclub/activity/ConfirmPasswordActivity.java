@@ -47,10 +47,10 @@ public class ConfirmPasswordActivity extends BaseActivity {
 	@BindView(R.id.btn_sure_to_confirm_password)
 	Button mBtnSureRest;
 
-	@Override
-	protected String initTitle() {
-		return "确认密码";
-	}
+//	@Override
+//	protected String initTitle() {
+//		return "确认密码";
+//	}
 
 	//activity_confirm_password
 	@Override
