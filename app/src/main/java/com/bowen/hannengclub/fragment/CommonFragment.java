@@ -12,8 +12,10 @@ import android.widget.ProgressBar;
 
 import com.bowen.hannengclub.R;
 import com.bowen.hannengclub.javascript.JavaScriptInterface;
+import com.bowen.hannengclub.util.Constans;
 import com.bowen.hannengclub.util.ToolImage;
 import com.bowen.hannengclub.util.ToolLog;
+import com.bowen.hannengclub.util.UserUtil;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
 import com.tencent.smtt.sdk.QbSdk;
@@ -65,17 +67,38 @@ public class CommonFragment extends BaseFragment {
 	public void initData() {
 		ToolImage.loading(mActivity, mIvLoad);
 		url = getArguments().getString(COMMON_URL);
-		if(!url.contains("http")){
-//			url = SysConfiguration.BASE_URL + url;
-			//这是测试地址 todo 正式需要修改
-			url = "http://222.171.202.3:7002/" + url;
-		}
+		//添加公共参数
+		addCommonParam();
+
 		int index = getArguments().getInt("index", -1);
 		mErrBack.setVisibility(index == -1 ? View.GONE : View.GONE);
 		ToolLog.e("main",url + "url");
 		if(index == 0){
 			loadDataOnce();
 		}
+	}
+
+	//添加公共参数
+	private void addCommonParam(){
+		if(!url.contains("http")){
+			//			url = SysConfiguration.BASE_URL + url;
+			//这是测试地址 todo 正式需要修改
+			url = "http://222.171.202.3:7002/" + url;
+		}
+		/**
+		 * 	说明
+		 token	用户token
+		 appver	app版本号
+		 */
+		String commonParam = "token=%s&appver=%s";
+		String token = UserUtil.getToken(mActivity);
+		commonParam = String.format(commonParam, token, Constans.VERSION_ID);
+		if(url.contains("?")){
+			commonParam = "&"+commonParam;
+		}else{
+			commonParam = "?" + commonParam;
+		}
+		url = url + commonParam;
 	}
 
 	boolean isLoad;

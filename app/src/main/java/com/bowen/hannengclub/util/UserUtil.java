@@ -29,7 +29,7 @@ public class UserUtil {
 		}
 
 	public static String getToken(Context context){
-		String result = null;
+		String result = "";
 		UserInfo info = getUserInfo(context);
 		if(info!= null){
 			result = info.getLogin_token();
