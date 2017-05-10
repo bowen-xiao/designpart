@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -85,6 +86,14 @@ public abstract class BaseActivity extends FragmentActivity {
 			mTvTitle.setText(title);
 		}*/
 		mTvTitle.setText(title);
+	}
+
+	public void setAppTitle(String title){
+		mTvTitle.setVisibility(View.GONE);
+		mTvTitle.setText(title);
+		if(!TextUtils.isEmpty(title)){
+			mTvTitle.setVisibility(View.VISIBLE);
+		}
 	}
 
 	//默认不实现，去设置标题

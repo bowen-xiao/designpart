@@ -52,9 +52,14 @@ public class JavaScriptInterface {
 
 	//2)设置标题
 	@JavascriptInterface
-	public void app_setTitle(String title) {
+	public void app_setTitle(final String title) {
 		if (mActivity != null) {
-			mActivity.setTitle(title);
+			mActivity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					mActivity.setAppTitle(title);
+				}
+			});
 		}
 	}
 
@@ -67,6 +72,11 @@ public class JavaScriptInterface {
 		 resourceUrl: 资源url
 		 */
 
+	}
+
+	@JavascriptInterface
+	public void app_share(String title, String desc, String url, String imageUrl) {
+		app_share(String.valueOf(2),title,desc,url,imageUrl);
 	}
 
 	/**

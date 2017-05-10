@@ -1,7 +1,6 @@
 package com.bowen.hannengclub.popuwindow;
 
 import android.app.Activity;
-import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -91,16 +90,16 @@ public class SharePopupWindow extends PopupWindow implements View.OnClickListene
 		// 设置视图
 		this.setContentView(this.view);
 		// 设置弹出窗体的宽和高
-		this.setHeight(RelativeLayout.LayoutParams.WRAP_CONTENT);
+		this.setHeight(RelativeLayout.LayoutParams.MATCH_PARENT);
 		this.setWidth(RelativeLayout.LayoutParams.MATCH_PARENT);
 
 		// 设置弹出窗体可点击
 		this.setFocusable(true);
 
 		// 实例化一个ColorDrawable颜色为半透明
-		ColorDrawable dw = new ColorDrawable(0xb0000000);
-		// 设置弹出窗体的背景
-		this.setBackgroundDrawable(dw);
+//		ColorDrawable dw = new ColorDrawable(0xb0000000);
+//		// 设置弹出窗体的背景
+//		this.setBackgroundDrawable(dw);
 
 		// 设置弹出窗体显示时的动画，从底部向上弹出
 		this.setAnimationStyle(R.style.share_popuwindow_anim);
