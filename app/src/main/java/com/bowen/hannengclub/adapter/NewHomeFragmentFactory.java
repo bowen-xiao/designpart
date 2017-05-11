@@ -44,6 +44,7 @@ public class NewHomeFragmentFactory
 //				"http://lytest.fengjing.com/wap/guideInfo/g_comment_list.html?id=383"
 				//  热点
 				url = ("index.aspx?apptype=1");
+//				url = "apptest.html";
 //				url = ("http://lytest.fengjing.com/wap/guideInfo/g_comment_list.html?id=383");
 				fragment = new CommonFragment();
 				break;

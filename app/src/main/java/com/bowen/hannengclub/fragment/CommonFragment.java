@@ -1,7 +1,10 @@
 package com.bowen.hannengclub.fragment;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -11,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.bowen.hannengclub.R;
+import com.bowen.hannengclub.activity.HomeActivity;
 import com.bowen.hannengclub.javascript.JavaScriptInterface;
 import com.bowen.hannengclub.util.Constans;
 import com.bowen.hannengclub.util.ToolImage;
@@ -56,15 +60,48 @@ public class CommonFragment extends BaseFragment {
 
 	@Override
 	protected View initView() {
-
 		View inflate = View.inflate(mActivity, com.bowen.hannengclub.R.layout.fragment_home_first, null);
 		return inflate;
+	}
+
+	//登录状态改变
+	public final static String LOGIN_STATUS_CHANGE = "LOGIN_STATUS_CHANGE";
+	/**
+	 * 注册广播,刷新头像等用户信息
+	 */
+	public void registerBroadcast() {
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(LOGIN_STATUS_CHANGE);
+		filter.addAction(HomeActivity.LOGIN_OUT);
+		mActivity.registerReceiver(receiver, filter);
+	}
+
+	private BroadcastReceiver receiver = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			if (LOGIN_STATUS_CHANGE.equals(intent.getAction())
+				|| HomeActivity.LOGIN_OUT.equals(intent.getAction())) {
+				if(mWebView != null){
+					//去设置token
+					String token = UserUtil.getToken(mActivity);
+					mWebView.loadUrl("javascript:h5_changeToken(" + token + ")");
+				}
+			}
+		}};
+
+	@Override
+	public void onDestroy() {
+		if(receiver != null){
+			mActivity.unregisterReceiver(receiver);
+		}
+		super.onDestroy();
 	}
 
 	public final static String COMMON_URL = "common_url";
 	String url ;
 	@Override
 	public void initData() {
+		//可去取消注册
+		registerBroadcast();
 		ToolImage.loading(mActivity, mIvLoad);
 		url = getArguments().getString(COMMON_URL);
 		//添加公共参数

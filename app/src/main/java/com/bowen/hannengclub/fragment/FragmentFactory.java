@@ -29,7 +29,7 @@ public class FragmentFactory
 			case 0:
 				//"http://lytest.fengjing.com/wap/guideInfo/g_comment_list.html?id=383"
 				// 首页
-				url = ("http://lytest.fengjing.com/wap/guideInfo/g_comment_list.html?id=383");
+				//url = ("http://lytest.fengjing.com/wap/guideInfo/g_comment_list.html?id=383");
 				fragment = new HomeFragment();
 				break;
 			case 1:

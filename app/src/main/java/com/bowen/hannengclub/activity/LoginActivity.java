@@ -21,6 +21,7 @@ import com.bowen.hannengclub.bean.UserInfo;
 import com.bowen.hannengclub.dialog.CommonMsgDialog;
 import com.bowen.hannengclub.dialog.DialogBean;
 import com.bowen.hannengclub.dialog.LoginErrDialog;
+import com.bowen.hannengclub.fragment.CommonFragment;
 import com.bowen.hannengclub.network.DataEngine2;
 import com.bowen.hannengclub.network.RxNetWorkService;
 import com.bowen.hannengclub.util.CacheUtils;
@@ -279,9 +280,7 @@ public class LoginActivity extends BaseActivity {
 							   //登录成功,返回
 							   UserInfo item = result.getItem();
 							   if(item != null){
-								   CacheUtils.setString(mActivity, SysConfiguration.USER_INFO, JSON.toJSONString(item));
-								   ToastUtil.showToast(mActivity,"登录成功");
-								   finish();
+								   loginSuccess(item);
 							   }
 						   }else{
 							   //绑定账号
@@ -301,6 +300,14 @@ public class LoginActivity extends BaseActivity {
 					   ToolLog.e("main thirdLogin", "请求完成 !" + model);
 				   }
 			   });
+	}
+
+	private void loginSuccess(UserInfo item ){
+		CacheUtils.setString(mActivity, SysConfiguration.USER_INFO, JSON.toJSONString(item));
+		ToastUtil.showToast(mActivity,"登录成功");
+		Intent intent = new Intent(CommonFragment.LOGIN_STATUS_CHANGE);
+		mActivity.sendBroadcast(intent);
+		finish();
 	}
 
 	@Override
@@ -370,9 +377,10 @@ public class LoginActivity extends BaseActivity {
 							   msgDialog.showDialog();
 						   }else{
 //							   ToolLog.e("login", "model : " + model);
-							   CacheUtils.setString(mActivity, SysConfiguration.USER_INFO, JSON.toJSONString(model.getItem()));
-							   ToastUtil.showToast(mActivity,"登录成功");
-							   finish();
+//							   CacheUtils.setString(mActivity, SysConfiguration.USER_INFO, JSON.toJSONString(model.getItem()));
+//							   ToastUtil.showToast(mActivity,"登录成功");
+//							   finish();
+							   loginSuccess(model.getItem());
 						   }
 					   }
 
