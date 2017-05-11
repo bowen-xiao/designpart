@@ -92,16 +92,19 @@ public class FocusFragment extends BaseFragment {
 				//设计圈
 //				ToolLog.e("onclick", view.getId() + " : id");
 //				url = "focus/club.aspx";
-				url = "apptest.html";
+				url = "focus/dynamic.aspx";
+//				url = "apptest.html";
 //				url = "https://apidev.hannengclub.com/ApiTest/user";
 				break;
 			case R.id.li_design_club_dynamic:
 				//俱乐部动态
-				url = "focus/dynamic.aspx";
+//				url = "focus/dynamic.aspx";
+				url = "focus/club.aspx";
 				break;
 			case R.id.li_design_same_city:
 				// 同城设计师
-				url = "designer/index.aspx";
+//				url = "designer/index.aspx";
+				url = "focus/citydesigner.aspx";
 				break;
 			case R.id.li_design_myfocus:
 				//关注的设计师

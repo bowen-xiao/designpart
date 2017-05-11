@@ -7,6 +7,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -327,6 +328,10 @@ public class MineFragment extends BaseFragment {
 
 			@Override
 			public void onResult(SHARE_MEDIA share_media) {
+				WindowManager.LayoutParams
+					params = mActivity.getWindow().getAttributes();
+				params.alpha=1f;
+				mActivity.getWindow().setAttributes(params);
 			}
 
 			@Override

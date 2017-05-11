@@ -24,7 +24,7 @@ import com.umeng.socialize.media.UMWeb;
 
 public class SharePopupWindow extends PopupWindow implements View.OnClickListener {
 
-	private  WindowManager.LayoutParams params;
+	//private  WindowManager.LayoutParams params;
 	private       Activity              mActivity;
 
 	private View view;
@@ -105,19 +105,19 @@ public class SharePopupWindow extends PopupWindow implements View.OnClickListene
 		this.setAnimationStyle(R.style.share_popuwindow_anim);
 
 		this.showAtLocation(mContext.findViewById(R.id.ff_common_content), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-		params = mContext.getWindow().getAttributes();
-		//当弹出Popupwindow时，背景变半透明
-		params.alpha=0.7f;
-		mContext.getWindow().setAttributes(params);
-		//设置Popupwindow关闭监听，当Popupwindow关闭，背景恢复1f
-		this.setOnDismissListener(new PopupWindow.OnDismissListener() {
-			@Override
-			public void onDismiss() {
-				params = mContext.getWindow().getAttributes();
-				params.alpha=1f;
-				mContext.getWindow().setAttributes(params);
-			}
-		});
+//		params = mContext.getWindow().getAttributes();
+//		//当弹出Popupwindow时，背景变半透明
+//		params.alpha=0.7f;
+//		mContext.getWindow().setAttributes(params);
+//		//设置Popupwindow关闭监听，当Popupwindow关闭，背景恢复1f
+//		this.setOnDismissListener(new PopupWindow.OnDismissListener() {
+//			@Override
+//			public void onDismiss() {
+//				params = mContext.getWindow().getAttributes();
+//				params.alpha=1f;
+//				mContext.getWindow().setAttributes(params);
+//			}
+//		});
 	}
 
 	@Override

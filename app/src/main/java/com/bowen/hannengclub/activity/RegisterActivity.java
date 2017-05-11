@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bowen.hannengclub.R;
-import com.bowen.hannengclub.SysConfiguration;
 import com.bowen.hannengclub.bean.BaseReqResult;
 import com.bowen.hannengclub.dialog.CommonMsgDialog;
 import com.bowen.hannengclub.dialog.DialogBean;
@@ -124,6 +123,7 @@ public class RegisterActivity extends BaseActivity {
 		R.id.btn_sure_to_reset_password
 		,R.id.btn_get_phone_msg_number
 		,R.id.tv_register_comment
+		,R.id.ll_register_comment_root
 	})
 	public void onClick(View view){
 		switch (view.getId()){
@@ -138,6 +138,10 @@ public class RegisterActivity extends BaseActivity {
 			case R.id.tv_register_comment:
 				// 注册协议
 				jumpToComment();
+				break;
+			case R.id.ll_register_comment_root:
+				// 注册协议
+				mCBAgree.setChecked(!mCBAgree.isChecked());
 				break;
 		}
 	}
@@ -159,7 +163,7 @@ public class RegisterActivity extends BaseActivity {
 	//跳转到
 	private void jumpToComment(){
 		//注册协议	/account/regagreement.aspx
-		String url = SysConfiguration.BASE_URL + "account/regagreement.aspx";
+		String url = "account/regagreement.aspx";
 		Intent intent = new Intent(mActivity, CommonActivity.class);
 		intent.putExtra(CommonFragment.COMMON_URL, url);
 		startActivity(intent);

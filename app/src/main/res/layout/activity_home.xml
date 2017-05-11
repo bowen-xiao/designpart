@@ -44,7 +44,7 @@
             android:id="@+id/rb_home_bottom_design"
             style="@style/tab_item_style"
             android:drawableTop="@drawable/home_bottom_design"
-            android:text="设置师" />
+            android:text="设计师" />
 
         <RadioButton
             android:id="@+id/rb_home_bottom_mine"

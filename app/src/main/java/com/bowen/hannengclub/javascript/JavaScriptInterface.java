@@ -2,6 +2,7 @@ package com.bowen.hannengclub.javascript;
 
 import android.Manifest;
 import android.content.Intent;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 
 import com.baidu.location.BDLocation;
@@ -25,6 +26,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
+import java.net.URLDecoder;
 import java.util.List;
 
 import rx.functions.Action1;
@@ -85,6 +87,8 @@ public class JavaScriptInterface {
 	//4)分享内容
 	@JavascriptInterface
 	public void app_share(String type, String title, String desc, String url, String imageUrl) {
+		ToolLog.e("share","imageUrl : " + URLDecoder.decode(imageUrl));
+		ToolLog.e("share","url : " + URLDecoder.decode(url));
 		UMShareListener umShareListener = new UMShareListener() {
 			@Override
 			public void onStart(SHARE_MEDIA share_media) {
@@ -93,11 +97,17 @@ public class JavaScriptInterface {
 
 			@Override
 			public void onResult(SHARE_MEDIA share_media) {
+				WindowManager.LayoutParams
+				params = mActivity.getWindow().getAttributes();
+				params.alpha=1f;
+				mActivity.getWindow().setAttributes(params);
 			}
 
 			@Override
 			public void onError(SHARE_MEDIA share_media, Throwable throwable) {
 				//分享错误
+//				ToastUtil.showToast(mActivity,throwable.getMessage());
+				ToolLog.e("main"," share_err" + throwable.getMessage());
 			}
 
 			@Override
@@ -106,8 +116,8 @@ public class JavaScriptInterface {
 				ToastUtil.showToast(mActivity, "用户取消了分享");
 			}
 		};
-		UMImage image = new UMImage(mActivity, imageUrl);//网络图片
-		UMWeb web = new UMWeb(url);
+		UMImage image = new UMImage(mActivity, URLDecoder.decode(imageUrl));//网络图片
+		UMWeb web = new UMWeb(URLDecoder.decode(url));
 		web.setTitle(title);//标题
 		web.setThumb(image);  //缩略图
 		web.setDescription(desc);//描述
