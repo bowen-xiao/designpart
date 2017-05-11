@@ -165,7 +165,7 @@ public class MineFragment extends BaseFragment {
 			msgDialog.showDialog();
 		}else{
 			//更新头像信息
-			String avatar = resultBean.getAvatar();
+			String avatar = resultBean.getItem().getAvatar();
 			UserInfo userInfo = UserUtil.getUserInfo(mActivity);
 			userInfo.setAvatar(avatar);
 			CacheUtils.setString(mActivity,SysConfiguration.USER_INFO,JSON.toJSONString(userInfo));
@@ -323,7 +323,6 @@ public class MineFragment extends BaseFragment {
 			@Override
 			public void onStart(SHARE_MEDIA share_media) {
 				//开始分享
-
 			}
 
 			@Override
@@ -494,14 +493,10 @@ public class MineFragment extends BaseFragment {
 								}
 							});
 							//ToolImage.displayLocalPic(mActivity,mHeadImage,path);
-
 						}
 					}
 				}
 				break;
 		}
 	}
-
-
-
 }

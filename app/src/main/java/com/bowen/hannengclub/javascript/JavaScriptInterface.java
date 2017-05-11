@@ -87,8 +87,12 @@ public class JavaScriptInterface {
 	//4)分享内容
 	@JavascriptInterface
 	public void app_share(String type, String title, String desc, String url, String imageUrl) {
-		ToolLog.e("share","imageUrl : " + URLDecoder.decode(imageUrl));
-		ToolLog.e("share","url : " + URLDecoder.decode(url));
+		String d_imageUrl = URLDecoder.decode(imageUrl);
+		String d_Url = URLDecoder.decode(url);
+		String d_desc = URLDecoder.decode(desc);
+		String d_title = URLDecoder.decode(title);
+		ToolLog.e("share", "imageUrl : " + d_imageUrl);
+		ToolLog.e("share","url : " +d_Url);
 		UMShareListener umShareListener = new UMShareListener() {
 			@Override
 			public void onStart(SHARE_MEDIA share_media) {
@@ -116,11 +120,11 @@ public class JavaScriptInterface {
 				ToastUtil.showToast(mActivity, "用户取消了分享");
 			}
 		};
-		UMImage image = new UMImage(mActivity, URLDecoder.decode(imageUrl));//网络图片
-		UMWeb web = new UMWeb(URLDecoder.decode(url));
-		web.setTitle(title);//标题
+		UMImage image = new UMImage(mActivity, d_imageUrl);//网络图片
+		UMWeb web = new UMWeb(d_Url);
+		web.setTitle(d_title);//标题
 		web.setThumb(image);  //缩略图
-		web.setDescription(desc);//描述
+		web.setDescription(d_desc);//描述
 		if (type.equals("1")) {
 			new ShareAction(mActivity).withMedia(web).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE).setCallback(umShareListener).share();
 		} else if (type.equals("0")) {
@@ -147,10 +151,10 @@ public class JavaScriptInterface {
 									  .setCallback(umShareListener)
 									  .open(config);*/
 			ShareBean shareBean = new ShareBean();
-			shareBean.setBackurl(url);
-			shareBean.setTitle(title);
-			shareBean.setContent(desc);
-			shareBean.setPic(imageUrl);
+			shareBean.setBackurl(d_Url);
+			shareBean.setTitle(d_title);
+			shareBean.setContent(d_desc);
+			shareBean.setPic(d_imageUrl);
 			new SharePopupWindow(mActivity, shareBean, umShareListener);
 		}
 

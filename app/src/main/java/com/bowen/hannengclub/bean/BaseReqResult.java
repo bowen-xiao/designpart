@@ -1,10 +1,12 @@
 package com.bowen.hannengclub.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by 肖稳华 on 2017/4/28.
  */
 
-public class BaseReqResult {
+public class BaseReqResult implements Serializable{
 //
 //	status	int	请求状态
 //	errmsg	string	错误信息

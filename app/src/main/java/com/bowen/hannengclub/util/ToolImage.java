@@ -18,8 +18,8 @@ public class ToolImage {
 
 	public static void displayLocalPic(Context context, ImageView imageView,String path){
 		Glide.with(context).load(path).
-			placeholder(R.mipmap.male_defalut)
-			 .error(R.mipmap.male_defalut)
+			placeholder(R.mipmap.default_header)
+			 .error(R.mipmap.default_header)
 			 .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
 	}
 }

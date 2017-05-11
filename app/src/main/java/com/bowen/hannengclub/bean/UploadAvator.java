@@ -13,6 +13,13 @@ public class UploadAvator extends BaseReqResult {
 
 	private String avatar;
 	private String uniqueid;
+	/**
+	 * avatar : http://222.171.202.3:7002/Files/MemberPhoto/1705/e5a2d5634e67420bb66e3ce92b647411_Thumb.jpg
+	 */
+
+	private ItemBean
+		item;
+
 
 	public String getAvatar() {
 		return avatar;
@@ -28,5 +35,26 @@ public class UploadAvator extends BaseReqResult {
 
 	public void setUniqueid(String uniqueid) {
 		this.uniqueid = uniqueid;
+	}
+
+	public ItemBean getItem() {
+		return item;
+	}
+
+	public void setItem(ItemBean item) {
+		this.item = item;
+	}
+
+	public static class ItemBean {
+
+		private String avatar;
+
+		public String getAvatar() {
+			return avatar;
+		}
+
+		public void setAvatar(String avatar) {
+			this.avatar = avatar;
+		}
 	}
 }

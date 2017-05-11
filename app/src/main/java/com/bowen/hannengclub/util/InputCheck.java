@@ -12,7 +12,8 @@ public class InputCheck {
 
 	//是否是合法的值 6-16位的数字和字母
 	public static boolean isPassword(String myInput){
-		String regex = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
+//		String regex = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
+		String regex = "^[_0-9a-z]{6,16}$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(myInput);
 		return (matcher.matches());
