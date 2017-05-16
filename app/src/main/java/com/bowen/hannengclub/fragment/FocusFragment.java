@@ -2,6 +2,7 @@ package com.bowen.hannengclub.fragment;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -62,9 +63,31 @@ public class FocusFragment extends BaseFragment {
 			  R.id.li_design_focus_activity,
 			  R.id.li_design_focus_subject})
 	public void onClick(View view) {
+		String url = "";
+		switch (view.getId()) {
+			case R.id.li_design_club_dynamic:
+				//俱乐部动态
+				//				url = "focus/dynamic.aspx";
+				url = "focus/club.aspx";
+				break;
+			case R.id.li_design_same_city:
+				// 同城设计师
+				//				url = "designer/index.aspx";
+				url = "focus/citydesigner.aspx";
+				break;
+		}
+
+		//不为空就返回
+		if(!TextUtils.isEmpty(url)){
+			Intent intent = new Intent(mActivity, CommonActivity.class);
+			intent.putExtra(CommonFragment.COMMON_URL, url);
+			startActivity(intent);
+			return;
+		}
+
 		//如果没有登录就去登录
 		if(UserUtil.getUserInfo(mActivity) == null){
-			DialogBean dialogBean = new DialogBean("你尚未登录您的账号，前往登录！", "", "取消", "前去登录");
+			DialogBean dialogBean = new DialogBean("您尚未登录您的账号，前往登录！", "", "取消", "前去登录");
 			CommonMsgDialog commonMsgDialog = new CommonMsgDialog(mActivity, dialogBean);
 			commonMsgDialog.setRightClick(new View.OnClickListener() {
 				@Override
@@ -86,7 +109,6 @@ public class FocusFragment extends BaseFragment {
 			 关注的活动	/focus/active.aspx
 			 关注的专题	/focus/subject.aspx
 		 */
-		String url = "";
 		switch (view.getId()) {
 			case R.id.li_design_circle:
 				//设计圈
@@ -96,16 +118,7 @@ public class FocusFragment extends BaseFragment {
 //				url = "apptest.html";
 //				url = "https://apidev.hannengclub.com/ApiTest/user";
 				break;
-			case R.id.li_design_club_dynamic:
-				//俱乐部动态
-//				url = "focus/dynamic.aspx";
-				url = "focus/club.aspx";
-				break;
-			case R.id.li_design_same_city:
-				// 同城设计师
-//				url = "designer/index.aspx";
-				url = "focus/citydesigner.aspx";
-				break;
+
 			case R.id.li_design_myfocus:
 				//关注的设计师
 				url = "focus/designer.aspx";

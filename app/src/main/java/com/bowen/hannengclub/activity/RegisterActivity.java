@@ -169,10 +169,11 @@ public class RegisterActivity extends BaseActivity {
 		startActivity(intent);
 	}
 
-	int seconds = 60;
+	int seconds = 180;
 	//需要去访问接口
 	// // TODO: 2017/4/25  需要去短信验证码
 	private void getMsgNumber(){
+		if(!mBtnMsgTime.isEnabled()){return;}
 		mPhoneNumber = mInputPhone.getText().toString().trim();
 		//手机号码不正确
 		boolean isPhoneNumber = InputCheck.isPhoneNumber(mPhoneNumber);
@@ -185,7 +186,7 @@ public class RegisterActivity extends BaseActivity {
 			return;
 		}
 		//开始获取验证码
-		seconds = 60;
+		seconds = 180;
 		startTimer();
 		getPhoneCode();
 	}
@@ -322,6 +323,18 @@ public class RegisterActivity extends BaseActivity {
 
 	//检查输入项
 	private void checkInput(){
+
+		String phoneNumber = mInputPhone.getText().toString().trim();
+		//手机号码不正确
+		boolean isPhoneNumber = InputCheck.isPhoneNumber(phoneNumber);
+		if(!isPhoneNumber){
+			//请输入正确的手机号码
+			DialogBean bean = new DialogBean("请输入正确的手机号码","","","");
+			CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
+			msgDialog.showDialog();
+			return;
+		}
+
 		String msgNumber = mMsgNumber.getText().toString();
 		//1)是否已经同意协议
 		if(!mCBAgree.isChecked()){

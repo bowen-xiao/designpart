@@ -37,6 +37,7 @@ import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.view.CropImageView;
 import com.tbruyelle.rxpermissions.RxPermissions;
+import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -165,11 +166,18 @@ public class MineFragment extends BaseFragment {
 			msgDialog.showDialog();
 		}else{
 			//更新头像信息
-			String avatar = resultBean.getItem().getAvatar();
+			final String avatar = resultBean.getItem().getAvatar();
 			UserInfo userInfo = UserUtil.getUserInfo(mActivity);
 			userInfo.setAvatar(avatar);
+			mUserInfo = userInfo;
 			CacheUtils.setString(mActivity,SysConfiguration.USER_INFO,JSON.toJSONString(userInfo));
-			upDateShow();
+			ToolImage.glideDisplayHeaderImage(mActivity, mHeadImage,avatar);
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					ToolImage.glideDisplayHeaderImage(mActivity, mHeadImage,avatar);
+				}
+			},3000L);
 		}
 	}
 
@@ -217,6 +225,7 @@ public class MineFragment extends BaseFragment {
 			}
 			//6)年龄
 			mUserAge.setText(mUserInfo.getAge_str()+"岁");
+			mUserAge.setVisibility(TextUtils.isEmpty(mUserInfo.getAge_str()) ? View.GONE : View.VISIBLE);
 			upViewState();
 		}
 	}
@@ -387,6 +396,8 @@ public class MineFragment extends BaseFragment {
 			public void onClick(View v) {
 				//将数据清理，退出登录
 				CacheUtils.setString(mActivity,SysConfiguration.USER_INFO,"");
+				//第三方登录需要删除授权
+				deleteThirdPlatFromOuthor();
 				upDateShow();
 				Intent intent = new Intent(HomeActivity.LOGIN_OUT);
 				mActivity.sendBroadcast(intent);
@@ -394,6 +405,35 @@ public class MineFragment extends BaseFragment {
 		});
 		msgDialog.showDialog();
 	}
+
+	//删除授权
+	private void deleteThirdPlatFromOuthor() {
+		UMShareAPI.get(mActivity).deleteOauth(mActivity, SHARE_MEDIA.QQ, authListener);
+		UMShareAPI.get(mActivity).deleteOauth(mActivity, SHARE_MEDIA.WEIXIN, authListener);
+	}
+
+	UMAuthListener authListener = new UMAuthListener() {
+		@Override
+		public void onStart(SHARE_MEDIA platform) {
+
+		}
+
+		@Override
+		public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+
+		}
+
+		@Override
+		public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+			//获取删除授权
+			ToolLog.e("main",t.getMessage());
+		}
+
+		@Override
+		public void onCancel(SHARE_MEDIA platform, int action) {
+
+		}
+	};
 
 	//解决授权问题
 	private void getPhoneReq(){

@@ -140,10 +140,11 @@ public class ForgetPasswordActivity extends BaseActivity {
 		mPhoneNumberStatus.setImageResource(isRight ? R.mipmap.input_right : R.mipmap.input_err);
 	}
 
-	int seconds = 60;
+	int seconds = 180;
 	//需要去访问接口
 	// // TODO: 2017/4/25  需要去短信验证码
 	private void getMsgNumber(){
+		if(!mBtnMsgTime.isEnabled()){return;}
 		String phoneNumber = mInputPhone.getText().toString().trim();
 		//手机号码不正确
 		boolean isPhoneNumber = InputCheck.isPhoneNumber(phoneNumber);
@@ -153,7 +154,7 @@ public class ForgetPasswordActivity extends BaseActivity {
 			return;
 		}
 		//开始获取验证码
-		seconds = 60;
+		seconds = 180;
 		startTimer();
 		getPhoneCode();
 
@@ -238,6 +239,12 @@ public class ForgetPasswordActivity extends BaseActivity {
 	//检查输入项
 	private void checkInput(){
 		String msgNumber = mMsgNumber.getText().toString();
+		String phoneNumber = mInputPhone.getText().toString().trim();
+		if(!InputCheck.isPhoneNumber(phoneNumber)){
+			ToastUtil.showToast(mActivity,"请输入正确的手机号码");
+			return;
+		}
+
 		if(TextUtils.isEmpty(msgNumber)){
 			DialogBean bean = new DialogBean("请输入验证码", "", "", "");
 			//显示错误信息

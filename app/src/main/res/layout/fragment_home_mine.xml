@@ -119,7 +119,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-
+                        android:layout_marginRight="@dimen/common_margin"
                         android:textColor="@color/whilte"
                         android:text="31岁"
                         android:layout_width="wrap_content"
@@ -127,7 +127,7 @@
                         android:id="@+id/tv_user_age" />
 
                     <ImageView
-                        android:layout_marginLeft="@dimen/common_margin"
+
                         android:id="@+id/iv_mine_sex_type"
                         android:src="@mipmap/sex_unknow"
                         android:layout_width="18dp"

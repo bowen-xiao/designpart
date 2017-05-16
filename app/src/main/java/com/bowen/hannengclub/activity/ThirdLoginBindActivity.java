@@ -109,6 +109,7 @@ public class ThirdLoginBindActivity extends BaseActivity {
 
 	//获取验证码
 	private void getPhoneCode(){
+		if(!mBtnPhoneCode.isEnabled()){return;}
 		mPhoneNumber = mInputPhone.getText().toString().trim();
 		//手机号码不正确
 		boolean isPhoneNumber = InputCheck.isPhoneNumber(mPhoneNumber);
@@ -120,7 +121,7 @@ public class ThirdLoginBindActivity extends BaseActivity {
 			return;
 		}
 		//开始获取验证码
-		seconds = 60;
+		seconds = 180;
 		startTimer();
 		//从网络获取
 		getPhoneCodeFrom();

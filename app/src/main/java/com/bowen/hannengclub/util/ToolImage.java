@@ -22,4 +22,25 @@ public class ToolImage {
 			 .error(R.mipmap.default_header)
 			 .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
 	}
+
+	/**
+	 * 加载圆形图片
+	 * @param mContext
+	 * @param path
+	 * @param imageView
+	 */
+	public static void glideDisplayHeaderImage(Context mContext,  ImageView imageView,String path) {
+		//imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+		try {
+			Glide.with(mContext)                             //配置上下文
+				 .load(path)
+				 .centerCrop()
+				 .error(R.mipmap.default_header)           //设置错误图片
+				 .placeholder(R.mipmap.default_header)     //设置占位图片,这里默认使用应用图标
+				 .diskCacheStrategy(DiskCacheStrategy.ALL)//缓存全尺寸
+				 .into(imageView);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

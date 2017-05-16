@@ -20,9 +20,9 @@ public class InputCheck {
 	}
 
 
-	//是否是合法的值 6-16位的数字和字母
+	//昵称
 	public static boolean isNickName(String myInput){
-		String regex = "^[a-zA-Z0-9\\u4e00-\\u9fa5]+$";
+		String regex = "^[a-zA-Z0-9\\u4e00-\\u9fa5]{1,20}$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(myInput);
 		return (matcher.matches());

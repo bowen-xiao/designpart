@@ -151,7 +151,8 @@ public class CommonFragment extends BaseFragment {
 		//可以使用script
 		//设置可以访问文件
 		mWebView.getSettings().setAllowFileAccess(true);
-
+		String userAgent = webSettings.getUserAgentString()+ " android：hnclubandroid("+Constans.VERSION_ID+")";
+		webSettings.setUserAgent(userAgent);
 		mWebView.getSettings().setJavaScriptEnabled(true);//可以使用JS
 		mWebView.getSettings().setPluginState(WebSettings.PluginState.ON);//可以使用插件
 		mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);

@@ -97,6 +97,9 @@ public class HomeActivity extends BaseActivity {
 	}
 
 	private void getLoginInfo(){
+		//如果token不存在就不同步
+		String token = UserUtil.getToken(mActivity);
+		if(TextUtils.isEmpty(token)){return;}
 		RxNetWorkService service = DataEngine2.getServiceApiByClass(RxNetWorkService.class);
 		Map<String,Object> param = new HashMap<>();
 		param.put("test","test");
@@ -286,7 +289,7 @@ public class HomeActivity extends BaseActivity {
 		}*/
 		if(view.getId() == R.id.rb_home_bottom_mine && UserUtil.getUserInfo(mActivity) == null){
 			mBottomItems.check(ids.get(mViewPager.getCurrentItem()));
-			DialogBean dialogBean = new DialogBean("你尚未登录您的账号，前往登录！", "", "取消", "前去登录");
+			DialogBean dialogBean = new DialogBean("您尚未登录您的账号，前往登录！", "", "取消", "前去登录");
 			CommonMsgDialog commonMsgDialog = new CommonMsgDialog(mActivity, dialogBean);
 			commonMsgDialog.setRightClick(new View.OnClickListener() {
 				@Override
