@@ -39,7 +39,7 @@ public class StartActivity extends BaseActivity {
 
 	//跳转到首页
 	private void jumpToHome(){
-		Intent intent = new Intent(this, com.bowen.hannengclub.activity.HomeActivity.class);
+		Intent intent = new Intent(this, HomeActivity.class);
 		startActivity(intent);
 		finish();
 	}
