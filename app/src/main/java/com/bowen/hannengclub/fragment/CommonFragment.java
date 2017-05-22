@@ -228,6 +228,7 @@ public class CommonFragment extends BaseFragment {
 				mProgressBar.setVisibility(View.VISIBLE);
 				//mLoadRoot.setVisibility(View.VISIBLE);
 				mProgressBar.setProgress(newProgress);
+				ToolLog.e("main","main :: newProgress :: " + newProgress);
 				if (newProgress == 100) {
 					mWebView.setVisibility(View.VISIBLE);
 					mProgressBar.setVisibility(View.GONE);

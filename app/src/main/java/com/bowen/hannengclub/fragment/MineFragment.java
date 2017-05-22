@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -211,6 +210,7 @@ public class MineFragment extends BaseFragment {
 			final String avatar = resultBean.getItem().getAvatar();
 			UserInfo userInfo = UserUtil.getUserInfo(mActivity);
 			userInfo.setAvatar(avatar);
+			userInfo.setAvatarstate(1);
 			mUserInfo = userInfo;
 			CacheUtils.setString(mActivity,SysConfiguration.USER_INFO,JSON.toJSONString(userInfo));
 			ToolImage.glideDisplayHeaderImage(mActivity, mHeadImage,avatar);
@@ -496,7 +496,14 @@ public class MineFragment extends BaseFragment {
 				public void call(Boolean granted) {
 					if (granted) { // 在android 6.0之前会默认返回true
 						// 已经获取权限
-						selectPic();
+						if(mUserInfo.getAvatarstate() == 0){
+							selectPic();
+						}else{
+							// 未获取权限
+							DialogBean bean = new DialogBean("头像正在审核中", "", "确定", "");
+							CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
+							msgDialog.showDialog();
+						}
 					} else {
 						// 未获取权限
 						DialogBean bean = new DialogBean("摄像头打开失败，请重试", "", "确定", "");
@@ -525,11 +532,6 @@ public class MineFragment extends BaseFragment {
 		imagePicker.setFocusHeight(width);  //裁剪框的高度。单位像素（圆形自动取宽高最小值）
 		imagePicker.setOutPutX(outPutX);//保存文件的宽度。单位像素
 		imagePicker.setOutPutY(outPutX);//保存文件的高度。单位像素
-
-		// 7.0以上不允许使用相机
-		if(Build.VERSION.SDK_INT >= 24) { //判读版本是否在7.0以上
-			imagePicker.setShowCamera(false);
-		}
 
 		Intent intent = new Intent(mActivity, ImageGridActivity.class);
 		startActivityForResult(intent, 100);
