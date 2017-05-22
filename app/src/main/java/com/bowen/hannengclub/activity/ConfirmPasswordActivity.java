@@ -72,6 +72,7 @@ public class ConfirmPasswordActivity extends BaseActivity {
 
 	@OnClick(R.id.btn_sure_to_confirm_password)
 	public void clickSubmit(View view){
+		hideSoftInput();
 		String inputOne = mEtInputOne.getText().toString().trim();
 		String inputTwo = mEtInputTwo.getText().toString().trim();
 		//boolean isRight = inputOne.equals(inputTwo) && isPassword(inputOne);

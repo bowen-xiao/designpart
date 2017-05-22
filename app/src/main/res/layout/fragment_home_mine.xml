@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp" />
     <ScrollView
+        android:id="@+id/sl_mine_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

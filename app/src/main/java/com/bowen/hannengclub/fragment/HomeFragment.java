@@ -162,10 +162,10 @@ public class HomeFragment extends BaseFragment {
 			commonMsgDialog.showDialog();
 			return;
 		}
-		//已经签到过了
-		if(info.getSign_status() == 1){
-			return;
-		}
+		//已经签到过了,这里不做控制
+//		if(info.getSign_status() == 1){
+//			return;
+//		}
 		///account/sign.aspx
 		Intent intent = new Intent(mActivity, CommonActivity.class);
 		intent.putExtra(CommonFragment.COMMON_URL, "account/sign.aspx");

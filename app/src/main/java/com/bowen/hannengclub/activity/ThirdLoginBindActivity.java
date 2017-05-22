@@ -1,9 +1,11 @@
 package com.bowen.hannengclub.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -120,9 +122,6 @@ public class ThirdLoginBindActivity extends BaseActivity {
 			msgDialog.showDialog();
 			return;
 		}
-		//开始获取验证码
-		seconds = 180;
-		startTimer();
 		//从网络获取
 		getPhoneCodeFrom();
 	}
@@ -169,6 +168,9 @@ public class ThirdLoginBindActivity extends BaseActivity {
 							   CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
 							   msgDialog.showDialog();
 						   }else{
+							   //开始获取验证码
+							   seconds = 180;
+							   startTimer();
 							   //							   ToolLog.e("login", "model : " + model);
 							   // CacheUtils.setString(mActivity, SysConfiguration.USER_INFO, JSON.toJSONString(model));
 							   //ToastUtil.showToast(mActivity,"登录成功");
@@ -202,6 +204,7 @@ public class ThirdLoginBindActivity extends BaseActivity {
 
 	//提交数据
 	private void postFrom(){
+		hideSoftInput();
 		// 1)检查输入项
 		boolean isPhoneNumber = !TextUtils.isEmpty(mPhoneNumber) && InputCheck.isPhoneNumber(mPhoneNumber);
 		if(!isPhoneNumber){
@@ -294,6 +297,17 @@ public class ThirdLoginBindActivity extends BaseActivity {
 					   }
 				   });
 		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		//关闭软键盘
+		InputMethodManager imm =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		if(imm != null) {
+			imm.hideSoftInputFromWindow(mPhoneCode.getWindowToken(), 0) ;
+			imm.hideSoftInputFromWindow(mInputPhone.getWindowToken(), 0) ;
+		}
+		super.onDestroy();
 	}
 
 	//绑定成功需要返回首页,关闭登录页面

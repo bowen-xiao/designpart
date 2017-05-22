@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -128,5 +129,17 @@ public abstract class BaseActivity extends FragmentActivity {
 	//默认操作是关闭
 	protected void leftClick() {
 		finish();
+	}
+
+	/** 隐藏已经打开的软键盘 **/
+	public void hideSoftInput(){
+		try {
+			((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+				.hideSoftInputFromWindow(getCurrentFocus()
+											 .getWindowToken(),
+										 InputMethodManager.HIDE_NOT_ALWAYS);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

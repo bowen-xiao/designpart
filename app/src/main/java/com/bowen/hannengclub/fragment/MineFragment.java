@@ -1,7 +1,11 @@
 package com.bowen.hannengclub.fragment;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -10,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -107,6 +112,17 @@ public class MineFragment extends BaseFragment {
 	@BindView(R.id.mine_author_base_root)
 	View mAuthorBase;
 
+	//已经谁的用户才显示的内容
+	@BindView(R.id.sl_mine_root)
+	ScrollView mSlRoot;
+
+	//谁看过我
+	@BindView(R.id.li_seen_mine_people)
+	View mSeeMe;
+	//评论管理
+	@BindView(R.id.li_mine_comment_manager)
+	View mCommentManager;
+
 	//图片选择器 参考 https://github.com/jeasonlzy/ImagePicker
 	private ImagePicker imagePicker;
 	private UserInfo    mUserInfo;
@@ -119,6 +135,27 @@ public class MineFragment extends BaseFragment {
 		return inflate;
 	}
 
+	//用户信息更新
+	public final static String USER_INFO_UPDATE = "user_info_update";
+
+	public BroadcastReceiver mineReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent.getAction().equals(USER_INFO_UPDATE)){
+				upDateShow();
+			}
+		}
+	};
+
+	/**
+	 * 注册广播,刷新头像等用户信息
+	 */
+	public void registerBroadcast() {
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(USER_INFO_UPDATE);
+		mActivity.registerReceiver(mineReceiver, filter);
+	}
+
 	@Override
 	public void loadDataOnce() {
 		//更新显示的状态,数据加载完成需要重新更新状态
@@ -127,6 +164,9 @@ public class MineFragment extends BaseFragment {
 		imagePicker = ImagePicker.getInstance();
 		//初始化图片加载器
 		imagePicker.setImageLoader(new GlideImageLoader());
+
+		//自动滚动到最顶部
+		mSlRoot.smoothScrollTo(0,0);
 	}
 
 	@Override
@@ -135,8 +175,10 @@ public class MineFragment extends BaseFragment {
 		upDateShow();
 	}
 
+
 	@Override
 	public void initData() {
+		registerBroadcast();
 		//gender	int	性别：-1 保密，0女，1男
 		SexTypes.put(-1,R.mipmap.sex_unknow);
 		SexTypes.put(0,R.mipmap.sex_woman);
@@ -206,6 +248,8 @@ public class MineFragment extends BaseFragment {
 				mAuthorLv.setVisibility(View.GONE);
 				mAuthorStatus.setVisibility(View.GONE);
 				mAuthorBase.setVisibility(View.GONE);
+				mSeeMe.setVisibility(View.GONE);
+				mCommentManager.setVisibility(View.GONE);
 
 				mTvRedAuthorNote.setVisibility(View.VISIBLE);
 				mRedAuthorNote.setVisibility(View.VISIBLE);
@@ -218,7 +262,8 @@ public class MineFragment extends BaseFragment {
 				mShareView.setVisibility(View.VISIBLE);
 				mAuthorLv.setText(mUserInfo.getGrade_str());
 				mAuthorBase.setVisibility(View.VISIBLE);
-
+				mSeeMe.setVisibility(View.VISIBLE);
+				mCommentManager.setVisibility(View.VISIBLE);
 
 				mTvRedAuthorNote.setVisibility(View.GONE);
 				mRedAuthorNote.setVisibility(View.GONE);
@@ -441,7 +486,9 @@ public class MineFragment extends BaseFragment {
 		//请求授权,权限框架
 		new RxPermissions(mActivity)
 			.request(
-				Manifest.permission.CAMERA
+				Manifest.permission.CAMERA,
+				Manifest.permission.READ_EXTERNAL_STORAGE,
+				Manifest.permission.WRITE_EXTERNAL_STORAGE
 //				Manifest.permission.ACCESS_FINE_LOCATION
 			)
 			.subscribe(new Action1<Boolean>() {
@@ -478,6 +525,11 @@ public class MineFragment extends BaseFragment {
 		imagePicker.setFocusHeight(width);  //裁剪框的高度。单位像素（圆形自动取宽高最小值）
 		imagePicker.setOutPutX(outPutX);//保存文件的宽度。单位像素
 		imagePicker.setOutPutY(outPutX);//保存文件的高度。单位像素
+
+		// 7.0以上不允许使用相机
+		if(Build.VERSION.SDK_INT >= 24) { //判读版本是否在7.0以上
+			imagePicker.setShowCamera(false);
+		}
 
 		Intent intent = new Intent(mActivity, ImageGridActivity.class);
 		startActivityForResult(intent, 100);
@@ -538,5 +590,13 @@ public class MineFragment extends BaseFragment {
 				}
 				break;
 		}
+	}
+
+	@Override
+	public void onDestroy() {
+		if(mineReceiver != null){
+			mActivity.unregisterReceiver(mineReceiver);
+		}
+		super.onDestroy();
 	}
 }

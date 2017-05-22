@@ -1,12 +1,20 @@
 package com.bowen.hannengclub.activity;
 
+import android.Manifest;
+import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -23,6 +31,7 @@ import com.bowen.hannengclub.dialog.DialogBean;
 import com.bowen.hannengclub.fragment.BaseFragment;
 import com.bowen.hannengclub.fragment.FragmentFactory;
 import com.bowen.hannengclub.fragment.HomePagerAdapter;
+import com.bowen.hannengclub.fragment.MineFragment;
 import com.bowen.hannengclub.network.DataEngine2;
 import com.bowen.hannengclub.network.RxNetWorkService;
 import com.bowen.hannengclub.util.CacheUtils;
@@ -30,10 +39,13 @@ import com.bowen.hannengclub.util.ToastUtil;
 import com.bowen.hannengclub.util.ToolLog;
 import com.bowen.hannengclub.util.UserUtil;
 import com.bowen.hannengclub.view.NoScrollViewPager;
+import com.pgyersdk.update.PgyUpdateManager;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +55,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 import static com.pgyersdk.update.UpdateManagerListener.startDownloadTask;
@@ -125,6 +138,8 @@ public class HomeActivity extends BaseActivity {
 					   if(model.getStatus() == 1 && item != null){
 						   //更新登录信息
 						   CacheUtils.setString(mActivity, SysConfiguration.USER_INFO, JSON.toJSONString(model.getItem()));
+						   //更新的广播
+						   sendBroadcast(new Intent(MineFragment.USER_INFO_UPDATE));
 					   }else{
 						   //清空登录信息
 						   CacheUtils.setString(mActivity, SysConfiguration.USER_INFO, "");
@@ -168,10 +183,40 @@ public class HomeActivity extends BaseActivity {
 								   public void onClick(View v) {
 									   //去下载
 									   ToolLog.e("main checkForUpdate", "下载地址 :: " + item.getDown_url());
-									   // 1)开始下载,到服务
-									   startDownloadTask(
-										   mActivity,
-										   item.getDown_url());
+
+									   //请求授权,权限框架
+									   new RxPermissions(mActivity).request(
+										   //					 Manifest.permission.CAMERA,
+										   Manifest.permission.WRITE_EXTERNAL_STORAGE,
+										   Manifest.permission.READ_EXTERNAL_STORAGE
+									   ).subscribe(new Action1<Boolean>() {
+										   @Override
+										   public void call(Boolean granted) {
+											   if (granted) { // 在android 6.0之前会默认返回true
+												   // 已经获取权限
+												   // 1)开始下载,到服务
+												   String downloadPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator + FILENAME;
+												   File file = new File(downloadPath);
+												   if(file.exists()){
+													   file.delete();
+												   }
+												   //只是为了适配7.0
+												   PgyUpdateManager.register(mActivity,"com.bowen.hannengclub.fileprovider");
+													startDownloadTask(mActivity,item.getDown_url());
+												   /* 正常的操作
+												   if(Build.VERSION.SDK_INT >= 24){
+													   //使用管理器下载
+													   downloadAPK(item.getDown_url(),FILENAME);
+												   }else{
+												   		startDownloadTask(mActivity,item.getDown_url());
+												   }*/
+											   } else {
+												   // 未获取权限
+												   ToastUtil.showToast(mActivity, "获取授权失败");
+											   }
+										   }
+									   });
+
 //									   Intent intent1 = new Intent(mActivity, UpLoadService.class);
 ////									   intent1.putExtra(UpLoadService.DOWNLOAD_RUL ,item.getDown_url());
 //									   intent1.putExtra(UpLoadService.DOWNLOAD_RUL ,"http://xg.qq.com/pigeon_v2/resource/sdk/Xg-Push-SDK-Android-3.0.zip");
@@ -184,6 +229,108 @@ public class HomeActivity extends BaseActivity {
 				   }
 			   });
 	}
+
+	private final String FILENAME = "hanneng_new_viersion";
+	//下载管理器
+	DownloadManager downloadManager ;
+	long mTaskId;
+	//使用系统下载器下载
+	private void downloadAPK(String versionUrl, String versionName) {
+		//创建下载任务
+		DownloadManager.Request request = new DownloadManager.Request(Uri.parse(versionUrl));
+		request.setAllowedOverRoaming(false);//漫游网络是否可以下载
+
+		//设置文件类型，可以在下载结束后自动打开该文件
+		MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+		String mimeString = mimeTypeMap.getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(versionUrl));
+		request.setMimeType(mimeString);
+
+		//在通知栏中显示，默认就是显示的
+		request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+		request.setVisibleInDownloadsUi(true);
+
+		//sdcard的目录下的download文件夹，必须设置
+		request.setDestinationInExternalPublicDir("/download/", versionName);
+		//request.setDestinationInExternalFilesDir(),也可以自己制定下载路径
+
+		//将下载请求加入下载队列
+		downloadManager = (DownloadManager) mActivity.getSystemService(Context.DOWNLOAD_SERVICE);
+		//加入下载队列后会给该任务返回一个long型的id，
+		//通过该id可以取消任务，重启任务等等，看上面源码中框起来的方法
+		mTaskId = downloadManager.enqueue(request);
+
+		//注册广播接收者，监听下载状态
+		mActivity.registerReceiver(down_receiver,
+								  new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+	}
+
+	//广播接受者，接收下载状态
+	private BroadcastReceiver down_receiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			checkDownloadStatus();//检查下载状态
+		}
+	};
+
+	//检查下载状态
+	private void checkDownloadStatus() {
+		DownloadManager.Query query = new DownloadManager.Query();
+		query.setFilterById(mTaskId);//筛选下载任务，传入任务ID，可变参数
+		Cursor c = downloadManager.query(query);
+		if (c.moveToFirst()) {
+			int status = c.getInt(c.getColumnIndex(DownloadManager.COLUMN_STATUS));
+			switch (status) {
+				case DownloadManager.STATUS_PAUSED:
+					ToolLog.i(">>>下载暂停");
+				case DownloadManager.STATUS_PENDING:
+					ToolLog.i(">>>下载延迟");
+				case DownloadManager.STATUS_RUNNING:
+					ToolLog.i(">>>正在下载");
+					break;
+				case DownloadManager.STATUS_SUCCESSFUL:
+					ToolLog.i(">>>下载完成");
+					//下载完成安装APK
+					String downloadPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator + FILENAME;
+					installAPK(new File(downloadPath));
+					break;
+				case DownloadManager.STATUS_FAILED:
+					ToolLog.i(">>>下载失败");
+					break;
+			}
+		}
+	}
+
+	//http://blog.csdn.net/yulianlin/article/details/52775160
+	//下载到本地后执行安装
+	protected void installAPK(File file) {
+		if (!file.exists()) return;
+		/*Uri apkUri =
+			FileProvider.getUriForFile(mActivity, "com.bowen.hannengclub.fileprovider", file);
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		// 由于没有在Activity环境下启动Activity,设置下面的标签
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		//添加这一句表示对目标应用临时授权该Uri所代表的文件
+		intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+		startActivity(intent);*/
+
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		// 由于没有在Activity环境下启动Activity,设置下面的标签
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		if(Build.VERSION.SDK_INT >= 24) { //判读版本是否在7.0以上
+			//参数1 上下文, 参数2 Provider主机地址 和配置文件中保持一致   参数3  共享的文件
+			Uri apkUri =
+				FileProvider.getUriForFile(mActivity, "com.bowen.hannengclub.fileprovider", file);
+			//添加这一句表示对目标应用临时授权该Uri所代表的文件
+			intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+			intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+		}else{
+			intent.setDataAndType(Uri.fromFile(file),
+								  "application/vnd.android.package-archive");
+		}
+		startActivity(intent);
+	}
+
 
 	@Override
 	protected void onResume() {

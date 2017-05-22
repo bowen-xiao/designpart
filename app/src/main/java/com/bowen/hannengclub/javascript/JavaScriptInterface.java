@@ -93,6 +93,8 @@ public class JavaScriptInterface {
 		String d_title = URLDecoder.decode(title);
 		ToolLog.e("share", "imageUrl : " + d_imageUrl);
 		ToolLog.e("share","url : " +d_Url);
+		ToolLog.e("share","d_title : " +d_title);
+		ToolLog.e("share","d_desc : " +d_desc);
 		UMShareListener umShareListener = new UMShareListener() {
 			@Override
 			public void onStart(SHARE_MEDIA share_media) {

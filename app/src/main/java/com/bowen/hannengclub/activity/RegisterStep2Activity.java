@@ -8,12 +8,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.bowen.hannengclub.R;
-import com.bowen.hannengclub.bean.BaseReqResult;
+import com.bowen.hannengclub.SysConfiguration;
+import com.bowen.hannengclub.bean.LoginResult;
 import com.bowen.hannengclub.dialog.CommonMsgDialog;
 import com.bowen.hannengclub.dialog.DialogBean;
 import com.bowen.hannengclub.network.DataEngine2;
 import com.bowen.hannengclub.network.RxNetWorkService;
+import com.bowen.hannengclub.util.CacheUtils;
 import com.bowen.hannengclub.util.InputCheck;
 import com.bowen.hannengclub.util.ToastUtil;
 import com.bowen.hannengclub.util.ToolLog;
@@ -133,17 +136,30 @@ public class RegisterStep2Activity extends BaseActivity {
 
 	//去保存注册信息
 	private void saveRegisterInfo(){
+		hideSoftInput();
 		// 1) 检查输入是否合法
 		String nickName = mEtNickName.getText().toString().trim();
+		if(TextUtils.isEmpty(nickName)){
+			DialogBean bean = new DialogBean("昵称不能为空", "", "", "");
+			CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
+			msgDialog.showDialog();
+			return;
+		}
 		if(!InputCheck.isNickName(nickName)){
-			DialogBean bean = new DialogBean("格式错误，请重新输入", "", "", "");
+			DialogBean bean = new DialogBean("昵称格式不正确，请重新输入", "", "", "");
 			CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
 			msgDialog.showDialog();
 			return;
 		}
 		String passwordOne = mEtPasswordOne.getText().toString().trim();
+		if(TextUtils.isEmpty(nickName)){
+			DialogBean bean = new DialogBean("密码不能为空", "", "", "");
+			CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
+			msgDialog.showDialog();
+			return;
+		}
 		if(!InputCheck.isPassword(passwordOne)){
-			DialogBean bean = new DialogBean("密码格式错误，请重新输入", "", "", "");
+			DialogBean bean = new DialogBean("密码格式不正确，请重新输入", "", "", "");
 			CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
 			msgDialog.showDialog();
 			return;
@@ -197,7 +213,7 @@ public class RegisterStep2Activity extends BaseActivity {
 		service.register(map)
 			   .subscribeOn(Schedulers.io())
 			   .observeOn(AndroidSchedulers.mainThread())
-			   .subscribe(new Subscriber<BaseReqResult>() {
+			   .subscribe(new Subscriber<LoginResult>() {
 				   @Override
 				   public void onCompleted() {
 					   mBtnSureRegister.setEnabled(true);
@@ -210,7 +226,7 @@ public class RegisterStep2Activity extends BaseActivity {
 				   }
 
 				   @Override
-				   public void onNext(BaseReqResult model) {
+				   public void onNext(LoginResult model) {
 					   ToolLog.e("saveRegister ",model + "--请求完成 !");
 					   if(model != null){
 						   if(model.getStatus() == 0){
@@ -219,6 +235,8 @@ public class RegisterStep2Activity extends BaseActivity {
 							   CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
 							   msgDialog.showDialog();
 						   }else{
+							   //更新登录信息
+							   CacheUtils.setString(mActivity, SysConfiguration.USER_INFO, JSON.toJSONString(model.getItem()));
 							   ToastUtil.showToast(mActivity, "注册成功");
 							   //关闭2个注册页面
 							   finishRegister();
@@ -229,6 +247,8 @@ public class RegisterStep2Activity extends BaseActivity {
 	}
 
 	private void finishRegister(){
+		//关闭登录页面
+		sendBroadcast(new Intent(LoginActivity.FINISH_LOGIN_ACTIVITY));
 		Intent intent = new Intent(RegisterActivity.FINISH_ACTIVITY);
 		sendBroadcast(intent);
 		finish();

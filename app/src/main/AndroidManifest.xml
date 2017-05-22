@@ -58,6 +58,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.GET_TASKS"/>
 
+
     <!-- 获取logcat日志 -->
     <application
         android:name=".MyApplication"
@@ -233,6 +234,16 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".activity.ThirdLoginBindActivity"></activity>
+
+        <provider android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.bowen.hannengclub.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
     </application>
 
 </manifest>

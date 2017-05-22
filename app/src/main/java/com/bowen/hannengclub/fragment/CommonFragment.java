@@ -83,10 +83,20 @@ public class CommonFragment extends BaseFragment {
 				if(mWebView != null){
 					//去设置token
 					String token = UserUtil.getToken(mActivity);
-					mWebView.loadUrl("javascript:h5_changeToken(" + token + ")");
+					String url = "javascript:h5_changeToken(\"%s\")";
+					url = String.format(url,token);
+					ToolLog.d("token","login info :: " + token);
+					ToolLog.d("token","login url :: " + url);
+					//							 h5_changeToken
+					mWebView.loadUrl(url);
 				}
 			}
 		}};
+
+	@Override
+	public void onResume() {
+		super.onResume();
+	}
 
 	@Override
 	public void onDestroy() {

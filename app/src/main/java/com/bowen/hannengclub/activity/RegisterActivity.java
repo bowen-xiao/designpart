@@ -185,9 +185,7 @@ public class RegisterActivity extends BaseActivity {
 			msgDialog.showDialog();
 			return;
 		}
-		//开始获取验证码
-		seconds = 180;
-		startTimer();
+
 		getPhoneCode();
 	}
 
@@ -235,6 +233,9 @@ public class RegisterActivity extends BaseActivity {
 							   CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
 							   msgDialog.showDialog();
 						   }else{
+							   //开始获取验证码
+							   seconds = 180;
+							   startTimer();
 //							   ToolLog.e("login", "model : " + model);
 							  // CacheUtils.setString(mActivity, SysConfiguration.USER_INFO, JSON.toJSONString(model));
 							   //ToastUtil.showToast(mActivity,"登录成功");
@@ -323,6 +324,8 @@ public class RegisterActivity extends BaseActivity {
 
 	//检查输入项
 	private void checkInput(){
+		//隐藏软键盘
+		hideSoftInput();
 
 		String phoneNumber = mInputPhone.getText().toString().trim();
 		//手机号码不正确

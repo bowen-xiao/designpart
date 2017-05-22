@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -323,11 +322,7 @@ public class LoginActivity extends BaseActivity {
 		String inputPassword = mEtPassword.getText().toString().trim();
 
 		//关闭软键盘
-		InputMethodManager imm =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-		if(imm != null) {
-			imm.hideSoftInputFromWindow(mEtPassword.getWindowToken(), 0) ;
-			imm.hideSoftInputFromWindow(mEtPhone.getWindowToken(), 0) ;
-		}
+		hideSoftInput();
 
 		// 2)网络访问
 		mLoaddingRoot.setVisibility(View.VISIBLE);
@@ -405,6 +400,13 @@ public class LoginActivity extends BaseActivity {
 	private void jumpToForgetPage(){
 		Intent intent = new Intent(mActivity, ForgetPasswordActivity.class);
 		startActivity(intent);
+	}
+
+	@Override
+	protected void onStop() {
+		//关闭软键盘
+		hideSoftInput();
+		super.onStop();
 	}
 
 	@Override

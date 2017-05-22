@@ -150,12 +150,13 @@ public class ForgetPasswordActivity extends BaseActivity {
 		boolean isPhoneNumber = InputCheck.isPhoneNumber(phoneNumber);
 		mPhoneNumberStatus.setImageResource(isPhoneNumber ? R.mipmap.input_right : R.mipmap.input_err);
 		if(!isPhoneNumber){
-			ToastUtil.showToast(mActivity,"请输入正确的手机号码");
+			//请输入正确的手机号码
+			DialogBean bean = new DialogBean("请输入正确的手机号码","","","");
+			CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
+			msgDialog.showDialog();
 			return;
 		}
-		//开始获取验证码
-		seconds = 180;
-		startTimer();
+
 		getPhoneCode();
 
 	}
@@ -207,6 +208,9 @@ public class ForgetPasswordActivity extends BaseActivity {
 							   CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
 							   msgDialog.showDialog();
 						   }else{
+							   //开始获取验证码
+							   seconds = 180;
+							   startTimer();
 							   //							   ToolLog.e("login", "model : " + model);
 							   // CacheUtils.setString(mActivity, SysConfiguration.USER_INFO, JSON.toJSONString(model));
 							   //ToastUtil.showToast(mActivity,"登录成功");
@@ -238,6 +242,7 @@ public class ForgetPasswordActivity extends BaseActivity {
 
 	//检查输入项
 	private void checkInput(){
+		hideSoftInput();
 		String msgNumber = mMsgNumber.getText().toString();
 		String phoneNumber = mInputPhone.getText().toString().trim();
 		if(!InputCheck.isPhoneNumber(phoneNumber)){

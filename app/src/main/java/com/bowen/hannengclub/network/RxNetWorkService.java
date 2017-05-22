@@ -44,7 +44,7 @@ public interface RxNetWorkService {
 
     @FormUrlEncoded
     @POST("user/login/register")
-    Observable<BaseReqResult> register(@FieldMap Map<String,Object> paramMap);
+    Observable<LoginResult> register(@FieldMap Map<String,Object> paramMap);
 
     @FormUrlEncoded
     @POST("user/login/resetpasswd")
