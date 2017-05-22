@@ -319,6 +319,7 @@ public class ForgetPasswordActivity extends BaseActivity {
 			   });
 	}
 
+
 	//注册的手机号码
 	private static final String REGISTER_PHONE = "register_phone";
 	//注册码剩余的时间

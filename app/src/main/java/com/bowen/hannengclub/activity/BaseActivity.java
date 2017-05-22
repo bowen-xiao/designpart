@@ -56,9 +56,9 @@ public abstract class BaseActivity extends FragmentActivity {
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		// 设置键盘不要破坏布局
 		//		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-//		getWindow().setFormat(PixelFormat.TRANSLUCENT);
+//		getWindow().setFormat(PixelFormat.TRANSLUCENT);  adjustPan
 		getWindow().setSoftInputMode(
-			WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+			WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		getWindow().setFormat(PixelFormat.TRANSLUCENT);
 		super.onCreate(savedInstanceState);
 		mIsRestartData = savedInstanceState;
@@ -141,5 +141,12 @@ public abstract class BaseActivity extends FragmentActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+
+	@Override
+	protected void onPause() {
+		hideSoftInput();
+		super.onPause();
 	}
 }
