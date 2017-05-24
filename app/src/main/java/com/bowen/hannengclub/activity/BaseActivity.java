@@ -48,6 +48,10 @@ public abstract class BaseActivity extends FragmentActivity {
 	@BindView(R.id.tv_common_loadding_status)
 	TextView mLoaddingText;
 
+	//加载页面
+	@BindView(R.id.header_underline)
+	View mHeaderLine;
+
 	Bundle mIsRestartData;
 
 	@Override

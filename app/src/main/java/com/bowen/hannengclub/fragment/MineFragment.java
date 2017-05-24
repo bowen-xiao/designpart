@@ -21,6 +21,7 @@ import com.bowen.hannengclub.R;
 import com.bowen.hannengclub.SysConfiguration;
 import com.bowen.hannengclub.activity.CommonActivity;
 import com.bowen.hannengclub.activity.HomeActivity;
+import com.bowen.hannengclub.activity.SettingActivity;
 import com.bowen.hannengclub.bean.ShareBean;
 import com.bowen.hannengclub.bean.UploadAvator;
 import com.bowen.hannengclub.bean.UserInfo;
@@ -121,6 +122,12 @@ public class MineFragment extends BaseFragment {
 	//评论管理
 	@BindView(R.id.li_mine_comment_manager)
 	View mCommentManager;
+
+	@BindView(R.id.mine_part_two_underline)
+	View mTwoPartUnderLine;
+
+	@BindView(R.id.mine_part_one_underline)
+	View mOnePartUnderLine;
 
 	//图片选择器 参考 https://github.com/jeasonlzy/ImagePicker
 	private ImagePicker imagePicker;
@@ -250,6 +257,8 @@ public class MineFragment extends BaseFragment {
 				mAuthorBase.setVisibility(View.GONE);
 				mSeeMe.setVisibility(View.GONE);
 				mCommentManager.setVisibility(View.GONE);
+				mOnePartUnderLine.setVisibility(View.GONE);
+				mTwoPartUnderLine.setVisibility(View.GONE);
 
 				mTvRedAuthorNote.setVisibility(View.VISIBLE);
 				mRedAuthorNote.setVisibility(View.VISIBLE);
@@ -264,6 +273,8 @@ public class MineFragment extends BaseFragment {
 				mAuthorBase.setVisibility(View.VISIBLE);
 				mSeeMe.setVisibility(View.VISIBLE);
 				mCommentManager.setVisibility(View.VISIBLE);
+				mOnePartUnderLine.setVisibility(View.VISIBLE);
+				mTwoPartUnderLine.setVisibility(View.VISIBLE);
 
 				mTvRedAuthorNote.setVisibility(View.GONE);
 				mRedAuthorNote.setVisibility(View.GONE);
@@ -301,6 +312,7 @@ public class MineFragment extends BaseFragment {
 			  R.id.tv_mine_exit_login,
 			  R.id.ll_mine_head_info_root,
 			  R.id.fragment_iv_header,
+			  R.id.li_mine_setting,
 			  R.id.li_mine_change_password
 	})
 	public void onClick(View view) {
@@ -312,6 +324,10 @@ public class MineFragment extends BaseFragment {
 			case R.id.iv_mine_share:
 				//Todo 分享我的名片
 				shareMyInfo();
+				break;
+			case R.id.li_mine_setting:
+				//Todo 设置页面
+				settingPage();
 				break;
 			case R.id.fragment_iv_header:
 				//Todo 选择上传头像
@@ -366,6 +382,13 @@ public class MineFragment extends BaseFragment {
 		if(TextUtils.isEmpty(url)){return;}
 		Intent intent = new Intent(mActivity, CommonActivity.class);
 		intent.putExtra(CommonFragment.COMMON_URL, url);
+		startActivity(intent);
+	}
+
+	//设置页面
+	private void settingPage(){
+		// TODO: 2017/5/24
+		Intent intent = new Intent(mActivity, SettingActivity.class);
 		startActivity(intent);
 	}
 

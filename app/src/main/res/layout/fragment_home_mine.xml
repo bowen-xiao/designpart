@@ -58,18 +58,21 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:maxLines="1"
+                        android:maxEms="4"
+                        android:ellipsize="end"
                         android:id="@+id/tv_user_name"
                         android:textColor="@color/whilte"
-                        android:text="刘大大"
+                        android:text="刘大大大11111111111"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <LinearLayout
                         android:id="@+id/mine_author_base_root"
                         android:gravity="center"
-                        android:layout_marginLeft="@dimen/margin_right_speace"
                         android:orientation="horizontal"
                         android:layout_width="0dp"
+                        android:minWidth="120dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content">
 
@@ -103,7 +106,7 @@
                         android:layout_height="18dp" />
 
                     <ImageView
-                        android:layout_marginLeft="@dimen/common_margin"
+                        android:layout_marginLeft="@dimen/margin_right_speace"
                         android:id="@+id/iv_mine_msg"
                         android:src="@mipmap/information"
                         android:layout_width="18dp"
@@ -203,6 +206,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
             <View
+                android:id="@+id/mine_part_one_underline"
                 android:background="@color/bottom_textcolor_defeaut"
                 android:layout_width="match_parent"
                 android:layout_height="0.45dp"/>
@@ -210,11 +214,12 @@
 
 
         <LinearLayout
-            android:layout_marginTop="@dimen/common_margin"
+
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="wrap_content">
             <com.bowen.hannengclub.view.LineItemView
+                android:layout_marginTop="@dimen/common_margin"
                 android:visibility="gone"
                 android:id="@+id/li_mine_example"
                 app:my_title="我的案例"
@@ -232,17 +237,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
             <View
+                android:id="@+id/mine_part_two_underline"
                 android:background="@color/bottom_textcolor_defeaut"
                 android:layout_width="match_parent"
                 android:layout_height="0.45dp"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="@dimen/common_margin"
+
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="wrap_content">
             <com.bowen.hannengclub.view.LineItemView
+                android:layout_marginTop="@dimen/common_margin"
                 android:id="@+id/li_mine_comment_manager"
                 app:my_title="评论管理"
                 android:layout_width="match_parent"
@@ -250,6 +257,24 @@
             <com.bowen.hannengclub.view.LineItemView
                 android:id="@+id/li_mine_change_password"
                 app:my_title="修改密码"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:background="@color/bottom_textcolor_defeaut"
+                android:layout_width="match_parent"
+                android:layout_height="0.45dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <com.bowen.hannengclub.view.LineItemView
+                android:layout_marginTop="@dimen/common_margin"
+                android:id="@+id/li_mine_setting"
+                app:my_title="设置"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

@@ -18,7 +18,6 @@ import com.bowen.hannengclub.dialog.CommonMsgDialog;
 import com.bowen.hannengclub.dialog.DialogBean;
 import com.bowen.hannengclub.network.DataEngine2;
 import com.bowen.hannengclub.network.RxNetWorkService;
-import com.bowen.hannengclub.util.InputCheck;
 import com.bowen.hannengclub.util.ToastUtil;
 import com.bowen.hannengclub.util.ToolLog;
 
@@ -30,6 +29,8 @@ import butterknife.OnTextChanged;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static com.bowen.hannengclub.util.InputCheck.isPhoneNumber;
 
 
 public class ForgetPasswordActivity extends BaseActivity {
@@ -136,7 +137,7 @@ public class ForgetPasswordActivity extends BaseActivity {
 	public void onTextChange(CharSequence s, int start, int count, int after){
 		mPhoneNumberStatus.setVisibility(View.VISIBLE);
 		String inputOne = mInputPhone.getText().toString().trim();
-		boolean isRight = InputCheck.isPhoneNumber(inputOne);
+		boolean isRight = isPhoneNumber(inputOne);
 		mPhoneNumberStatus.setImageResource(isRight ? R.mipmap.input_right : R.mipmap.input_err);
 	}
 
@@ -147,7 +148,7 @@ public class ForgetPasswordActivity extends BaseActivity {
 		if(!mBtnMsgTime.isEnabled()){return;}
 		String phoneNumber = mInputPhone.getText().toString().trim();
 		//手机号码不正确
-		boolean isPhoneNumber = InputCheck.isPhoneNumber(phoneNumber);
+		boolean isPhoneNumber = isPhoneNumber(phoneNumber);
 		mPhoneNumberStatus.setImageResource(isPhoneNumber ? R.mipmap.input_right : R.mipmap.input_err);
 		if(!isPhoneNumber){
 			//请输入正确的手机号码
@@ -245,7 +246,12 @@ public class ForgetPasswordActivity extends BaseActivity {
 		hideSoftInput();
 		String msgNumber = mMsgNumber.getText().toString();
 		String phoneNumber = mInputPhone.getText().toString().trim();
-		if(!InputCheck.isPhoneNumber(phoneNumber)){
+		//为空的数据检查
+		if(TextUtils.isEmpty(phoneNumber)){
+			ToastUtil.showToast(mActivity,"手机号码不能为空");
+			return;
+		}
+		if(!isPhoneNumber(phoneNumber)){
 			ToastUtil.showToast(mActivity,"请输入正确的手机号码");
 			return;
 		}

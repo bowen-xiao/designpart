@@ -15,4 +15,5 @@
     <dimen name="loadding_margin">5dp</dimen>
     <dimen name="must_require">12dp</dimen>
     <dimen name="share_icon_size">50dp</dimen>
+    <dimen name="mine_text_left_margin">5dp</dimen>
 </resources>
