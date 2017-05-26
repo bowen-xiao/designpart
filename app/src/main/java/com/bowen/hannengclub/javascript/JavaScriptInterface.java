@@ -187,10 +187,15 @@ public class JavaScriptInterface {
 
 	//6)打开新页面
 	@JavascriptInterface
-	public int app_openUrl(String url) {
-		Intent intent = new Intent(mActivity, CommonActivity.class);
-		intent.putExtra(CommonFragment.COMMON_URL, url);
-		mActivity.startActivity(intent);
+	public int app_openUrl(final String url) {
+		mActivity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				Intent intent = new Intent(mActivity, CommonActivity.class);
+				intent.putExtra(CommonFragment.COMMON_URL, url);
+				mActivity.startActivity(intent);
+			}
+		});
 		//固定返回值，是APP打开的标识
 		return 1;
 	}

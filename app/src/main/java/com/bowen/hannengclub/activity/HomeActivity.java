@@ -488,4 +488,5 @@ public class HomeActivity extends BaseActivity {
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+
 }

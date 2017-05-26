@@ -18,7 +18,6 @@ import com.bowen.hannengclub.dialog.CommonMsgDialog;
 import com.bowen.hannengclub.dialog.DialogBean;
 import com.bowen.hannengclub.network.DataEngine2;
 import com.bowen.hannengclub.network.RxNetWorkService;
-import com.bowen.hannengclub.util.ToastUtil;
 import com.bowen.hannengclub.util.ToolLog;
 
 import java.util.HashMap;
@@ -248,11 +247,17 @@ public class ForgetPasswordActivity extends BaseActivity {
 		String phoneNumber = mInputPhone.getText().toString().trim();
 		//为空的数据检查
 		if(TextUtils.isEmpty(phoneNumber)){
-			ToastUtil.showToast(mActivity,"手机号码不能为空");
+			DialogBean bean = new DialogBean("手机号码不能为空", "", "", "");
+			//显示错误信息
+			mMsgDialog = new CommonMsgDialog(mActivity, bean);
+			mMsgDialog.showDialog();
 			return;
 		}
 		if(!isPhoneNumber(phoneNumber)){
-			ToastUtil.showToast(mActivity,"请输入正确的手机号码");
+			DialogBean bean = new DialogBean("请输入正确的手机号码", "", "", "");
+			//显示错误信息
+			mMsgDialog = new CommonMsgDialog(mActivity, bean);
+			mMsgDialog.showDialog();
 			return;
 		}
 

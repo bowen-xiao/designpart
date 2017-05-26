@@ -7,17 +7,28 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.alibaba.fastjson.JSON;
 import com.bowen.hannengclub.R;
 import com.bowen.hannengclub.activity.CommonActivity;
 import com.bowen.hannengclub.activity.LoginActivity;
+import com.bowen.hannengclub.bean.MsgResult;
 import com.bowen.hannengclub.dialog.CommonMsgDialog;
 import com.bowen.hannengclub.dialog.DialogBean;
+import com.bowen.hannengclub.network.DataEngine2;
+import com.bowen.hannengclub.network.RxNetWorkService;
 import com.bowen.hannengclub.util.ToolImage;
+import com.bowen.hannengclub.util.ToolLog;
 import com.bowen.hannengclub.util.UserUtil;
 import com.bowen.hannengclub.view.LineItemView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by 肖稳华 on 2017/4/20.
@@ -36,6 +47,10 @@ public class FocusFragment extends BaseFragment {
 	@BindView(R.id.iv_loading_view)
 	ImageView    mIvLoad;
 
+	//消息的小红点
+	@BindView(R.id.tv_focus_msg_point)
+	View    mMsgPoint;
+
 	@Override
 	protected View initView() {
 		View inflate = View.inflate(mActivity, R.layout.fragment_home_focus, null);
@@ -53,7 +68,7 @@ public class FocusFragment extends BaseFragment {
 				mLoadRoot.setVisibility(View.GONE);
 				//mLoadViewRoot.setVisibility(View.GONE);
 			}
-		}, 500);
+		}, 250);
 	}
 
 	@OnClick({R.id.li_design_circle,
@@ -135,4 +150,46 @@ public class FocusFragment extends BaseFragment {
 		startActivity(intent);
 	}
 
+
+	//获取消息
+	private void getMessage() {
+		RxNetWorkService service = DataEngine2.getServiceApiByClass(RxNetWorkService.class);
+		Map<String,Object> param = new HashMap<>();
+		param.put("msg_type",1);
+		service.personalMessage(param)
+			   .subscribeOn(Schedulers.io())
+			   .observeOn(AndroidSchedulers.mainThread())
+			   .subscribe(new Subscriber<String>() {
+				   @Override
+				   public void onCompleted() {
+					   ToolLog.e("main focus getMessage", "请求完成 !");
+				   }
+
+				   @Override
+				   public void onError(Throwable e) {
+					   ToolLog.e("main personalMessage",e.getMessage() + "请求完成 !");
+				   }
+
+				   @Override
+				   public void onNext(String model) {
+					   ToolLog.e("main checkForUpdate", " onNext model : " + model);
+					   mMsgPoint.setVisibility(View.GONE);
+					   if(!TextUtils.isEmpty(model)){
+						   MsgResult result = JSON.parseObject(model, MsgResult.class);
+						   if(result != null && result.getStatus() == 1){
+							   if(result.getItem() != null
+								  && result.getItem().getHasread() == 1){
+								   mMsgPoint.setVisibility(View.VISIBLE);
+							   }
+						   }
+					   }
+				   }
+			   });
+	}
+
+	@Override
+	public void onResume() {
+		getMessage();
+		super.onResume();
+	}
 }

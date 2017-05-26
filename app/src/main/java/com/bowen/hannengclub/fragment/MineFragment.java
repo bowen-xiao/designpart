@@ -22,11 +22,14 @@ import com.bowen.hannengclub.SysConfiguration;
 import com.bowen.hannengclub.activity.CommonActivity;
 import com.bowen.hannengclub.activity.HomeActivity;
 import com.bowen.hannengclub.activity.SettingActivity;
+import com.bowen.hannengclub.bean.MsgResult;
 import com.bowen.hannengclub.bean.ShareBean;
 import com.bowen.hannengclub.bean.UploadAvator;
 import com.bowen.hannengclub.bean.UserInfo;
 import com.bowen.hannengclub.dialog.CommonMsgDialog;
 import com.bowen.hannengclub.dialog.DialogBean;
+import com.bowen.hannengclub.network.DataEngine2;
+import com.bowen.hannengclub.network.RxNetWorkService;
 import com.bowen.hannengclub.network.UpLoadFile;
 import com.bowen.hannengclub.popuwindow.SharePopupWindow;
 import com.bowen.hannengclub.util.CacheUtils;
@@ -60,9 +63,10 @@ import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-
-import static com.bowen.hannengclub.R.id.iv_mine_sex_type;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by 肖稳华 on 2017/4/20.
@@ -73,7 +77,7 @@ public class MineFragment extends BaseFragment {
 	//	如果不认证就不显示
 	@BindView(R.id.fragment_iv_header)
 	CircleImageView mHeadImage;
-	@BindView(iv_mine_sex_type)
+	@BindView(R.id.iv_mine_sex_type)
 	ImageView       mSexType;
 	@BindView(R.id.tv_mine_id_number)
 	TextView        mIdNumber;
@@ -129,6 +133,10 @@ public class MineFragment extends BaseFragment {
 	@BindView(R.id.mine_part_one_underline)
 	View mOnePartUnderLine;
 
+	//是否有消息的红点
+	@BindView(R.id.mine_center_msg_point)
+	View mMsgRedCircle;
+
 	//图片选择器 参考 https://github.com/jeasonlzy/ImagePicker
 	private ImagePicker imagePicker;
 	private UserInfo    mUserInfo;
@@ -179,6 +187,7 @@ public class MineFragment extends BaseFragment {
 	public void onResume() {
 		super.onResume();
 		upDateShow();
+		getMessage();
 	}
 
 
@@ -623,5 +632,41 @@ public class MineFragment extends BaseFragment {
 			mActivity.unregisterReceiver(mineReceiver);
 		}
 		super.onDestroy();
+	}
+
+	//获取消息
+	private void getMessage() {
+		RxNetWorkService service = DataEngine2.getServiceApiByClass(RxNetWorkService.class);
+		Map<String,Object> param = new HashMap<>();
+		param.put("msg_type",0);
+		service.personalMessage(param)
+			   .subscribeOn(Schedulers.io())
+			   .observeOn(AndroidSchedulers.mainThread())
+			   .subscribe(new Subscriber<String>() {
+				   @Override
+				   public void onCompleted() {
+					   ToolLog.e("main checkForUpdate", "请求完成 !");
+				   }
+
+				   @Override
+				   public void onError(Throwable e) {
+					   ToolLog.e("main personalMessage",e.getMessage() + "请求完成 !");
+				   }
+
+				   @Override
+				   public void onNext(String model) {
+					   ToolLog.e("main checkForUpdate", " onNext model : " + model);
+						mMsgRedCircle.setVisibility(View.GONE);
+					   if(!TextUtils.isEmpty(model)){
+						   MsgResult result = JSON.parseObject(model, MsgResult.class);
+						   if(result != null && result.getStatus() == 1){
+							   if(result.getItem() != null
+								  && result.getItem().getHasread() == 1){
+								   mMsgRedCircle.setVisibility(View.VISIBLE);
+							   }
+						   }
+					   }
+				   }
+			   });
 	}
 }

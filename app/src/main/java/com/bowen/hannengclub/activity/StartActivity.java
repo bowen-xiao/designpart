@@ -41,6 +41,23 @@ public class StartActivity extends BaseActivity {
 	private void jumpToHome(){
 		Intent intent = new Intent(this, HomeActivity.class);
 		startActivity(intent);
+		overridePendingTransition(0,0);
 		finish();
 	}
+
+
+	/**
+	 * Overrides the pending Activity transition by performing the "Enter" animation.
+	 */
+	protected void overridePendingTransitionEnter() {
+		overridePendingTransition(0, 0);
+	}
+
+	/**
+	 * Overrides the pending Activity transition by performing the "Exit" animation.
+	 */
+	protected void overridePendingTransitionExit() {
+		overridePendingTransition(0, 0);
+	}
+
 }

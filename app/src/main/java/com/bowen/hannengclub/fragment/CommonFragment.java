@@ -8,10 +8,12 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.bowen.hannengclub.R;
 import com.bowen.hannengclub.activity.HomeActivity;
@@ -55,8 +57,19 @@ public class CommonFragment extends BaseFragment {
 	@BindView(R.id.ll_err_back)
 	View                  mErrBack;
 
+	//一级页面的子标题
+	@BindView(R.id.common_second_title)
+	TextView mSecondTitle;
+
+	//一级页面的子标题下面的线
+	@BindView(R.id.common_second_title_underline)
+	View mSecondTitleUnderLine;
+
 	private ValueCallback<Uri[]> mUploadMessage;
 	public static final int FILECHOOSER_RESULTCODE = 1023;
+
+	//参数名称
+	public static final String COMMON_SECOND_TITLE = "common_second_title";
 
 	@Override
 	protected View initView() {
@@ -123,6 +136,13 @@ public class CommonFragment extends BaseFragment {
 		if(index == 0){
 			loadDataOnce();
 		}
+		String secondTitle = getArguments().getString(COMMON_SECOND_TITLE);
+		if(!TextUtils.isEmpty(secondTitle)){
+			mSecondTitle.setText(secondTitle);
+		}
+		//是否显示二级子标题，用于一级页面
+		mSecondTitle.setVisibility(TextUtils.isEmpty(secondTitle) ? View.GONE : View.VISIBLE);
+		mSecondTitleUnderLine.setVisibility(TextUtils.isEmpty(secondTitle) ? View.GONE : View.VISIBLE);
 	}
 
 	//添加公共参数
@@ -204,7 +224,7 @@ public class CommonFragment extends BaseFragment {
 			@Override
 			public void onReceivedError (WebView view, int errorCode, String description, String failingUrl) {
 				sendErrMsg();
-				ToolLog.e("url" , "onReceivedError code : " + errorCode);
+//				ToolLog.e("url" , "onReceivedError code : " + errorCode);
 			}
 
 			@Override
@@ -218,7 +238,7 @@ public class CommonFragment extends BaseFragment {
 				if(statusCode > 399){
 					sendErrMsg();
 				}
-				ToolLog.e("url" , "onReceivedHttpError code : " + statusCode);
+//				ToolLog.e("url" , "onReceivedHttpError code : " + statusCode);
 			}
 		});
 		//进度条

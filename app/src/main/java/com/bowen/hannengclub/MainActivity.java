@@ -290,4 +290,5 @@ public class MainActivity extends AppCompatActivity {
 		stopLocation();
 		super.onDestroy();
 	}
+
 }

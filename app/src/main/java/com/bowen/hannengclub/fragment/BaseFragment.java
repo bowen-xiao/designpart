@@ -1,12 +1,14 @@
 package com.bowen.hannengclub.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bowen.hannengclub.R;
 import com.bowen.hannengclub.activity.BaseActivity;
 
 import butterknife.ButterKnife;
@@ -78,6 +80,19 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+	}
+
+	@Override
+	public void startActivity(Intent intent) {
+		super.startActivity(intent);
+		overridePendingTransitionEnter();
+	}
+
+	/**
+	 * Overrides the pending Activity transition by performing the "Enter" animation.
+	 */
+	protected void overridePendingTransitionEnter() {
+		mActivity.overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 	}
 
 }

@@ -7,12 +7,17 @@
 
 
     <TextView
+        android:background="@color/whilte"
         android:textSize="17sp"
         android:textColor="@color/black"
         android:gravity="center"
         android:text="我的个人中心"
         android:layout_width="match_parent"
         android:layout_height="50dp" />
+    <View
+        android:background="@color/bottom_textcolor_defeaut"
+        android:layout_width="match_parent"
+        android:layout_height="0.45dp"/>
     <ScrollView
         android:id="@+id/sl_mine_root"
         android:layout_width="match_parent"
@@ -44,7 +49,7 @@
                 app:civ_border_color="@color/whilte"/>
 
             <LinearLayout
-                android:layout_marginRight="@dimen/common_margin"
+                android:layout_marginRight="8dp"
                 android:layout_marginLeft="10dp"
                 android:gravity="center|left"
                 android:layout_width="0dp"
@@ -87,7 +92,7 @@
 
                         <TextView
                             android:visibility="gone"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="8dp"
                             android:textSize="12sp"
                             android:id="@+id/tv_mine_author_status"
                             android:background="@drawable/red_conner_bg"
@@ -99,19 +104,31 @@
                     </LinearLayout>
 
                     <ImageView
+                        android:layout_marginLeft="5dp"
                         android:scaleType="centerInside"
                         android:id="@+id/iv_mine_share"
                         android:src="@mipmap/mine_share"
                         android:layout_width="18dp"
                         android:layout_height="18dp" />
-
                     <ImageView
-                        android:layout_marginLeft="@dimen/margin_right_speace"
+                        android:layout_marginLeft="@dimen/common_margin"
                         android:id="@+id/iv_mine_msg"
                         android:src="@mipmap/information"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:scaleType="centerInside" />
+                    <RelativeLayout
+                        android:visibility="gone"
+                        android:id="@+id/mine_center_msg_point"
+                        android:layout_width="10dp"
+                        android:layout_height="20dp">
+                        <TextView
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/msg_red_circle"
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"/>
+                    </RelativeLayout>
 
                 </LinearLayout>
 
@@ -149,8 +166,8 @@
             </LinearLayout>
 
             <ImageView
+                android:layout_marginLeft="8dp"
                 android:layout_marginRight="@dimen/common_margin"
-                android:layout_marginLeft="@dimen/common_margin"
                 android:src="@mipmap/mine_header_indo"
                 android:layout_width="12dp"
                 android:layout_height="24dp" />

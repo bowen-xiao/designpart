@@ -8,7 +8,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.bowen.hannengclub.activity.SettingActivity">
 
-
     <LinearLayout
         android:background="@drawable/focus_item_bg"
         android:layout_marginTop="@dimen/focus_image_size"
@@ -48,7 +47,6 @@
             android:layout_width="match_parent"
             android:layout_height="0.45dp"/>
     </LinearLayout>
-
 
     <LinearLayout
 

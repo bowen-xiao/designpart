@@ -71,4 +71,9 @@ public interface RxNetWorkService {
     @FormUrlEncoded
     @POST("user/login/thirdbind")
     Observable<String> thirdbind(@FieldMap Map<String,Object> param);
+
+    //消息更新
+    @FormUrlEncoded
+    @POST("user/message/noread")
+    Observable<String> personalMessage(@FieldMap Map<String,Object> param);
 }

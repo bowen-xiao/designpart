@@ -1,6 +1,7 @@
 package com.bowen.hannengclub.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
@@ -127,6 +128,7 @@ public abstract class BaseActivity extends FragmentActivity {
 		}
 	}
 
+
 	//右上角的点击事件处理
 	protected void rightClick(){finish();}
 
@@ -153,4 +155,31 @@ public abstract class BaseActivity extends FragmentActivity {
 		hideSoftInput();
 		super.onPause();
 	}
+
+	@Override
+	public void startActivity(Intent intent) {
+		super.startActivity(intent);
+		overridePendingTransitionEnter();
+	}
+
+	/**
+	 * Overrides the pending Activity transition by performing the "Enter" animation.
+	 */
+	protected void overridePendingTransitionEnter() {
+		overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+	}
+
+	/**
+	 * Overrides the pending Activity transition by performing the "Exit" animation.
+	 */
+	protected void overridePendingTransitionExit() {
+		overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
+	}
+
+	@Override
+	public void finish() {
+		super.finish();
+		overridePendingTransitionExit();
+	}
+
 }

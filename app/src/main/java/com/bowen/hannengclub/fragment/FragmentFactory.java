@@ -24,6 +24,7 @@ public class FragmentFactory
 		//传递的参数信息
 		Bundle args = new Bundle();
 		String url = "";
+		String secondTitle = "";
 		switch (position)
 		{
 			case 0:
@@ -36,6 +37,7 @@ public class FragmentFactory
 				// 案例
 				url =  "case/index.aspx?apptype=2";
 				fragment = new CommonFragment();
+				secondTitle = "案例";
 				break;
 			case 2:
 				// 关注
@@ -45,6 +47,7 @@ public class FragmentFactory
 				// 设计师
 				url = "/designer/index.aspx?apptype=2";
 				fragment = new CommonFragment();
+				secondTitle = "设计师";
 				break;
 			case 4:
 				// 我的
@@ -54,6 +57,7 @@ public class FragmentFactory
 		args.putString(CommonFragment.COMMON_URL, url);
 		fragment.setArguments(args);
 		args.putInt("index",position);
+		args.putString(CommonFragment.COMMON_SECOND_TITLE,secondTitle);
 		// 存储到缓存
 		mCaches.put(position, fragment);
 		return fragment;

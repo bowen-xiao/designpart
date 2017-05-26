@@ -1,4 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:background="@color/whilte"
+        android:visibility="gone"
+        android:textSize="17sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:text="标题"
+        android:id="@+id/common_second_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+    <View
+        android:visibility="gone"
+        android:id="@+id/common_second_title_underline"
+        android:background="@color/bottom_textcolor_defeaut"
+        android:layout_width="match_parent"
+        android:layout_height="0.45dp"/>
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -104,3 +129,5 @@
 
 
 </FrameLayout>
+
+</LinearLayout>
