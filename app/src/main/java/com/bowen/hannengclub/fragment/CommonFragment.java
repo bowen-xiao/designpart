@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bowen.hannengclub.R;
+import com.bowen.hannengclub.SysConfiguration;
 import com.bowen.hannengclub.activity.HomeActivity;
 import com.bowen.hannengclub.javascript.JavaScriptInterface;
 import com.bowen.hannengclub.util.Constans;
@@ -150,7 +151,7 @@ public class CommonFragment extends BaseFragment {
 		if(!url.contains("http")){
 			//			url = SysConfiguration.BASE_URL + url;
 			//这是测试地址 todo 正式需要修改
-			url = "http://222.171.202.3:7002/" + url;
+			url = SysConfiguration.BASE_WEB_URL + url;
 		}
 		/**
 		 * 	说明

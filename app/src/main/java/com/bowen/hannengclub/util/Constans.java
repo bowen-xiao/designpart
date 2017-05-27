@@ -7,7 +7,7 @@ package com.bowen.hannengclub.util;
 public class Constans {
 
 	public static int DEVICE_TYPE = 2;
-	public static int VERSION_ID = 106;
+	public static int VERSION_ID = 100;
 	public static int API_VER = 2000;
 
 }

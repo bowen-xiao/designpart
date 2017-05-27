@@ -68,6 +68,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
+
 /**
  * Created by 肖稳华 on 2017/4/20.
  */
@@ -289,7 +290,7 @@ public class MineFragment extends BaseFragment {
 				mRedAuthorNote.setVisibility(View.GONE);
 			}
 			//6)年龄
-			mUserAge.setText(mUserInfo.getAge_str()+"岁");
+			mUserAge.setText(mUserInfo.getAge_str());
 			mUserAge.setVisibility(TextUtils.isEmpty(mUserInfo.getAge_str()) ? View.GONE : View.VISIBLE);
 			upViewState();
 		}
