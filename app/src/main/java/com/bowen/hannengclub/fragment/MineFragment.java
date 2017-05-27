@@ -331,15 +331,12 @@ public class MineFragment extends BaseFragment {
 		 */
 		switch (view.getId()) {
 			case R.id.iv_mine_share:
-				//Todo 分享我的名片
 				shareMyInfo();
 				break;
 			case R.id.li_mine_setting:
-				//Todo 设置页面
 				settingPage();
 				break;
 			case R.id.fragment_iv_header:
-				//Todo 选择上传头像
 				getPhoneReq();
 				break;
 			case R.id.ll_mine_head_info_root:

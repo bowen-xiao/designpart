@@ -163,7 +163,6 @@ public class LoginActivity extends BaseActivity {
 			public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
 
 				/**
-					 *
 					 UShare封装后字段名	QQ原始字段名	微信原始字段名	新浪原始字段名	字段含义	备注
 					 uid	openid	unionid	id	用户唯一标识	如果需要做跨APP用户打通，QQ需要使用unionID实现
 					 name	screen_name	screen_name	screen_name	用户昵称
@@ -179,7 +178,7 @@ public class LoginActivity extends BaseActivity {
 						type = 2;
 					}
 					//第三登录返回的信息
-					String uid = map.get("uid");
+					String uid = map.get("unionid");
 					String name = map.get("name");
 					String gender = map.get("gender");
 					String iconurl = map.get("iconurl");
@@ -195,7 +194,6 @@ public class LoginActivity extends BaseActivity {
 					reqParam.put("type",type);
 					reqParam.put("third_unionid",uid);
 					reqParam.put("third_openid",openid);
-					reqParam.put("third_nickname",name);
 					reqParam.put("third_nickname",name);
 					//参数名称
 					reqParam.put("unionid",uid);

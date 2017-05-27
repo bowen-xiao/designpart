@@ -3,7 +3,6 @@ package com.bowen.hannengclub.receiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.bowen.hannengclub.bean.XGNotification;
 import com.bowen.hannengclub.service.NotificationService;
@@ -24,6 +23,7 @@ public class MessageReceiver extends XGPushBaseReceiver {
 	public static final String LogTag = "TPushReceiver";
 
 	private void show(Context context, String text) {
+		//这里暂时不显示
 //		Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
 	}
 
@@ -116,8 +116,7 @@ public class MessageReceiver extends XGPushBaseReceiver {
 			// APP自己处理通知被清除后的相关动作
 			text = "通知被清除 :" + message;
 		}
-		Toast.makeText(context, "广播接收到通知被点击:" + message.toString(),
-				Toast.LENGTH_SHORT).show();
+
 		// 获取自定义key-value
 		String customContent = message.getCustomContent();
 		if (customContent != null && customContent.length() != 0) {

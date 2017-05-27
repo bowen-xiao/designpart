@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">瀚能</string>
+    <string name="app_name">瀚能设计帮</string>
 
     <string-array name="home_page_titles">
         <item>热点</item>
