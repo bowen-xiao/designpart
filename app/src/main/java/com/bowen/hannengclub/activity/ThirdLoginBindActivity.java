@@ -130,10 +130,19 @@ public class ThirdLoginBindActivity extends BaseActivity {
 		/**
 		 * 	必选	类型及范围	说明
 		 type	是	int	类型：0注册，1找回密码，2手机登录，3第三方绑定
+		 thirdtype	否	int	类型：0无，1微信，2 QQ
+		 third_unionid	否	string	微信或QQ的unionid
+		 third_openid	否	string	微信或QQ的openid
 		 */
 		RxNetWorkService service = DataEngine2.getServiceApiByClass(RxNetWorkService.class);
 		//		service.getBaiDuInfo(SysConfiguration.BASE_URL)
-		final HashMap<String, Object> map = new HashMap<>();
+		final Map<String, Object> map = new HashMap<>();
+		if(param != null){
+			map.putAll(param.getParams());
+			Object thirdType = map.get("type");
+			map.put("thirdtype",thirdType);
+			map.remove("type");
+		}
 		map.put("phone_number",mPhoneNumber);
 		map.put("type",3);
 		/*LoginResult
