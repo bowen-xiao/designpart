@@ -137,13 +137,40 @@ public class LoginActivity extends BaseActivity {
 				jumpToRegister();
 				break;
 			case R.id.iv_wechat_login:
-				thirdLogin(SHARE_MEDIA.WEIXIN);
+				deleteThirdPlatFromOuthor(SHARE_MEDIA.WEIXIN);
 				break;
 			case R.id.iv_qq_login:
-				thirdLogin(SHARE_MEDIA.QQ);
+				deleteThirdPlatFromOuthor(SHARE_MEDIA.QQ);
 				break;
 		}
 	}
+
+	//删除授权
+	private void deleteThirdPlatFromOuthor(final SHARE_MEDIA loginType) {
+		UMShareAPI.get(mActivity).deleteOauth(mActivity, loginType, new UMAuthListener() {
+			@Override
+			public void onStart(SHARE_MEDIA share_media) {
+
+			}
+
+			@Override
+			public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+				//去登录
+				thirdLogin(loginType);
+			}
+
+			@Override
+			public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+				thirdLogin(loginType);
+			}
+
+			@Override
+			public void onCancel(SHARE_MEDIA share_media, int i) {
+
+			}
+		});
+	}
+
 
 	//微信登录  http://dev.umeng.com/social/android/login-page#1
 	private void thirdLogin(SHARE_MEDIA loginType){
