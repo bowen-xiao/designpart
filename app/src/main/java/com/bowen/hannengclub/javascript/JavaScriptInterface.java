@@ -182,7 +182,6 @@ public class JavaScriptInterface {
 				}
 			}
 		});
-
 	}
 
 	//6)打开新页面

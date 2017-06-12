@@ -254,6 +254,7 @@
         </provider>
 
         <activity android:name=".activity.SettingActivity" ></activity>
+
     </application>
 
 </manifest>
