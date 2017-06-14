@@ -1,5 +1,6 @@
 package com.bowen.hannengclub;
 
+import android.app.Activity;
 import android.app.Application;
 import android.util.Log;
 
@@ -10,6 +11,9 @@ import com.tencent.smtt.sdk.TbsListener;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by 肖稳华 on 2017/4/18.
@@ -86,4 +90,41 @@ public class MyApplication extends Application {
 
 		QbSdk.initX5Environment(getApplicationContext(), cb);
 	}
+
+	private static List<Activity> mActivityList = new ArrayList<>();// 记录应用打开的所有activity
+
+	/**
+	 * 添加activity
+	 *
+	 * @param activity
+	 */
+	public static void addActivity(Activity activity) {
+		if (!mActivityList.contains(activity)) {
+			mActivityList.add(activity);
+		}
+	}
+
+	/**
+	 * 应用关闭时逐个关闭activity
+	 */
+	public static void exit() {
+		try {
+			for (Activity activity : mActivityList) {
+				if (activity != null) {
+					activity.finish();
+                   /* //关闭所有Activity
+                    removeAll();
+                    //退出进程
+                    System.exit(0);*/
+				}
+			}
+			mActivityList.clear();
+		} catch (Exception e) {
+			e.printStackTrace();
+			ToolLog.e(" exit err" , e.getMessage());
+		} finally {
+			android.os.Process.killProcess(android.os.Process.myPid());
+		}
+	}
+
 }

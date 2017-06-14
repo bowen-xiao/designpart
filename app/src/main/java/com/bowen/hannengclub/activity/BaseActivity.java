@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bowen.hannengclub.MyApplication;
 import com.bowen.hannengclub.R;
 
 import butterknife.BindView;
@@ -57,6 +58,7 @@ public abstract class BaseActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		MyApplication.addActivity(this);
 		//		锁定屏幕的方向
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		// 设置键盘不要破坏布局

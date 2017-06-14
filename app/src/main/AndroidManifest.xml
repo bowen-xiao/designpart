@@ -96,7 +96,7 @@
 
         <activity
             android:name=".activity.HomeActivity"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTop"
             android:stateNotNeeded="true" />
         <activity
             android:name=".activity.LoginActivity"

@@ -6,7 +6,7 @@ android {
         bowensign {
             keyAlias 'com.bowen'
             keyPassword 'wenhua'
-            storeFile file('E:/android_workspeace/designpart2/designpart/bowen')
+            storeFile file('F:/studio_demo/BaiDuLocationDemo/bowen')
             storePassword 'wenhua'
         }
     }
@@ -17,8 +17,11 @@ android {
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
+        }
     }
     buildTypes {
         release {
@@ -64,7 +67,7 @@ dependencies {
     /*使用QQ浏览器内核*/
     compile files('libs/tbs_v2.6.0.jar')
     /*图片选择库*/
-    compile 'com.lzy.widget:imagepicker:0.3.2'
+    compile 'com.lzy.widget:imagepicker:0.5.5'
     /*用于解决动态权限问题的*/
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.3@aar'
     compile files('libs/Xg_sdk_v3.1_20170417_0946.jar')

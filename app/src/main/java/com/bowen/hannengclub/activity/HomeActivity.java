@@ -21,6 +21,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.bowen.hannengclub.MyApplication;
 import com.bowen.hannengclub.R;
 import com.bowen.hannengclub.SysConfiguration;
 import com.bowen.hannengclub.bean.LoginResult;
@@ -459,6 +460,7 @@ public class HomeActivity extends BaseActivity {
 			unregisterReceiver(receiver);
 		}
 		FragmentFactory.clearCaches();
+		MyApplication.exit();
 		super.onDestroy();
 	}
 
