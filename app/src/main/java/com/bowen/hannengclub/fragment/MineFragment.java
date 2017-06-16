@@ -138,6 +138,14 @@ public class MineFragment extends BaseFragment {
 	@BindView(R.id.mine_center_msg_point)
 	View mMsgRedCircle;
 
+	//加载中的图片
+	@BindView(R.id.iv_loading_view)
+	ImageView mIvLoading;
+
+	//是否有消息的红点
+	@BindView(R.id.ll_loading_view_root)
+	View mLoadRoot;
+
 	//图片选择器 参考 https://github.com/jeasonlzy/ImagePicker
 	private ImagePicker imagePicker;
 	private UserInfo    mUserInfo;
@@ -175,22 +183,8 @@ public class MineFragment extends BaseFragment {
 	public void loadDataOnce() {
 		//更新显示的状态,数据加载完成需要重新更新状态
 		upDateShow();
-		//用于选择图片
-		imagePicker = ImagePicker.getInstance();
-		//初始化图片加载器
-		imagePicker.setImageLoader(new GlideImageLoader());
-
-		//自动滚动到最顶部
-		mSlRoot.smoothScrollTo(0,0);
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		upDateShow();
 		getMessage();
 	}
-
 
 	@Override
 	public void initData() {
@@ -210,9 +204,22 @@ public class MineFragment extends BaseFragment {
 							handUploadResult((UploadAvator) msg.obj);
 						}
 						break;
+					case  UPDATE_STATUS_GONE:
+						mLoadRoot.setVisibility(View.GONE);
+						break;
 				}
 			}
 		};
+
+		//用于选择图片
+		imagePicker = ImagePicker.getInstance();
+		//初始化图片加载器
+		imagePicker.setImageLoader(new GlideImageLoader());
+
+		//自动滚动到最顶部
+		mSlRoot.smoothScrollTo(0,0);
+		ToolImage.loading(mActivity.getApplicationContext(), mIvLoading);
+		ToolLog.e("main","visible ....");
 	}
 
 	//更新要显示的内容
@@ -242,6 +249,7 @@ public class MineFragment extends BaseFragment {
 
 	//更新显示
 	protected final int UPDATESHOW = 1022;
+	protected final int UPDATE_STATUS_GONE = 1023;
 
 	//	int[] SexTypes = new int[]{R.mipmap.sex_man};
 	Map<Integer,Integer> SexTypes = new HashMap<>();
@@ -258,13 +266,18 @@ public class MineFragment extends BaseFragment {
 			mIdNumber.setText("ID:"+mUserInfo.getId_str());
 			//5)认证状态,认证等级
 			String author_str = mUserInfo.getAuthor_str();
+			if(TextUtils.isEmpty(author_str)){
+				mAuthorStatus.setVisibility(View.GONE);
+			}else{
+				mAuthorStatus.setText(author_str);
+				mAuthorStatus.setVisibility(View.VISIBLE);
+			}
 			if("未认证".equals(author_str)){
 				isAuthor = false;
 				mTvRedAuthorNote.setVisibility(View.GONE);
 				mShareView.setVisibility(View.GONE);
 				mAuthorLv.setVisibility(View.GONE);
-				mAuthorStatus.setVisibility(View.GONE);
-				mAuthorBase.setVisibility(View.GONE);
+				mAuthorBase.setVisibility(View.VISIBLE);
 				mSeeMe.setVisibility(View.GONE);
 				mCommentManager.setVisibility(View.GONE);
 				mOnePartUnderLine.setVisibility(View.GONE);
@@ -275,8 +288,6 @@ public class MineFragment extends BaseFragment {
 				mTvRedAuthorNote.setText(mUserInfo.getTipsmsg());
 			}else{
 				isAuthor = true;
-				mAuthorStatus.setText(author_str);
-				mAuthorStatus.setVisibility(View.VISIBLE);
 				//分享的按钮
 				mShareView.setVisibility(View.VISIBLE);
 				mAuthorLv.setText(mUserInfo.getGrade_str());
@@ -292,6 +303,7 @@ public class MineFragment extends BaseFragment {
 			//6)年龄
 			mUserAge.setText(mUserInfo.getAge_str());
 			mUserAge.setVisibility(TextUtils.isEmpty(mUserInfo.getAge_str()) ? View.GONE : View.VISIBLE);
+
 			upViewState();
 		}
 	}
@@ -305,7 +317,7 @@ public class MineFragment extends BaseFragment {
 		mExmaple.setVisibility(visible);
 		mMaterial.setVisibility(visible);
 		mAuthorLv.setVisibility(visible);
-		mAuthorStatus.setVisibility(visible);
+		//mAuthorStatus.setVisibility(visible);
 		mRedAuthorNote.setVisibility(isAuthor ? View.GONE : View.VISIBLE);
 	}
 
@@ -585,10 +597,12 @@ public class MineFragment extends BaseFragment {
 						File file = new File(path);
 						if(file != null && file.exists()){
 							String uploadUrl = SysConfiguration.BASE_URL + "user/profile/avatar";
+							mLoadRoot.setVisibility(View.VISIBLE);
 							UpLoadFile.upFile(file, uploadUrl, new Callback() {
 								@Override
 								public void onFailure(Call call, IOException e) {
 									ToolLog.i("upload onFailure : " + e.getMessage());
+									mHandler.sendEmptyMessage(UPDATE_STATUS_GONE);
 									mActivity.runOnUiThread(new Runnable() {
 										@Override
 										public void run() {
@@ -602,6 +616,7 @@ public class MineFragment extends BaseFragment {
 
 								@Override
 								public void onResponse(Call call, Response response) throws IOException {
+									mHandler.sendEmptyMessage(UPDATE_STATUS_GONE);
 									//有返回值
 									String result = response.body().string();
 									ToolLog.i("upload success : " + result);

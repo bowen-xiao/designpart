@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.bowen.hannengclub.R;
+import com.bowen.hannengclub.adapter.NewHomeFragmentFactory;
+import com.bowen.hannengclub.fragment.FragmentFactory;
 
 
 /**
@@ -29,6 +31,9 @@ public class StartActivity extends BaseActivity {
 
 	@Override
 	public void initData() {
+		//清理数据，用于显示新内容
+		FragmentFactory.clearCaches();
+		NewHomeFragmentFactory.clearCaches();
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {

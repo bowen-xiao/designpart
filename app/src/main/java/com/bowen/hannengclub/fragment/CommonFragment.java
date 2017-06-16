@@ -172,6 +172,7 @@ public class CommonFragment extends BaseFragment {
 	boolean isLoad;
 	@Override
 	public void loadDataOnce() {
+		//这里只加载一次
 		if(isLoad){return;}
 		isLoad = true;
 		mErrPage.setVisibility(View.GONE);
