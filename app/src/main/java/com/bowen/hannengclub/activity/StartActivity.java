@@ -31,15 +31,21 @@ public class StartActivity extends BaseActivity {
 
 	@Override
 	public void initData() {
-		//清理数据，用于显示新内容
-		FragmentFactory.clearCaches();
-		NewHomeFragmentFactory.clearCaches();
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				jumpToHome();
 			}
 		},3000L);
+		//子线程去清理数据
+		new Thread(){
+			@Override
+			public void run() {
+				//清理数据，用于显示新内容
+				FragmentFactory.clearCaches();
+				NewHomeFragmentFactory.clearCaches();
+			}
+		}.start();
 	}
 
 	//跳转到首页

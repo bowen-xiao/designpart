@@ -237,9 +237,7 @@ public class CommonFragment extends BaseFragment {
 //				msg.what=URL_ERR;//通知加载自定义404页面
 //				handler.sendMessage(msg);//通知发送！
 				//如果错误码大于这个值就是要显示错误页面
-				if(statusCode > 399){
-					sendErrMsg();
-				}
+				sendErrMsg();
 //				ToolLog.e("url" , "onReceivedHttpError code : " + statusCode);
 			}
 		});

@@ -77,9 +77,8 @@ public class HomeFragment extends BaseFragment {
 	}
 
 	@Override
-	public void onResume() {
-		super.onResume();
-		//getLoginInfo();
+	public void loadDataOnce() {
+		super.loadDataOnce();
 		setSignStatus();
 		getLoginInfo();
 	}
