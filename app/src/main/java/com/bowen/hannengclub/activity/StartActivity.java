@@ -23,6 +23,12 @@ public class StartActivity extends BaseActivity {
 	}
 
 	@Override
+	public void onCreateBefore() {
+		//设置主题
+		setTheme(R.style.AppTheme_NoActionBar);
+	}
+
+	@Override
 	public int getContextViewId() {
 		//需要全屏显示
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

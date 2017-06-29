@@ -56,8 +56,11 @@ public abstract class BaseActivity extends FragmentActivity {
 
 	Bundle mIsRestartData;
 
+	public void onCreateBefore(){}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		onCreateBefore();
 		MyApplication.addActivity(this);
 		//		锁定屏幕的方向
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

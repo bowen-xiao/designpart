@@ -40,7 +40,12 @@ public class MyApplication extends Application {
 		//Todo 分享的ID
 		PlatformConfig.setWeixin("wxd394e2ec4060bd80", "920eee8134b2a9901c33a6f587593624");
 		PlatformConfig.setQQZone("101394093", "691c49892d5511379551345bf5f369d3");
-		PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad", "http://sns.whalecloud.com");
+		/**
+		 *   新浪微博分享
+		 *   Apple ID：1234480662
+			 App Key：53986201
+			 App Secret：948f84d491b84fc365124b6732425078 **/
+		PlatformConfig.setSinaWeibo("1234480662", "948f84d491b84fc365124b6732425078", "http://sns.whalecloud.com");
 		UMShareAPI.get(this);
 
 		UMShareConfig config = new UMShareConfig();

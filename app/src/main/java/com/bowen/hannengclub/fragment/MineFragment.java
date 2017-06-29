@@ -50,8 +50,6 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,6 +58,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -272,11 +271,19 @@ public class MineFragment extends BaseFragment {
 				mAuthorStatus.setText(author_str);
 				mAuthorStatus.setVisibility(View.VISIBLE);
 			}
+			//认证等级
+			String grade_str = mUserInfo.getGrade_str();
+			if(TextUtils.isEmpty(grade_str)){
+				mAuthorLv.setVisibility(View.GONE);
+			}else{
+				mAuthorLv.setText(grade_str);
+				mAuthorLv.setVisibility(View.VISIBLE);
+			}
 			if("未认证".equals(author_str)){
 				isAuthor = false;
 				mTvRedAuthorNote.setVisibility(View.GONE);
 				mShareView.setVisibility(View.GONE);
-				mAuthorLv.setVisibility(View.GONE);
+				//mAuthorLv.setVisibility(View.GONE);
 				mAuthorBase.setVisibility(View.VISIBLE);
 				mSeeMe.setVisibility(View.GONE);
 				mCommentManager.setVisibility(View.GONE);
@@ -290,7 +297,7 @@ public class MineFragment extends BaseFragment {
 				isAuthor = true;
 				//分享的按钮
 				mShareView.setVisibility(View.VISIBLE);
-				mAuthorLv.setText(mUserInfo.getGrade_str());
+				//mAuthorLv.setText(mUserInfo.getGrade_str());
 				mAuthorBase.setVisibility(View.VISIBLE);
 				mSeeMe.setVisibility(View.VISIBLE);
 				mCommentManager.setVisibility(View.VISIBLE);
@@ -308,6 +315,7 @@ public class MineFragment extends BaseFragment {
 		}
 	}
 
+	//是否已经有权限
 	boolean isAuthor;
 
 	//是否通过验证的显示状态
@@ -316,7 +324,7 @@ public class MineFragment extends BaseFragment {
 		mMyFans.setVisibility(visible);
 		mExmaple.setVisibility(visible);
 		mMaterial.setVisibility(visible);
-		mAuthorLv.setVisibility(visible);
+		//mAuthorLv.setVisibility(visible);
 		//mAuthorStatus.setVisibility(visible);
 		mRedAuthorNote.setVisibility(isAuthor ? View.GONE : View.VISIBLE);
 	}
@@ -406,7 +414,6 @@ public class MineFragment extends BaseFragment {
 
 	//设置页面
 	private void settingPage(){
-		// TODO: 2017/5/24
 		Intent intent = new Intent(mActivity, SettingActivity.class);
 		startActivity(intent);
 	}

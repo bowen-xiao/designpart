@@ -63,4 +63,8 @@
         <item name="android:windowExitAnimation">@anim/pop_exit_anim</item>
     </style>
 
+    <style name="LauncherTheme">
+        <item name="android:windowBackground">@mipmap/start_bg</item>
+    </style>
+
 </resources>

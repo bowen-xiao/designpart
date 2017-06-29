@@ -69,7 +69,7 @@
         <activity
             android:name=".activity.StartActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/LauncherTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -103,7 +103,8 @@
             android:stateNotNeeded="true" />
         <activity android:name=".activity.ForgetPasswordActivity" />
         <activity android:name=".activity.ConfirmPasswordActivity" />
-        <activity android:name=".activity.CommonActivity" />
+        <activity android:name=".activity.CommonActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
         <!-- 需要杀死后自动重启 -->
         <activity
             android:name=".activity.RegisterActivity"
@@ -254,6 +255,18 @@
         </provider>
 
         <activity android:name=".activity.SettingActivity" ></activity>
+
+        <activity
+            android:name="com.tencent.smtt.sdk.VideoActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:alwaysRetainTaskState="true">
+            <intent-filter>
+                <action android:name="com.tencent.smtt.tbs.video.PLAY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
     </application>
 

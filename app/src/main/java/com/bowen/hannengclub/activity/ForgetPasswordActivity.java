@@ -169,6 +169,7 @@ public class ForgetPasswordActivity extends BaseActivity {
 		 type	是	int	类型：0注册，1找回密码，2手机登录
 
 		 */
+		mBtnMsgTime.setEnabled(false);
 		String mPhoneNumber = mInputPhone.getText().toString().trim();
 		RxNetWorkService service = DataEngine2.getServiceApiByClass(RxNetWorkService.class);
 		//		service.getBaiDuInfo(SysConfiguration.BASE_URL)
@@ -186,7 +187,7 @@ public class ForgetPasswordActivity extends BaseActivity {
 				   @Override
 				   public void onCompleted() {
 					   //启用按钮
-					   mBtnMsgTime.setEnabled(true);
+					   //mBtnMsgTime.setEnabled(true);
 				   }
 
 				   @Override
@@ -194,6 +195,7 @@ public class ForgetPasswordActivity extends BaseActivity {
 					   //有异常不处理
 					   ToolLog.e("login getPhoneCode ",e.getMessage() + "--onError !");
 					   //seconds = 1;
+					   mBtnMsgTime.setEnabled(true);
 				   }
 
 				   @Override
@@ -203,6 +205,7 @@ public class ForgetPasswordActivity extends BaseActivity {
 						   if(model.getStatus() == 0){
 							   //重新计时
 							   seconds = 1;
+							   mBtnMsgTime.setEnabled(true);
 							   //ToastUtil.showToast(mActivity, model.getErrmsg());
 							   DialogBean bean = new DialogBean(model.getErrmsg(),"","","");
 							   CommonMsgDialog msgDialog = new CommonMsgDialog(mActivity, bean);
@@ -234,8 +237,10 @@ public class ForgetPasswordActivity extends BaseActivity {
 					mBtnMsgTime.setText("获取验证码");
 					mBtnMsgTime.setEnabled(true);
 					return;
+				}else{
+					mBtnMsgTime.setEnabled(false);
+					myHandler.postDelayed(this,1000L);
 				}
-				myHandler.postDelayed(this,1000L);
 			}
 		},1000L);
 	}

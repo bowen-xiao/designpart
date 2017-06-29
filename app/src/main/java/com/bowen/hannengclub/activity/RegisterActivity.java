@@ -260,6 +260,7 @@ public class RegisterActivity extends BaseActivity {
 					mBtnMsgTime.setEnabled(true);
 					return;
 				}else{
+					mBtnMsgTime.setEnabled(false);
 					myHandler.postDelayed(this,1000L);
 				}
 			}
