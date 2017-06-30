@@ -6,7 +6,7 @@ android {
         bowensign {
             keyAlias 'com.bowen'
             keyPassword 'wenhua'
-            storeFile file('F:/studio_demo/BaiDuLocationDemo/bowen')
+            storeFile file('E:/studio_demo/BaiDuLocationDemo/bowen')
             storePassword 'wenhua'
         }
     }
@@ -16,8 +16,8 @@ android {
         applicationId "com.bowen.hannengclub"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0.0"
+        versionCode 9
+        versionName "1.9.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
