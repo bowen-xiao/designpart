@@ -439,6 +439,7 @@ public class MineFragment extends BaseFragment {
 			@Override
 			public void onError(SHARE_MEDIA share_media, Throwable throwable) {
 				//分享错误
+				ToolLog.e("share","err",throwable);
 			}
 
 			@Override

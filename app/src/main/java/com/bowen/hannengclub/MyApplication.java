@@ -45,7 +45,7 @@ public class MyApplication extends Application {
 		 *   Apple ID：1234480662
 			 App Key：53986201
 			 App Secret：948f84d491b84fc365124b6732425078 **/
-		PlatformConfig.setSinaWeibo("1234480662", "948f84d491b84fc365124b6732425078", "http://sns.whalecloud.com");
+		PlatformConfig.setSinaWeibo("53986201", "948f84d491b84fc365124b6732425078", "http://sns.whalecloud.com");
 		UMShareAPI.get(this);
 
 		UMShareConfig config = new UMShareConfig();
