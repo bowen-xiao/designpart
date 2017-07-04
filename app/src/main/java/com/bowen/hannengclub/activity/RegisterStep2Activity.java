@@ -14,6 +14,7 @@ import com.bowen.hannengclub.SysConfiguration;
 import com.bowen.hannengclub.bean.LoginResult;
 import com.bowen.hannengclub.dialog.CommonMsgDialog;
 import com.bowen.hannengclub.dialog.DialogBean;
+import com.bowen.hannengclub.fragment.CommonFragment;
 import com.bowen.hannengclub.network.DataEngine2;
 import com.bowen.hannengclub.network.RxNetWorkService;
 import com.bowen.hannengclub.util.CacheUtils;
@@ -249,6 +250,8 @@ public class RegisterStep2Activity extends BaseActivity {
 	private void finishRegister(){
 		//关闭登录页面
 		sendBroadcast(new Intent(LoginActivity.FINISH_LOGIN_ACTIVITY));
+		//更新页面信息
+		sendBroadcast(new Intent(CommonFragment.LOGIN_STATUS_CHANGE));
 		Intent intent = new Intent(RegisterActivity.FINISH_ACTIVITY);
 		sendBroadcast(intent);
 		finish();
